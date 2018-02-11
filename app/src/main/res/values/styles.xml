@@ -1,0 +1,101 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionButtonStyle">@style/AppTheme.Widget.ActionButton</item>
+        <item name="android:textColorHint">@color/colorPrimary</item>
+        <item name="android:actionMenuTextColor">@color/title_color</item>
+    </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textColorSecondary">@color/colorPrimary</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:actionBarStyle">@style/AppTheme.ActionBarStyle</item>
+        <item name="android:capitalize">none</item>
+    </style>
+    `
+
+    <style name="AppTheme.ActionBarStyle" parent="@android:style/Widget.Holo.Light.ActionBar">
+        <item name="android:titleTextStyle">@style/AppTheme.ActionBar.TitleTextStyle</item>
+    </style>
+
+    <style name="AppTheme.ActionBar.TitleTextStyle" parent="@android:style/TextAppearance.Holo.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/colorPrimary</item>
+    </style>
+
+    <style name="AppTheme.Widget.ActionButton" parent="@style/Widget.AppCompat.ActionButton">
+        <item name="textAllCaps">false</item>
+    </style>
+
+    <style name="margin_left_right_14dp">
+        <item name="android:layout_marginLeft">@dimen/dimen_14dp</item>
+        <item name="android:layout_marginRight">@dimen/dimen_14dp</item>
+    </style>
+
+    <style name="margin_left_right_18dp">
+        <item name="android:layout_marginLeft">@dimen/dimen_18dp</item>
+        <item name="android:layout_marginRight">@dimen/dimen_18dp</item>
+    </style>
+
+    <style name="margin_left_right_20dp">
+        <item name="android:layout_marginLeft">@dimen/dimen_20dp</item>
+        <item name="android:layout_marginRight">@dimen/dimen_20dp</item>
+    </style>
+
+    <style name="singleline_edittext">
+        <item name="android:singleLine">true</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:textSize">@dimen/font_18sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/edittext_color</item>
+    </style>
+
+    <style name="hint_text">
+        <item name="android:layout_marginLeft">@dimen/dimen_20dp</item>
+        <item name="android:layout_marginRight">@dimen/dimen_20dp</item>
+        <item name="android:textSize">@dimen/font_14sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/hint_color</item>
+    </style>
+
+    <style name="multiline_edittext">
+        <item name="android:textSize">@dimen/font_18sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/edittext_color</item>
+    </style>
+
+    <style name="disabled_rounded_button" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_marginLeft">@dimen/dimen_20dp</item>
+        <item name="android:layout_marginRight">@dimen/dimen_20dp</item>
+        <item name="android:textSize">@dimen/font_18sp</item>
+        <item name="android:textColor">@color/light_tosca</item>
+        <item name="android:fontFamily">@font/roboto_bold</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:background">@drawable/rounded_button_disabled</item>
+    </style>
+
+    <style name="TabLayoutStyle" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:fontFamily">@font/lato_bold</item>
+        <item name="android:textColor">@color/White</item>
+        <item name="android:textSize">@dimen/font_18sp</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+</resources>

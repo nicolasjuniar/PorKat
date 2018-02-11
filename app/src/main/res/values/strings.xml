@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">porkat</string>
+    <item name="visible" type="id" />
+    <item name="masked" type="id" />
+    <string name="login_text">Masuk</string>
+    <string name="register_text">Daftar</string>
+    <string name="username_text">Id Pengguna</string>
+    <string name="password_text">Katasandi</string>
+    <string name="register_reminder">Belum punya akun? %s</string>
+    <string name="register_here">Daftar disini</string>
+    <string name="home_text">Beranda</string>
+    <string name="empty_string"></string>
+    <string name="phone_text">Nomor Telpon</string>
+    <string name="address_text">Alamat</string>
+    <string name="fullname_text">Nama Lengkap</string>
+    <string name="title_activity_home_pelanggan">HomePelangganActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+</resources>
