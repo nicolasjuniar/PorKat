@@ -1,9 +1,11 @@
 package juniar.porkat.Utils
 
 import io.reactivex.Observable
+import juniar.porkat.auth.login.LoginRequest
+import juniar.porkat.auth.login.LoginResponse
+import juniar.porkat.auth.register.RegisterPelangganRequest
+import juniar.porkat.auth.register.RegisterPelangganResponse
 import juniar.porkat.homescreen.ListKateringResponse
-import juniar.porkat.login.LoginRequest
-import juniar.porkat.login.LoginResponse
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -18,4 +20,6 @@ interface NetworkApi {
     @POST("pengguna/login")
     fun login(@Body request: LoginRequest): Observable<LoginResponse>
 
+    @POST("pelanggan/register")
+    fun registerPelanggan(@Body request: RegisterPelangganRequest): Observable<RegisterPelangganResponse>
 }

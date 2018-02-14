@@ -1,7 +1,7 @@
 package juniar.porkat.splashscreen
 
 import android.content.Intent
-import android.os.Handler
+import android.util.Log
 import juniar.porkat.R
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.common.BaseActivity
@@ -19,10 +19,18 @@ class SplashScreenActivity : BaseActivity<Any>() {
 
     override fun onViewReady() {
         prefs = SharedPreferenceUtil(this@SplashScreenActivity)
-        Handler().postDelayed({
-            loadPreferences()
-        }, 2000)
-        finish()
+        object : Thread() {
+            override fun run() {
+                try {
+                    Thread.sleep(2000)
+                } catch (e: InterruptedException) {
+                    Log.d("Exception", "Exception" + e)
+                } finally {
+                    loadPreferences()
+                }
+                finish()
+            }
+        }.start()
     }
 
     fun loadPreferences() {

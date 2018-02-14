@@ -1,4 +1,4 @@
-package juniar.porkat.login
+package juniar.porkat.auth.login
 
 import android.content.Intent
 import android.support.v4.content.res.ResourcesCompat
@@ -16,7 +16,7 @@ import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.homepelanggan.HomePelangganActivity
-import juniar.porkat.register.RegisterPelangganActivity
+import juniar.porkat.auth.register.RegisterPelangganActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**

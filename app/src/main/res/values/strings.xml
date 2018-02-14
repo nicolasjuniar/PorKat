@@ -14,6 +14,11 @@
     <string name="address_text">Alamat</string>
     <string name="fullname_text">Nama Lengkap</string>
     <string name="title_activity_home_pelanggan">HomePelangganActivity</string>
+    <string name="autentikasi_text">Data Autentikasi</string>
+    <string name="private_text">Data Diri</string>
+    <string name="next_text">Lanjut</string>
+    <string name="username_error_text">Id Pengguna minimal 4 karakter</string>
+    <string name="password_error_text">Katasandi minimal 6 karakter</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * Created by Nicolas Juniar on 12/02/2018.
  */
 data class GetKateringModel(@SerializedName("id_katering") var id_katering: Int,
-                            @SerializedName("id_pengguna") var id_pengguna: String,
+                            @SerializedName("idPengguna") var id_pengguna: String,
                             @SerializedName("katasandi") var katasandi: String,
                             @SerializedName("nama_katering") var nama_katering: String,
                             @SerializedName("no_telp") var no_telp: String,

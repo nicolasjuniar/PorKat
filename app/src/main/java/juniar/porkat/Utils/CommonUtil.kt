@@ -10,6 +10,7 @@ import android.text.Html
 import android.view.View
 import android.view.WindowManager
 import android.widget.Button
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import juniar.porkat.R
@@ -102,3 +103,7 @@ fun Button.setAvailable(enable: Boolean, context: Context) {
 }
 
 val DONT_TOUCH = WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+
+fun EditText.getTextString(): String {
+    return this.text.toString()
+}

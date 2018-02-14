@@ -1,14 +1,13 @@
 package juniar.porkat.homescreen
 
 import android.content.Intent
-import android.support.v4.content.ContextCompat.startActivity
 import android.support.v7.widget.Toolbar
 import android.view.Menu
 import android.view.MenuItem
 import juniar.porkat.R
 import juniar.porkat.Utils.TabPagerAdapter
 import juniar.porkat.common.BaseActivity
-import juniar.porkat.login.LoginActivity
+import juniar.porkat.auth.login.LoginActivity
 import kotlinx.android.synthetic.main.activity_home.*
 
 /**

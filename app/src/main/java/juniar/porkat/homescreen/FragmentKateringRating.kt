@@ -45,6 +45,7 @@ class FragmentKateringRating : Fragment(), KateringView {
 
     override fun onGetListKatering(error: Boolean, response: ListKateringResponse?, t: Throwable?) {
         setLoading(false)
+        swipe_layout.isRefreshing = false
         if (!error) {
             with(rv_katering) {
                 getKateringList = response?.listkatering!!

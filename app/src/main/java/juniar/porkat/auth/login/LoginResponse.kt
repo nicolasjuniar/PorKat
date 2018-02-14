@@ -1,6 +1,8 @@
-package juniar.porkat.login
+package juniar.porkat.auth.login
 
 import com.google.gson.annotations.SerializedName
+import juniar.porkat.auth.KateringModel
+import juniar.porkat.auth.PelangganModel
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.

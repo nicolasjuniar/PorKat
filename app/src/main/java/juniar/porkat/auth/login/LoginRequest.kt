@@ -1,9 +1,9 @@
-package juniar.porkat.login
+package juniar.porkat.auth.login
 
 import com.google.gson.annotations.SerializedName
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.
  */
-data class LoginRequest(@SerializedName("id_pengguna") val id_pengguna:String,
+data class LoginRequest(@SerializedName("idPengguna") val idPengguna:String,
                         @SerializedName("katasandi") val katasandi:String)

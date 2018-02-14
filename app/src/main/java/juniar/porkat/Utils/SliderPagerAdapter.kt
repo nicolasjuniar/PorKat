@@ -1,4 +1,4 @@
-package id.co.binar.binarapp.common
+package juniar.porkat.Utils
 
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager

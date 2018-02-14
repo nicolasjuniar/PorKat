@@ -1,4 +1,4 @@
-package juniar.porkat.login
+package juniar.porkat.auth.login
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.

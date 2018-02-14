@@ -1,4 +1,4 @@
-package juniar.porkat.login
+package juniar.porkat.auth
 
 import com.google.gson.annotations.SerializedName
 
@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
  * Created by Nicolas Juniar on 12/02/2018.
  */
 data class KateringModel(@SerializedName("id_katering") val id_katering: Int,
-                         @SerializedName("id_pengguna") val id_pengguna: String,
+                         @SerializedName("idPengguna") val id_pengguna: String,
                          @SerializedName("katasandi") val katasandi: String,
                          @SerializedName("nama_katering") val nama_katering: String,
                          @SerializedName("no_telp") val no_telp: String,
