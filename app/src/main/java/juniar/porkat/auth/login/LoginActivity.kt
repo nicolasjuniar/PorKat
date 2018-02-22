@@ -14,16 +14,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import juniar.porkat.R
 import juniar.porkat.Utils.*
-import juniar.porkat.common.BaseActivity
-import juniar.porkat.homepelanggan.HomePelangganActivity
 import juniar.porkat.auth.register.RegisterPelangganActivity
+import juniar.porkat.common.BaseActivity
+import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
+import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
+import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
+import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
+import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
+import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
+import juniar.porkat.homepelanggan.HomePelangganActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.
  */
 class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
-    lateinit var prefs: SharedPreferenceUtil
+    lateinit var sharedPreferenceUtil: SharedPreferenceUtil
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_login)
@@ -31,7 +37,7 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
     }
 
     override fun onViewReady() {
-        prefs = SharedPreferenceUtil(this@LoginActivity)
+        sharedPreferenceUtil = SharedPreferenceUtil(this@LoginActivity)
         presenter = LoginPresenter(this@LoginActivity)
 
         val str2 = getString(R.string.register_here)
@@ -92,12 +98,28 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
         setLoading(false)
         if (!error) {
             showShortToast(response?.message!!)
-            if(response?.success!!){
-                startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
-                finishAffinity()
+            response.let {
+                if (it.success) {
+                    with(sharedPreferenceUtil) {
+                        setBoolean(SESSION, true)
+                        setString(ROLE, it.role)
+                    }
+
+                    when (it.role) {
+                        PELANGGAN -> {
+                            startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
+                            sharedPreferenceUtil.setString(PROFILE_PELANGGAN, it.datapelanggan.encodeJson())
+                        }
+                        KATERING -> {
+                            startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
+                            sharedPreferenceUtil.setString(PROFILE_KATERING, it.datakatering.encodeJson())
+                        }
+                    }
+                    finishAffinity()
+                }
             }
         } else {
-            showShortToast(t?.localizedMessage!!)
+            t!!.localizedMessage.logDebug()
         }
     }
 

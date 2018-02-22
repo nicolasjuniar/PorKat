@@ -1,49 +1,40 @@
-package juniar.porkat.auth.register
+package juniar.porkat.homepelanggan.setting
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.support.v7.widget.Toolbar
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException
 import com.google.android.gms.common.GooglePlayServicesRepairableException
 import com.google.android.gms.location.places.ui.PlacePicker
+import com.google.gson.Gson
 import com.jakewharton.rxbinding2.widget.RxTextView
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Function3
 import juniar.porkat.R
 import juniar.porkat.Utils.*
-import juniar.porkat.auth.register.RegisterPelangganActivity.Companion.PRIVATE
-import juniar.porkat.common.BaseFragment
-import kotlinx.android.synthetic.main.fragment_register_pelanggan_private.*
+import juniar.porkat.auth.PelangganModel
+import juniar.porkat.auth.register.FillPrivatePelangganFragment
+import juniar.porkat.common.BaseActivity
+import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
+import kotlinx.android.synthetic.main.activity_edit_profile_pelanggan.*
 
 /**
- * Created by Nicolas Juniar on 14/02/2018.
+ * Created by Nicolas Juniar on 22/02/2018.
  */
-class FillPrivatePelangganFragment : BaseFragment<Any>() {
+class EditProfileActivity : BaseActivity<SettingPelangganPresenter>(), SettingView {
 
-    lateinit var callback: RegisterView
+    lateinit var sharedPreferenceUtil: SharedPreferenceUtil
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        callback = activity as RegisterView
+    override fun onSetupLayout() {
+        setContentView(R.layout.activity_edit_profile_pelanggan)
+        setupToolbarTitle(toolbar_layout as Toolbar, R.string.edit_profile_text)
     }
 
-    companion object {
-        val PLACE_PICKER_REQUEST = 1
-        fun newInstance(): FillPrivatePelangganFragment {
-            return FillPrivatePelangganFragment()
-
-        }
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = inflater.inflate(R.layout.fragment_register_pelanggan_private, container, false)
-
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onViewReady() {
+        sharedPreferenceUtil = SharedPreferenceUtil(this@EditProfileActivity)
+        presenter= SettingPelangganPresenter(this)
+        val pelanggan = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN), PelangganModel::class.java)
         Observable.combineLatest(
                 RxTextView.textChanges(et_fullname)
                         .map { it.isNotEmpty() },
@@ -56,7 +47,7 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    callback.onFieldFilled(it,PRIVATE)
+                    btn_update.setAvailable(it, this@EditProfileActivity)
                 }
 
         RxTextView.textChanges(et_fullname)
@@ -69,14 +60,14 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
                             error = null
                             isErrorEnabled = false
                         }
-                        fullname.setTextColor(activity.getColorCompat(R.color.hint_color))
+                        fullname.setTextColor(getColorCompat(R.color.hint_color))
                     } else {
                         with(field_fullname)
                         {
                             isErrorEnabled = true
                             error = getString(R.string.error_fullname_invalid).toHtmlText()
                         }
-                        fullname.setTextColor(activity.getColorCompat(R.color.md_red_500))
+                        fullname.setTextColor(getColorCompat(R.color.md_red_500))
                     }
                 }
 
@@ -89,13 +80,13 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
                             isErrorEnabled = true
                             error = getString(R.string.error_phone_invalid).toHtmlText()
                         }
-                        et_phone.setTextColor(activity.getColorCompat(R.color.md_red_500))
+                        et_phone.setTextColor(getColorCompat(R.color.md_red_500))
                     } else {
                         with(field_phone) {
                             error = null
                             isErrorEnabled = false
                         }
-                        et_phone.setTextColor(activity.getColorCompat(R.color.hint_color))
+                        et_phone.setTextColor(getColorCompat(R.color.hint_color))
                     }
                 }
 
@@ -103,22 +94,55 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
             val builder = PlacePicker.IntentBuilder()
 
             try {
-                startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
+                startActivityForResult(builder.build(this@EditProfileActivity), FillPrivatePelangganFragment.PLACE_PICKER_REQUEST)
             } catch (e: GooglePlayServicesRepairableException) {
                 e.printStackTrace()
             } catch (e: GooglePlayServicesNotAvailableException) {
                 e.printStackTrace()
             }
         }
+        setProfilePelanggan(pelanggan)
+
+        btn_update.setOnClickListener {
+            setLoading(true)
+            presenter?.editProfilePelanggan(EditProfilePelangganRequest(pelanggan.id_pelanggan,et_phone.textToString(),et_fullname.textToString(),et_address.textToString()))
+        }
+    }
+
+    fun setProfilePelanggan(pelanggan: PelangganModel) {
+        et_fullname.setText(pelanggan.nama_lengkap)
+        et_address.setText(pelanggan.alamat)
+        et_phone.setText(pelanggan.no_telp)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
-        if (requestCode == PLACE_PICKER_REQUEST) {
+        if (requestCode == FillPrivatePelangganFragment.PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                val place = PlacePicker.getPlace(data, activity)
-                val address = activity.getAddress(place.latLng.latitude, place.latLng.longitude)
+                val place = PlacePicker.getPlace(data, this@EditProfileActivity)
+                val address = getAddress(place.latLng.latitude, place.latLng.longitude)
                 et_address.setText(address)
             }
         }
     }
+
+    override fun onUpdateProfile(error: Boolean, message: String?, t: Throwable?) {
+        if (!error) {
+            showShortToast(message!!)
+            finish()
+        } else {
+            showShortToast(t?.localizedMessage!!)
+        }
+    }
+
+    override fun setLoading(loading: Boolean) {
+        if(loading){
+            window.setFlags(DONT_TOUCH, DONT_TOUCH)
+            progressbar.show()
+        }
+        else{
+            window.clearFlags(DONT_TOUCH)
+            progressbar.hide()
+        }
+    }
+
 }

@@ -11,7 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import juniar.porkat.R
 import juniar.porkat.Utils.getColorCompat
+import juniar.porkat.Utils.textToString
 import juniar.porkat.Utils.toHtmlText
+import juniar.porkat.auth.register.RegisterPelangganActivity.Companion.AUTH
 import juniar.porkat.common.BaseFragment
 import kotlinx.android.synthetic.main.fragment_register_autentikasi.*
 import java.util.concurrent.TimeUnit
@@ -48,12 +50,12 @@ class FillAuthPelangganFragment : BaseFragment<Any>() {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    callback.onFieldFilled(it)
+                    callback.onFieldFilled(it,AUTH)
+                    callback.onAuthFilled(et_username.textToString(),et_password.textToString())
                 }
 
         RxTextView.textChanges(et_username)
-                .debounce(1,TimeUnit.SECONDS)
-                .map { it.isNotEmpty() && it.length<4 }
+                .map { it.isNotEmpty() && it.length < 4 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it) {
@@ -72,8 +74,7 @@ class FillAuthPelangganFragment : BaseFragment<Any>() {
                 }
 
         RxTextView.textChanges(et_password)
-                .debounce(1,TimeUnit.SECONDS)
-                .map { it.isNotEmpty() && it.length<6 }
+                .map { it.isNotEmpty() && it.length < 6 }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     if (it) {

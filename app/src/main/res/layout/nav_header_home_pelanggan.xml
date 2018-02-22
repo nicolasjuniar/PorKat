@@ -20,16 +20,20 @@
         app:srcCompat="@mipmap/ic_launcher_round" />
 
     <TextView
+        android:id="@+id/tv_fullname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="Android Studio"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+        android:fontFamily="@font/roboto_bold"
+        android:textSize="@dimen/font_16sp"/>
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tv_role"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="android.studio@android.com" />
+        android:text="android.studio@android.com"
+        android:fontFamily="@font/roboto_regular"
+        android:textSize="@dimen/font_14sp"/>
 
 </LinearLayout>

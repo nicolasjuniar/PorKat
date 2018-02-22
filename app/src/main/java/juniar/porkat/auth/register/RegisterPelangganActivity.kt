@@ -23,6 +23,13 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
     val fragmentList = mutableListOf<Fragment>()
     lateinit var slider: SliderPagerAdapter
     var indicators = arrayListOf<ImageView>()
+    var request = RegisterPelangganRequest()
+    var buttonEnabled = false
+
+    companion object {
+        val AUTH = 1
+        val PRIVATE = 2
+    }
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_register_pelanggan)
@@ -58,8 +65,8 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
             with(btn_register) {
                 text = getString(R.string.next_text)
                 setOnClickListener {
+                    btn_register.setAvailable(buttonEnabled, this@RegisterPelangganActivity)
                     viewpager.currentItem++
-                    btn_register.setAvailable(false, this@RegisterPelangganActivity)
                 }
             }
         } else {
@@ -67,7 +74,8 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
             with(btn_register) {
                 text = getString(R.string.register_text)
                 setOnClickListener {
-                    showShortToast("register gan")
+                    setLoading(true)
+                    presenter?.registerPelanggan(request)
                 }
             }
         }
@@ -101,7 +109,13 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
     }
 
     override fun setLoading(loading: Boolean) {
-        if (loading) progressbar.show() else progressbar.hide()
+        if (loading) {
+            window.setFlags(DONT_TOUCH, DONT_TOUCH)
+            progressbar.show()
+        } else {
+            window.clearFlags(DONT_TOUCH)
+            progressbar.hide()
+        }
     }
 
     override fun onRegisterResponse(error: Boolean, response: RegisterPelangganResponse?, t: Throwable?) {
@@ -131,7 +145,23 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
         indicators[position].setImageDrawable(ContextCompat.getDrawable(this@RegisterPelangganActivity, R.drawable.dot_indicator))
     }
 
-    override fun onFieldFilled(enable: Boolean) {
+    override fun onFieldFilled(enable: Boolean, code: Int) {
+        if (code == PRIVATE) buttonEnabled = enable
         btn_register.setAvailable(enable, this@RegisterPelangganActivity)
+    }
+
+    override fun onAuthFilled(username: String, password: String) {
+        with(request) {
+            idPengguna = username
+            katasandi = password
+        }
+    }
+
+    override fun onPrivateFilled(fullname: String, phone: String, address: String) {
+        with(request) {
+            namaLengkap = fullname
+            noTelp = phone
+            alamat = address
+        }
     }
 }
