@@ -1,11 +1,17 @@
 package juniar.porkat.splashscreen
 
 import android.content.Intent
+import android.location.Location
 import android.os.Handler
+import android.widget.Toast
+import com.google.android.gms.maps.model.LatLng
 import juniar.porkat.R
+import juniar.porkat.Utils.MyLocation
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
+import juniar.porkat.common.Constant.CommonStrings.Companion.LATITUDE
+import juniar.porkat.common.Constant.CommonStrings.Companion.LONGITUDE
 import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
 import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
@@ -24,6 +30,7 @@ class SplashScreenActivity : BaseActivity<Any>() {
 
     override fun onViewReady() {
         sharedPreferenceUtil = SharedPreferenceUtil(this@SplashScreenActivity)
+        getMyLocation(sharedPreferenceUtil)
         Handler().postDelayed({
             loadPreferences()
             finish()

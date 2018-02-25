@@ -10,9 +10,20 @@ import juniar.porkat.common.BasePresenter
  * Created by Nicolas Juniar on 12/02/2018.
  */
 class KateringPresenter(val view:KateringView): BasePresenter(){
-    fun getListKatering() {
+    fun getListKateringByRating() {
         compositeDisposable.add(NetworkManager.createService(NetworkApi::class.java)
                 .GetListKateringByRating()
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { view.onGetListKatering(false, it, null) },
+                        { view.onGetListKatering(true, null, it) }
+                ))
+    }
+
+    fun getListKateringByDistance(latitude:Double,longitude:Double) {
+        compositeDisposable.add(NetworkManager.createService(NetworkApi::class.java)
+                .GetListKateringByDistance(latitude,longitude)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

@@ -18,37 +18,30 @@ import juniar.porkat.Utils.hide
 import juniar.porkat.Utils.show
 import juniar.porkat.Utils.showShortToast
 import juniar.porkat.common.BaseFragment
-import juniar.porkat.common.Constant.CommonStrings.Companion.EMPTY_STRING
-import juniar.porkat.common.Constant.CommonStrings.Companion.LATITUDE
-import juniar.porkat.common.Constant.CommonStrings.Companion.LONGITUDE
+import juniar.porkat.common.Constant
 import juniar.porkat.common.GeneralRecyclerViewAdapter
 import juniar.porkat.detailkatering.DetailKateringActivity
-import juniar.porkat.detailkatering.DetailKateringActivity.Companion.DETAIL_KATERING
 import kotlinx.android.synthetic.main.fragment_rating.*
 
 /**
- * Created by Nicolas Juniar on 12/02/2018.
+ * Created by Nicolas Juniar on 24/02/2018.
  */
-class FragmentKateringRating : BaseFragment<KateringPresenter>(), KateringView {
+class FragmentKateringDistance : BaseFragment<KateringPresenter>(), KateringView {
 
     lateinit var getKateringList: MutableList<GetKateringModel>
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
+    val myLocation= Location(Constant.CommonStrings.EMPTY_STRING)
 
     private val kateringAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_katering, getKateringList,
                 { kateringModel, _, _ ->
-                    val intent=Intent(activity, DetailKateringActivity::class.java)
-                    intent.putExtra(DETAIL_KATERING,kateringModel)
-                    startActivity(intent)
+                    startActivity(Intent(activity,DetailKateringActivity::class.java))
                 },
                 { kateringModel, view ->
                     with(kateringModel) {
-                        val kateringLocation=Location(EMPTY_STRING)
+                        val kateringLocation= Location(Constant.CommonStrings.EMPTY_STRING)
                         kateringLocation.longitude=kateringModel.longitude
                         kateringLocation.latitude=kateringModel.latitude
-                        val myLocation=Location(EMPTY_STRING)
-                        myLocation.longitude=sharedPreferenceUtil.getString(LONGITUDE,"0").toDouble()
-                        myLocation.latitude=sharedPreferenceUtil.getString(LATITUDE,"0").toDouble()
                         kateringModel.distance=myLocation.distanceTo(kateringLocation)/1000
                         view.findViewById<TextView>(R.id.tv_katering).text = this.nama_katering
                         view.findViewById<TextView>(R.id.tv_alamat).text = this.alamat
@@ -64,12 +57,11 @@ class FragmentKateringRating : BaseFragment<KateringPresenter>(), KateringView {
         swipe_layout.isRefreshing = false
         if (!error) {
             with(rv_katering) {
-                getKateringList.clear()
-                getKateringList.addAll(response?.listkatering!!)
-                kateringAdapter.notifyDataSetChanged()
+                getKateringList = response?.listkatering!!
                 adapter = kateringAdapter
                 layoutManager = LinearLayoutManager(activity)
             }
+            kateringAdapter.notifyDataSetChanged()
         } else {
             context.showShortToast(t?.localizedMessage!!)
         }
@@ -88,14 +80,18 @@ class FragmentKateringRating : BaseFragment<KateringPresenter>(), KateringView {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = KateringPresenter(this)
-        sharedPreferenceUtil=SharedPreferenceUtil(activity)
+        sharedPreferenceUtil= SharedPreferenceUtil(activity)
         getKateringList = mutableListOf()
         getMyLocation(sharedPreferenceUtil)
-        presenter?.getListKateringByRating()
+        myLocation.longitude=sharedPreferenceUtil.getString(Constant.CommonStrings.LONGITUDE,"0").toDouble()
+        myLocation.latitude=sharedPreferenceUtil.getString(Constant.CommonStrings.LATITUDE,"0").toDouble()
+        presenter?.getListKateringByDistance(myLocation.longitude,myLocation.latitude)
 
         swipe_layout.setOnRefreshListener({
-            presenter?.getListKateringByRating()
             getMyLocation(sharedPreferenceUtil)
+            myLocation.longitude=sharedPreferenceUtil.getString(Constant.CommonStrings.LONGITUDE,"0").toDouble()
+            myLocation.latitude=sharedPreferenceUtil.getString(Constant.CommonStrings.LATITUDE,"0").toDouble()
+            presenter?.getListKateringByDistance(myLocation.longitude,myLocation.latitude)
         })
 
         rv_katering.addOnScrollListener(object : RecyclerView.OnScrollListener() {

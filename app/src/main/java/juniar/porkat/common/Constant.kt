@@ -14,6 +14,8 @@ class Constant {
             val KATERING="katering"
             val PROFILE_PELANGGAN="profile_pelanggan"
             val PROFILE_KATERING="profile_katering"
+            val LONGITUDE="longitude"
+            val LATITUDE="latitude"
         }
     }
 }

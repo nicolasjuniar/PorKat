@@ -2,6 +2,7 @@ package juniar.porkat.Utils
 
 import android.content.Context
 import android.content.SharedPreferences
+import juniar.porkat.common.Constant.CommonStrings.Companion.EMPTY_STRING
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.
@@ -31,7 +32,7 @@ class SharedPreferenceUtil(context: Context) {
 
     fun getBoolean(key: String) = sharedPreferenceUtil.getBoolean(key, false)
 
-    fun getString(key: String) = sharedPreferenceUtil.getString(key, "")
+    fun getString(key: String,defValue:String=EMPTY_STRING) = sharedPreferenceUtil.getString(key, defValue)
 
     fun getInt(key: String) = sharedPreferenceUtil.getInt(key, 0)
 

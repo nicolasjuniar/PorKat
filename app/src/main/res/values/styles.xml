@@ -87,6 +87,14 @@
         <item name="android:textColor">@color/hint_color</item>
     </style>
 
+    <style name="desc_text">
+        <item name="android:layout_marginLeft">@dimen/dimen_20dp</item>
+        <item name="android:layout_marginRight">@dimen/dimen_20dp</item>
+        <item name="android:textSize">@dimen/font_20sp</item>
+        <item name="android:fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/title_color</item>
+    </style>
+
     <style name="multiline_edittext">
         <item name="android:textSize">@dimen/font_18sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>

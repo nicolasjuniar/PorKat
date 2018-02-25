@@ -1,10 +1,17 @@
 package juniar.porkat.common
 
+import android.location.Location
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import android.widget.Toast
+import com.google.android.gms.maps.model.LatLng
 import juniar.porkat.R
+import juniar.porkat.Utils.MyLocation
+import juniar.porkat.Utils.SharedPreferenceUtil
+import juniar.porkat.common.Constant.CommonStrings.Companion.LATITUDE
+import juniar.porkat.common.Constant.CommonStrings.Companion.LONGITUDE
 import kotlinx.android.synthetic.main.toolbar.*
 
 /**
@@ -28,6 +35,10 @@ abstract class BaseActivity<T> : AppCompatActivity() {
             it.setDisplayShowHomeEnabled(true)
             it.setHomeAsUpIndicator(drawable)
         }
+        toolbar_title.setText(title)
+    }
+
+    fun changeTitleToolbar(title: String) {
         toolbar_title.setText(title)
     }
 
@@ -58,6 +69,18 @@ abstract class BaseActivity<T> : AppCompatActivity() {
         presenter?.let {
             (presenter as BasePresenter).clearCompositeDisposable()
         }
+    }
+
+    fun getMyLocation(sharedPreferenceUtil: SharedPreferenceUtil) {
+        val locationResult = object : MyLocation.LocationResult() {
+            override fun gotLocation(location: Location) {
+                val loc = LatLng(location.latitude, location.longitude)
+                sharedPreferenceUtil.setString(LONGITUDE, loc.longitude.toString())
+                sharedPreferenceUtil.setString(LATITUDE, loc.latitude.toString())
+            }
+        }
+        val myLocation = MyLocation(this)
+        myLocation.getLocation(this, locationResult)
     }
 
     protected abstract fun onSetupLayout()
