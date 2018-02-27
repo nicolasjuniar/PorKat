@@ -6,6 +6,7 @@ import juniar.porkat.auth.login.LoginResponse
 import juniar.porkat.auth.register.RegisterPelangganRequest
 import juniar.porkat.auth.register.RegisterPelangganResponse
 import juniar.porkat.detailkatering.GetListMenuResponse
+import juniar.porkat.detailkatering.GetReviewResponse
 import juniar.porkat.homepelanggan.setting.ChangePasswordPelangganRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
@@ -38,4 +39,8 @@ interface NetworkApi {
 
     @GET("menu/list")
     fun getListMenu(@Query("id_katering") idKatering: Int): Observable<GetListMenuResponse>
+
+    @GET("pelanggan/ulasan/list")
+    fun getListUlasan(@Query("id_katering") idKatering: Int,
+                      @Query("id_pelanggan") idPelanggan: Int): Observable<GetReviewResponse>
 }

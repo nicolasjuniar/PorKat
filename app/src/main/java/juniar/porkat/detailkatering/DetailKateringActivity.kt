@@ -8,20 +8,18 @@ import juniar.porkat.Utils.encodeJson
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.detailkatering.DeskripsiKateringFragment.Companion.DESKRIPSI
 import juniar.porkat.detailkatering.MenuFragment.Companion.ID_KATERING
-import juniar.porkat.homescreen.FragmentKateringDistance
-import juniar.porkat.homescreen.FragmentKateringRating
 import juniar.porkat.homescreen.GetKateringModel
 import kotlinx.android.synthetic.main.activity_detail_katering.*
 
 /**
  * Created by Nicolas Juniar on 24/02/2018.
  */
-class DetailKateringActivity:BaseActivity<Any>(){
+class DetailKateringActivity : BaseActivity<Any>() {
 
-    var tabAdapter= TabPagerAdapter(supportFragmentManager)
+    var tabAdapter = TabPagerAdapter(supportFragmentManager)
 
     companion object {
-        val DETAIL_KATERING="detail_katering"
+        val DETAIL_KATERING = "detail_katering"
     }
 
     override fun onSetupLayout() {
@@ -30,19 +28,21 @@ class DetailKateringActivity:BaseActivity<Any>(){
     }
 
     override fun onViewReady() {
-        val katering=intent.extras.get(DETAIL_KATERING) as GetKateringModel
+        val katering = intent.extras.get(DETAIL_KATERING) as GetKateringModel
         changeTitleToolbar(katering.nama_katering)
-        val bundle=Bundle()
-        bundle.putString(DESKRIPSI,katering.encodeJson())
-        bundle.putInt(ID_KATERING,katering.id_katering)
-        val deskripsiKateringFragment=DeskripsiKateringFragment()
-        deskripsiKateringFragment.arguments=bundle
-        val menuFragment=MenuFragment()
-        menuFragment.arguments=bundle
-        tabAdapter.addFragment(deskripsiKateringFragment,getString(R.string.deskripsi_text))
-        tabAdapter.addFragment(menuFragment,getString(R.string.menu_text))
-        tabAdapter.addFragment(FragmentKateringDistance(),getString(R.string.ulasan_text))
-        tabpager.adapter=tabAdapter
+        val bundle = Bundle()
+        bundle.putString(DESKRIPSI, katering.encodeJson())
+        bundle.putInt(ID_KATERING, katering.id_katering)
+        val deskripsiKateringFragment = DeskripsiKateringFragment()
+        deskripsiKateringFragment.arguments = bundle
+        val menuFragment = MenuFragment()
+        menuFragment.arguments = bundle
+        val reviewFragment = ReviewFragment()
+        reviewFragment.arguments = bundle
+        tabAdapter.addFragment(deskripsiKateringFragment, getString(R.string.deskripsi_text))
+        tabAdapter.addFragment(menuFragment, getString(R.string.menu_text))
+        tabAdapter.addFragment(reviewFragment, getString(R.string.ulasan_text))
+        tabpager.adapter = tabAdapter
         tab_layout.setupWithViewPager(tabpager)
     }
 

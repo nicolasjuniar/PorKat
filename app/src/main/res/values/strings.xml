@@ -43,6 +43,11 @@
     <string name="ulasan_text">Ulasan</string>
     <string name="menu_example">Nasi Goreng Spesial</string>
     <string name="price_example">Rp 12.000,00</string>
+    <string name="date_example">19 Februari 2017</string>
+    <string name="review_example">Makanan enak \nTemoat nyaman \ndsb</string>
+    <string name="add_review">Tambahkan Ulasan</string>
+    <string name="button_add_text">Tambah</string>
+    <string name="button_cancel_text">Batal</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

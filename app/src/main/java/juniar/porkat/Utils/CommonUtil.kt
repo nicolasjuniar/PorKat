@@ -77,14 +77,6 @@ fun Context.showShortToast(text: String) {
 
 fun Context.getColorCompat(@ColorRes colorId: Int) = ContextCompat.getColor(this, colorId)
 
-fun changeDateFormat(input: String): String {
-    val oldFormat = DateTimeFormat.forPattern("yyyy-MM-dd'T'HH:mm:ssZ")
-    val oldDateTime = oldFormat.parseDateTime(input)
-    val newFormat = DateTimeFormat.forPattern("d MMMM yyyy")
-    val newDateTime = DateTime.parse(newFormat.print(oldDateTime), newFormat)
-    return newDateTime.toString("d MMMM yyyy", Locale("in_ID"))
-}
-
 fun Context.buildAlertDialog(title: String, message: String = "", yesButton: String = "", noButton: String = "", positiveAction: (DialogInterface) -> Unit = {}, negativeAction: (DialogInterface) -> Unit = {}): AlertDialog {
     val builder = AlertDialog.Builder(this)
             .setTitle(title)
@@ -145,4 +137,12 @@ fun getProfilePelanggan(sharedPreferenceUtil: SharedPreferenceUtil):PelangganMod
 
 fun getProfileKatering(sharedPreferenceUtil: SharedPreferenceUtil):KateringModel{
     return Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_KATERING),KateringModel::class.java)
+}
+
+fun changeDateFormat(input:String):String{
+    val oldFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+    val oldDateTime = oldFormat.parseDateTime(input)
+    val newFormat = DateTimeFormat.forPattern("d MMMM yyyy")
+    val newDateTime = DateTime.parse(newFormat.print(oldDateTime), newFormat)
+    return newDateTime.toString("d MMMM yyyy", Locale("id","ID","ID"))
 }

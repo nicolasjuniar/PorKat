@@ -17,7 +17,6 @@ import juniar.porkat.Utils.showShortToast
 import juniar.porkat.common.BaseFragment
 import juniar.porkat.common.GeneralRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_menu.*
-import kotlinx.android.synthetic.main.viewholder_menu_katering.*
 import java.math.BigDecimal
 import java.text.NumberFormat
 import java.util.*

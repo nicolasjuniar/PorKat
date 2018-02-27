@@ -95,6 +95,11 @@
         <item name="android:textColor">@color/title_color</item>
     </style>
 
+    <style name="RatingBar" parent="Theme.AppCompat">
+        <item name="colorControlNormal">@android:color/darker_gray</item>
+        <item name="colorControlActivated">@color/Gold</item>
+    </style>
+
     <style name="multiline_edittext">
         <item name="android:textSize">@dimen/font_18sp</item>
         <item name="android:fontFamily">@font/roboto_regular</item>
