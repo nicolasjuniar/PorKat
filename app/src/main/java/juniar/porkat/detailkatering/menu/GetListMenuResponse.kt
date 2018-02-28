@@ -1,4 +1,4 @@
-package juniar.porkat.detailkatering
+package juniar.porkat.detailkatering.menu
 
 import com.google.gson.annotations.SerializedName
 

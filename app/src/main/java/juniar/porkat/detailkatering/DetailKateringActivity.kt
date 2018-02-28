@@ -6,8 +6,11 @@ import juniar.porkat.R
 import juniar.porkat.Utils.TabPagerAdapter
 import juniar.porkat.Utils.encodeJson
 import juniar.porkat.common.BaseActivity
-import juniar.porkat.detailkatering.DeskripsiKateringFragment.Companion.DESKRIPSI
-import juniar.porkat.detailkatering.MenuFragment.Companion.ID_KATERING
+import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment.Companion.DESKRIPSI
+import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
+import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment
+import juniar.porkat.detailkatering.menu.MenuFragment
+import juniar.porkat.detailkatering.review.ReviewFragment
 import juniar.porkat.homescreen.GetKateringModel
 import kotlinx.android.synthetic.main.activity_detail_katering.*
 

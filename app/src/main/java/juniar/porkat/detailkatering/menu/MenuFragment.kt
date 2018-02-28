@@ -1,4 +1,4 @@
-package juniar.porkat.detailkatering
+package juniar.porkat.detailkatering.menu
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -16,6 +16,7 @@ import juniar.porkat.Utils.show
 import juniar.porkat.Utils.showShortToast
 import juniar.porkat.common.BaseFragment
 import juniar.porkat.common.GeneralRecyclerViewAdapter
+import juniar.porkat.detailkatering.review.MenuView
 import kotlinx.android.synthetic.main.fragment_menu.*
 import java.math.BigDecimal
 import java.text.NumberFormat

@@ -1,4 +1,4 @@
-package juniar.porkat.detailkatering
+package juniar.porkat.detailkatering.deskripsi
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,9 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.gson.Gson
 import juniar.porkat.R
-import juniar.porkat.auth.KateringModel
 import juniar.porkat.common.BaseFragment
-import juniar.porkat.detailkatering.DetailKateringActivity.Companion.DETAIL_KATERING
 import juniar.porkat.homescreen.GetKateringModel
 import kotlinx.android.synthetic.main.fragment_deskripsi.*
 

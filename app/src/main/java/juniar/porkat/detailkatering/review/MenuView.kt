@@ -1,4 +1,6 @@
-package juniar.porkat.detailkatering
+package juniar.porkat.detailkatering.review
+
+import juniar.porkat.detailkatering.menu.MenuKateringModel
 
 /**
  * Created by Nicolas Juniar on 26/02/2018.

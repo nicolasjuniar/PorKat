@@ -5,8 +5,8 @@ import juniar.porkat.auth.login.LoginRequest
 import juniar.porkat.auth.login.LoginResponse
 import juniar.porkat.auth.register.RegisterPelangganRequest
 import juniar.porkat.auth.register.RegisterPelangganResponse
-import juniar.porkat.detailkatering.GetListMenuResponse
-import juniar.porkat.detailkatering.GetReviewResponse
+import juniar.porkat.detailkatering.menu.GetListMenuResponse
+import juniar.porkat.detailkatering.review.*
 import juniar.porkat.homepelanggan.setting.ChangePasswordPelangganRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
@@ -43,4 +43,13 @@ interface NetworkApi {
     @GET("pelanggan/ulasan/list")
     fun getListUlasan(@Query("id_katering") idKatering: Int,
                       @Query("id_pelanggan") idPelanggan: Int): Observable<GetReviewResponse>
+
+    @DELETE("pelanggan/ulasan/delete/{id_ulasan}")
+    fun deleteUlasan(@Path("id_ulasan") idUlasan: Int): Observable<DeleteReviewResponse>
+
+    @POST("pelanggan/ulasan/insert")
+    fun insertUlasan(@Body request: InsertReviewRequest): Observable<InsertReviewResponse>
+
+    @PUT("pelanggan/ulasan/update")
+    fun updateUlasan(@Body request: UpdateReviewRequest): Observable<UpdateReviewResponse>
 }
