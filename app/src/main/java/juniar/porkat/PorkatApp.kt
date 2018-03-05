@@ -6,9 +6,9 @@ import net.danlew.android.joda.JodaTimeAndroid
 /**
  * Created by Nicolas Juniar on 12/02/2018.
  */
-class PorkatApp: Application() {
+class PorkatApp : Application() {
     companion object {
-        val BASE_URL="http://192.168.43.251/porkat_web/"
+        val BASE_URL = "http://192.168.43.251/porkat_web/"
     }
 
     override fun onCreate() {

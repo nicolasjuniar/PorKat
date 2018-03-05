@@ -25,6 +25,11 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
     lateinit var pelanggan: PelangganModel
     lateinit var review: ReviewModel
 
+    companion object {
+        val ID_PELANGGAN="id_pelanggan"
+        val REVIEW="Review"
+    }
+
     private val reviewAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_review, listReview,
                 { review, _, _ ->
@@ -61,7 +66,12 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         })
 
         cv_add_review.setOnClickListener {
-            ReviewDialog().show(activity.fragmentManager, "Review")
+            var args=Bundle()
+            arguments.putInt(ID_KATERING,idKatering)
+            arguments.putInt(ID_PELANGGAN,pelanggan.id_pelanggan)
+            val reviewDialog=ReviewDialog()
+            reviewDialog.arguments=args
+            reviewDialog.show(activity.fragmentManager, REVIEW)
         }
 
         ic_delete.setOnClickListener {

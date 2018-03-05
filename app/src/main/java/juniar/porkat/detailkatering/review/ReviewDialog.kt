@@ -10,6 +10,8 @@ import com.jakewharton.rxbinding2.widget.RxTextView
 import juniar.porkat.R
 import juniar.porkat.Utils.setAvailable
 import juniar.porkat.Utils.textToString
+import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
+import juniar.porkat.detailkatering.review.ReviewFragment.Companion.ID_PELANGGAN
 import kotlinx.android.synthetic.main.dialog_review.*
 
 /**
@@ -29,6 +31,9 @@ class ReviewDialog : DialogFragment(), ReviewDialogView {
             it.setCanceledOnTouchOutside(false)
         }
 
+        val idKatering=arguments.getInt(ID_KATERING)
+        val idPelanggan=arguments.getInt(ID_PELANGGAN)
+
         rb_review.setOnRatingBarChangeListener { ratingBar, rating, _ ->
             if (rating < 1.0f)
                 ratingBar.rating = 1.0f
@@ -39,7 +44,7 @@ class ReviewDialog : DialogFragment(), ReviewDialogView {
                 .subscribe { btn_send.setAvailable(it, activity) }
 
         btn_send.setOnClickListener {
-            presenter.insertReview(InsertReviewRequest(et_review.textToString(),rb_review.rating,1,1))
+            presenter.insertReview(InsertReviewRequest(et_review.textToString(),rb_review.rating,idPelanggan,idKatering))
         }
     }
 
