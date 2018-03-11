@@ -8,4 +8,6 @@ interface ReviewView {
     fun setHorizontalProgress(loading: Boolean)
     fun onGetReview(error: Boolean, review: GetReviewResponse?, t: Throwable?)
     fun onDeleteReview(error: Boolean, message: String?, t: Throwable?)
+    fun onInsertReview(review:InsertReviewResponse)
+    fun onUpdateReview(review:UpdateReviewResponse)
 }

@@ -3,9 +3,12 @@ package juniar.porkat.detailkatering
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import juniar.porkat.R
+import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.Utils.TabPagerAdapter
 import juniar.porkat.Utils.encodeJson
+import juniar.porkat.Utils.showShortToast
 import juniar.porkat.common.BaseActivity
+import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
 import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment.Companion.DESKRIPSI
 import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment
@@ -18,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_detail_katering.*
  * Created by Nicolas Juniar on 24/02/2018.
  */
 class DetailKateringActivity : BaseActivity<Any>() {
-
+    lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     var tabAdapter = TabPagerAdapter(supportFragmentManager)
 
     companion object {
@@ -31,6 +34,10 @@ class DetailKateringActivity : BaseActivity<Any>() {
     }
 
     override fun onViewReady() {
+        sharedPreferenceUtil= SharedPreferenceUtil(this@DetailKateringActivity)
+        if(sharedPreferenceUtil.getBoolean(SESSION)){
+            fab_transaction.show()
+        }
         val katering = intent.extras.get(DETAIL_KATERING) as GetKateringModel
         changeTitleToolbar(katering.nama_katering)
         val bundle = Bundle()
@@ -47,6 +54,10 @@ class DetailKateringActivity : BaseActivity<Any>() {
         tabAdapter.addFragment(reviewFragment, getString(R.string.ulasan_text))
         tabpager.adapter = tabAdapter
         tab_layout.setupWithViewPager(tabpager)
+
+        fab_transaction.setOnClickListener {
+            showShortToast("tenot")
+        }
     }
 
 }

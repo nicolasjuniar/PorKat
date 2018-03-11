@@ -8,7 +8,7 @@ import net.danlew.android.joda.JodaTimeAndroid
  */
 class PorkatApp : Application() {
     companion object {
-        val BASE_URL = "http://192.168.43.251/porkat_web/"
+        val BASE_URL = "http://192.168.43.168/porkat_web/"
     }
 
     override fun onCreate() {

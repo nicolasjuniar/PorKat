@@ -2,7 +2,6 @@ package juniar.porkat.detailkatering.review
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +9,7 @@ import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.BaseFragment
+import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
 import juniar.porkat.common.GeneralRecyclerViewAdapter
 import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import kotlinx.android.synthetic.main.fragment_review.*
@@ -20,14 +20,22 @@ import kotlinx.android.synthetic.main.viewholder_review.view.*
  */
 class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
 
-    lateinit var listReview: MutableList<ReviewModel>
+    var listReview= mutableListOf<ReviewModel>()
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     lateinit var pelanggan: PelangganModel
-    lateinit var review: ReviewModel
+    var review=ReviewModel()
+    var idPelanggan = -1
+    var idKatering=-1
 
     companion object {
-        val ID_PELANGGAN="id_pelanggan"
-        val REVIEW="Review"
+        val ID_PELANGGAN = "id_pelanggan"
+        val ID_ULASAN="id_ulasan"
+        val REVIEW = "Review"
+        val EDIT="edit"
+        val ADD="add"
+        val TYPE="type"
+        val RATING="rating"
+        val ULASAN="ulasan"
     }
 
     private val reviewAdapter by lazy {
@@ -50,28 +58,42 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         super.onViewCreated(view, savedInstanceState)
         presenter = ReviewPresenter(this)
         sharedPreferenceUtil = SharedPreferenceUtil(activity)
-        pelanggan = getProfilePelanggan(sharedPreferenceUtil)
-        val idKatering = arguments.getInt(ID_KATERING)
-        presenter?.getListMenuKatering(idKatering, pelanggan.id_pelanggan)
+        var login = sharedPreferenceUtil.getBoolean(SESSION)
+        if (login) {
+            getProfilePelanggan(sharedPreferenceUtil)?.let {
+                pelanggan = it
+                idPelanggan = pelanggan.id_pelanggan
+            }
+        }
+        setLayout(login)
+        idKatering = arguments.getInt(ID_KATERING)
+        presenter?.getListMenuKatering(idKatering, idPelanggan)
 
         swipe_layout.setOnRefreshListener({
-            presenter?.getListMenuKatering(idKatering, pelanggan.id_pelanggan)
-        })
-
-        rv_review.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                val topRowVerticalPosition = if (recyclerView == null || recyclerView.childCount == 0) 0 else recyclerView.getChildAt(0).top
-                swipe_layout.isEnabled = topRowVerticalPosition >= 0
-            }
+            presenter?.getListMenuKatering(idKatering, idPelanggan)
         })
 
         cv_add_review.setOnClickListener {
-            var args=Bundle()
-            arguments.putInt(ID_KATERING,idKatering)
-            arguments.putInt(ID_PELANGGAN,pelanggan.id_pelanggan)
-            val reviewDialog=ReviewDialog()
-            reviewDialog.arguments=args
-            reviewDialog.show(activity.fragmentManager, REVIEW)
+            var args = Bundle()
+            args.putInt(ID_KATERING, idKatering)
+            args.putInt(ID_PELANGGAN, pelanggan.id_pelanggan)
+            args.putString(TYPE,ADD)
+            val reviewDialog = ReviewDialog()
+            reviewDialog.arguments = args
+            reviewDialog.setTargetFragment(this@ReviewFragment, 1)
+            reviewDialog.show(activity.supportFragmentManager, REVIEW)
+        }
+
+        ic_edit.setOnClickListener {
+            var args = Bundle()
+            args.putInt(ID_ULASAN,review.idUlasan)
+            args.putFloat(RATING,review.rating)
+            args.putString(ULASAN,review.ulasan)
+            args.putString(TYPE,EDIT)
+            val reviewDialog = ReviewDialog()
+            reviewDialog.arguments = args
+            reviewDialog.setTargetFragment(this@ReviewFragment, 1)
+            reviewDialog.show(activity.supportFragmentManager, REVIEW)
         }
 
         ic_delete.setOnClickListener {
@@ -82,9 +104,13 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         }
     }
 
-    fun setMyReview(review: ReviewModel) {
-        rb_review.rating = review.rating
-        tv_review.text = review.ulasan
+    fun setLayout(login: Boolean) {
+        if (login) cv_add_review.show() else cv_add_review.hide()
+    }
+
+    fun setMyReview(rating: Float, ulasan: String) {
+        rb_review.rating = rating
+        tv_review.text = ulasan
         tv_review.show()
         add_review.hide()
         cv_add_review.isClickable = false
@@ -126,11 +152,14 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         swipe_layout.isRefreshing = false
         if (!error) {
             review?.ulasanpelanggan?.let {
-                setMyReview(it)
+                setMyReview(it.rating, it.ulasan)
                 this.review = it
             }
             with(rv_review) {
-                listReview = review!!.listulasan
+                review?.let {
+                    listReview.clear()
+                    listReview.addAll(it.listulasan)
+                }
                 adapter = reviewAdapter
                 layoutManager = LinearLayoutManager(activity)
             }
@@ -144,8 +173,31 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         if (!error) {
             deleteMyReview()
             activity.showShortToast(message!!)
+            presenter?.getListMenuKatering(idKatering, idPelanggan)
         } else {
             activity.showShortToast(t?.localizedMessage!!)
         }
+    }
+
+    override fun onInsertReview(review: InsertReviewResponse) {
+        setMyReview(review.rating, review.ulasan)
+        this.review.idUlasan=review.idUlasan
+        this.review.rating=review.rating
+        this.review.ulasan= review.ulasan
+        activity?.let {
+            it.showShortToast(review.message)
+        }
+        presenter?.getListMenuKatering(idKatering, idPelanggan)
+    }
+
+    override fun onUpdateReview(review: UpdateReviewResponse) {
+        setMyReview(review.rating, review.ulasan)
+        this.review.idUlasan=review.idUlasan
+        this.review.rating=review.rating
+        this.review.ulasan= review.ulasan
+        activity?.let {
+            it.showShortToast(review.message)
+        }
+        presenter?.getListMenuKatering(idKatering, idPelanggan)
     }
 }
