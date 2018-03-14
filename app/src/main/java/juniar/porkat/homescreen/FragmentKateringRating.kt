@@ -9,7 +9,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import com.squareup.picasso.Picasso
 import juniar.porkat.PorkatApp
 import juniar.porkat.R
@@ -25,6 +24,7 @@ import juniar.porkat.common.GeneralRecyclerViewAdapter
 import juniar.porkat.detailkatering.DetailKateringActivity
 import juniar.porkat.detailkatering.DetailKateringActivity.Companion.DETAIL_KATERING
 import kotlinx.android.synthetic.main.fragment_rating.*
+import kotlinx.android.synthetic.main.viewholder_katering.view.*
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.
@@ -37,23 +37,23 @@ class FragmentKateringRating : BaseFragment<KateringPresenter>(), KateringView {
     private val kateringAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_katering, getKateringList,
                 { kateringModel, _, _ ->
-                    val intent=Intent(activity, DetailKateringActivity::class.java)
-                    intent.putExtra(DETAIL_KATERING,kateringModel)
+                    val intent = Intent(activity, DetailKateringActivity::class.java)
+                    intent.putExtra(DETAIL_KATERING, kateringModel)
                     startActivity(intent)
                 },
                 { kateringModel, view ->
                     with(kateringModel) {
-                        val kateringLocation=Location(EMPTY_STRING)
-                        kateringLocation.longitude=kateringModel.longitude
-                        kateringLocation.latitude=kateringModel.latitude
-                        val myLocation=Location(EMPTY_STRING)
-                        myLocation.longitude=sharedPreferenceUtil.getString(LONGITUDE,"0").toDouble()
-                        myLocation.latitude=sharedPreferenceUtil.getString(LATITUDE,"0").toDouble()
-                        kateringModel.distance=myLocation.distanceTo(kateringLocation)/1000
-                        view.findViewById<TextView>(R.id.tv_katering).text = this.nama_katering
-                        view.findViewById<TextView>(R.id.tv_alamat).text = this.alamat
-                        view.findViewById<TextView>(R.id.tv_jarak).text = "${this.distance.toString().substring(0,4)} km"
-                        view.findViewById<TextView>(R.id.tv_rating).text = this.rating.toString()
+                        val kateringLocation = Location(EMPTY_STRING)
+                        kateringLocation.longitude = kateringModel.longitude
+                        kateringLocation.latitude = kateringModel.latitude
+                        val myLocation = Location(EMPTY_STRING)
+                        myLocation.longitude = sharedPreferenceUtil.getString(LONGITUDE, "0").toDouble()
+                        myLocation.latitude = sharedPreferenceUtil.getString(LATITUDE, "0").toDouble()
+                        kateringModel.distance = myLocation.distanceTo(kateringLocation) / 1000
+                        view.tv_katering.text = this.nama_katering
+                        view.tv_alamat.text = this.alamat
+                        view.tv_jarak.text = "${this.distance.toString().substring(0, 4)} km"
+                        view.tv_rating.text = this.rating.toString()
                         Picasso.with(activity).load("${PorkatApp.BASE_URL}/foto/katering/${this.foto}").fit().into(view.findViewById<ImageView>(R.id.img_katering))
                     }
                 })
@@ -88,14 +88,14 @@ class FragmentKateringRating : BaseFragment<KateringPresenter>(), KateringView {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter = KateringPresenter(this)
-        sharedPreferenceUtil=SharedPreferenceUtil(activity)
+        sharedPreferenceUtil = SharedPreferenceUtil(activity)
         getKateringList = mutableListOf()
-        getMyLocation(sharedPreferenceUtil)
+        setMyLocation(sharedPreferenceUtil)
         presenter?.getListKateringByRating()
 
         swipe_layout.setOnRefreshListener({
             presenter?.getListKateringByRating()
-            getMyLocation(sharedPreferenceUtil)
+            setMyLocation(sharedPreferenceUtil)
         })
 
         rv_katering.addOnScrollListener(object : RecyclerView.OnScrollListener() {

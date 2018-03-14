@@ -1,20 +1,21 @@
 package juniar.porkat.detailkatering
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.Toolbar
 import juniar.porkat.R
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.Utils.TabPagerAdapter
 import juniar.porkat.Utils.encodeJson
-import juniar.porkat.Utils.showShortToast
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
-import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment.Companion.DESKRIPSI
-import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment
+import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment.Companion.DESKRIPSI
 import juniar.porkat.detailkatering.menu.MenuFragment
+import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import juniar.porkat.detailkatering.review.ReviewFragment
 import juniar.porkat.homescreen.GetKateringModel
+import juniar.porkat.transaction.TransactionActivity
 import kotlinx.android.synthetic.main.activity_detail_katering.*
 
 /**
@@ -34,8 +35,8 @@ class DetailKateringActivity : BaseActivity<Any>() {
     }
 
     override fun onViewReady() {
-        sharedPreferenceUtil= SharedPreferenceUtil(this@DetailKateringActivity)
-        if(sharedPreferenceUtil.getBoolean(SESSION)){
+        sharedPreferenceUtil = SharedPreferenceUtil(this@DetailKateringActivity)
+        if (sharedPreferenceUtil.getBoolean(SESSION)) {
             fab_transaction.show()
         }
         val katering = intent.extras.get(DETAIL_KATERING) as GetKateringModel
@@ -56,7 +57,7 @@ class DetailKateringActivity : BaseActivity<Any>() {
         tab_layout.setupWithViewPager(tabpager)
 
         fab_transaction.setOnClickListener {
-            showShortToast("tenot")
+            startActivity(Intent(this@DetailKateringActivity, TransactionActivity::class.java))
         }
     }
 

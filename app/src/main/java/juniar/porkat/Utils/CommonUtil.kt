@@ -1,10 +1,14 @@
 package juniar.porkat.Utils
 
+import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
+import android.content.pm.PackageManager
 import android.location.Geocoder
+import android.os.Build
 import android.support.annotation.ColorRes
 import android.support.design.widget.Snackbar
+import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.text.Html
@@ -20,12 +24,12 @@ import com.google.gson.Gson
 import juniar.porkat.R
 import juniar.porkat.auth.KateringModel
 import juniar.porkat.auth.PelangganModel
-import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.IOException
+import java.text.DateFormatSymbols
 import java.util.*
 import java.util.regex.Pattern
 
@@ -123,26 +127,40 @@ fun Context.getAddress(lat: Double, lng: Double): String {
     return address
 }
 
-fun String.logDebug() {
-    Log.d("debug", this)
+fun String.logDebug(TAG: String = "debug") {
+    Log.d(TAG, this)
 }
 
 fun Any.encodeJson(): String {
     return Gson().toJson(this)
 }
 
-fun getProfilePelanggan(sharedPreferenceUtil: SharedPreferenceUtil):PelangganModel{
-    return Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN),PelangganModel::class.java)
+fun getProfilePelanggan(sharedPreferenceUtil: SharedPreferenceUtil): PelangganModel {
+    return Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN), PelangganModel::class.java)
 }
 
-fun getProfileKatering(sharedPreferenceUtil: SharedPreferenceUtil):KateringModel{
-    return Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_KATERING),KateringModel::class.java)
+fun getProfileKatering(sharedPreferenceUtil: SharedPreferenceUtil): KateringModel {
+    return Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_KATERING), KateringModel::class.java)
 }
 
-fun changeDateFormat(input:String):String{
-    val oldFormat = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss")
+fun changeDateFormat(input: String,oldPattern:String,newPattern:String): String {
+    val oldFormat = DateTimeFormat.forPattern(oldPattern)
     val oldDateTime = oldFormat.parseDateTime(input)
-    val newFormat = DateTimeFormat.forPattern("d MMMM yyyy")
+    val newFormat = DateTimeFormat.forPattern(newPattern)
     val newDateTime = DateTime.parse(newFormat.print(oldDateTime), newFormat)
-    return newDateTime.toString("d MMMM yyyy", Locale("id","ID","ID"))
+    return newDateTime.toString(newPattern, Locale("id", "ID", "ID"))
 }
+
+fun getMonth(month: Int): String {
+    return DateFormatSymbols().months[month]
+}
+
+fun Context.checkRequestPermission(permission: String): Boolean {
+    return ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+}
+
+fun Activity.makeRequest(permission: String, requestCode: Int) {
+    ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+}
+
+val sdkVersion = Build.VERSION.SDK_INT

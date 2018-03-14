@@ -10,6 +10,17 @@
     <string name="register_reminder">Belum punya akun? %s</string>
     <string name="register_here">Daftar disini</string>
     <string name="home_text">Beranda</string>
+    <string name="start_date_text">Tanggal Mulai</string>
+    <string name="order_day">Lama Pesan</string>
+    <string name="one_week">1 Minggu</string>
+    <string name="one_month">1 Bulan</string>
+    <string name="trnsaction_number">Banyak Pengiriman(Per Hari)</string>
+    <string name="one_times">1 kali</string>
+    <string name="two_times">2 kali</string>
+    <string name="three_times">3 kali</string>
+    <string name="description_transaction">Deskripsi Pengantaran</string>
+    <string name="choose_meu">Pilih Menu</string>
+    <string name="choose_place">Pilih Tempat Pengiriman</string>
     <string name="setting_text">Pengaturan</string>
     <string name="empty_string"></string>
     <string name="phone_text">Nomor Telpon</string>

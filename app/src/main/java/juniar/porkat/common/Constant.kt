@@ -18,4 +18,10 @@ class Constant {
             val LATITUDE="latitude"
         }
     }
+
+    interface CommonInt{
+        companion object {
+            val ACCESS_FINE_LOCATION_CODE=101
+        }
+    }
 }

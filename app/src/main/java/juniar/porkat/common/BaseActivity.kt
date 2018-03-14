@@ -1,15 +1,16 @@
 package juniar.porkat.common
 
+import android.content.Context
 import android.location.Location
+import android.location.LocationManager
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import android.widget.Toast
-import com.google.android.gms.maps.model.LatLng
 import juniar.porkat.R
-import juniar.porkat.Utils.MyLocation
 import juniar.porkat.Utils.SharedPreferenceUtil
+import juniar.porkat.Utils.logDebug
+import juniar.porkat.Utils.showShortToast
 import juniar.porkat.common.Constant.CommonStrings.Companion.LATITUDE
 import juniar.porkat.common.Constant.CommonStrings.Companion.LONGITUDE
 import kotlinx.android.synthetic.main.toolbar.*
@@ -46,6 +47,27 @@ abstract class BaseActivity<T> : AppCompatActivity() {
         toolbar_title.setText(title)
     }
 
+    fun setMyLocation(sharedPreferenceUtil: SharedPreferenceUtil) {
+        val locationListener = object : android.location.LocationListener {
+            override fun onLocationChanged(location: Location) {
+                sharedPreferenceUtil.setString(LONGITUDE, location.longitude.toString())
+                sharedPreferenceUtil.setString(LATITUDE, location.latitude.toString())
+            }
+
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
+        }
+
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L,
+                    0f, locationListener)
+        } catch (e: SecurityException) {
+            e.localizedMessage.logDebug()
+        }
+    }
+
     fun setupToolbarTitleNoBack(toolbarId: Toolbar, title: Int = R.string.empty_string) {
         setSupportActionBar(toolbarId)
         supportActionBar?.let {
@@ -69,18 +91,6 @@ abstract class BaseActivity<T> : AppCompatActivity() {
         presenter?.let {
             (presenter as BasePresenter).clearCompositeDisposable()
         }
-    }
-
-    fun getMyLocation(sharedPreferenceUtil: SharedPreferenceUtil) {
-        val locationResult = object : MyLocation.LocationResult() {
-            override fun gotLocation(location: Location) {
-                val loc = LatLng(location.latitude, location.longitude)
-                sharedPreferenceUtil.setString(LONGITUDE, loc.longitude.toString())
-                sharedPreferenceUtil.setString(LATITUDE, loc.latitude.toString())
-            }
-        }
-        val myLocation = MyLocation(this)
-        myLocation.getLocation(this, locationResult)
     }
 
     protected abstract fun onSetupLayout()

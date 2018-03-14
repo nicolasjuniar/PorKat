@@ -1,6 +1,5 @@
-package juniar.porkat.auth.register
+package juniar.porkat.transaction
 
-import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -11,49 +10,44 @@ import android.widget.LinearLayout
 import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
-import juniar.porkat.homepelanggan.HomePelangganActivity
-import kotlinx.android.synthetic.main.activity_register_pelanggan.*
+import kotlinx.android.synthetic.main.activity_transaction.*
 
 /**
- * Created by Nicolas Juniar on 12/02/2018.
+ * Created by Jarvis on 12/03/2018.
  */
-class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterView, ViewPager.OnPageChangeListener {
+class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,TransactionView {
 
     val fragmentList = mutableListOf<Fragment>()
     lateinit var slider: SliderPagerAdapter
     var indicators = arrayListOf<ImageView>()
-    var request = RegisterPelangganRequest()
-    var buttonEnabled = false
+//    var listBoolean = mutableListOf(false, false, false)
 
     companion object {
-        val AUTH = 1
-        val PRIVATE = 2
-        val NUM_PAGES = 2
+        val NUM_PAGES = 3
     }
 
     override fun onSetupLayout() {
-        setContentView(R.layout.activity_register_pelanggan)
-        setupToolbarTitle(toolbar_layout as Toolbar, R.string.autentikasi_text)
+        setContentView(R.layout.activity_transaction)
+        setupToolbarTitle(toolbar_layout as Toolbar, R.string.description_transaction)
     }
 
     override fun onViewReady() {
-        presenter = RegisterPresenter(this)
-        fragmentList.add(FillAuthPelangganFragment.newInstance())
-        fragmentList.add(FillPrivatePelangganFragment.newInstance())
+        fragmentList.add(DescriptionTransactionFragment())
+        fragmentList.add(DescriptionTransactionFragment())
+        fragmentList.add(DescriptionTransactionFragment())
         slider = SliderPagerAdapter(supportFragmentManager, fragmentList)
         with(viewpager) {
             adapter = slider
-            addOnPageChangeListener(this@RegisterPelangganActivity)
+            addOnPageChangeListener(this@TransactionActivity)
         }
         setupPagerIndicator(NUM_PAGES)
-
-
+        btn_submit.setAvailable(true, this@TransactionActivity)
     }
 
     override fun onBackPressed() {
         if (viewpager.currentItem != 0) {
             viewpager.currentItem--
-            btn_register.setAvailable(true, this@RegisterPelangganActivity)
+            btn_submit.setAvailable(true, this@TransactionActivity)
         } else {
             super.onBackPressed()
         }
@@ -62,31 +56,28 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
     fun setLayout(index: Int) {
         if (index == 0) {
             changeTitleToolbar(R.string.autentikasi_text)
-            with(btn_register) {
+            with(btn_submit) {
                 text = getString(R.string.next_text)
                 setOnClickListener {
-                    btn_register.setAvailable(buttonEnabled, this@RegisterPelangganActivity)
+                    btn_submit.setAvailable(true, this@TransactionActivity)
                     viewpager.currentItem++
                 }
             }
         } else {
             changeTitleToolbar(R.string.private_text)
-            with(btn_register) {
+            with(btn_submit) {
                 text = getString(R.string.register_text)
                 setOnClickListener {
-                    setLoading(true)
-                    presenter?.registerPelanggan(request)
                 }
             }
         }
     }
 
     private fun setupPagerIndicator(size: Int) {
-
         for (i in 0 until size) {
-            indicators.add(ImageView(this@RegisterPelangganActivity))
+            indicators.add(ImageView(this@TransactionActivity))
             indicators[i].setImageDrawable(
-                    ContextCompat.getDrawable(this@RegisterPelangganActivity,
+                    ContextCompat.getDrawable(this@TransactionActivity,
                             if (i == 0) R.drawable.dot_indicator else R.drawable.dot_indicator_disabled)
             )
 
@@ -118,50 +109,21 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
         }
     }
 
-    override fun onRegisterResponse(error: Boolean, response: RegisterPelangganResponse?, t: Throwable?) {
-        setLoading(false)
-        if (!error) {
-            showShortToast(response?.message!!)
-            if (response?.success!!) {
-                startActivity(Intent(this@RegisterPelangganActivity, HomePelangganActivity::class.java))
-                finishAffinity()
-            }
-        } else {
-            showShortToast(t?.localizedMessage!!)
-        }
+    override fun onGetDescriptionTransaction(startDate: String, orderDay: Int, transactionNumber: Int) {
     }
 
     override fun onPageScrollStateChanged(state: Int) {
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        setLayout(position)
+//        setLayout(position)
     }
 
     override fun onPageSelected(position: Int) {
         for (i in 0 until NUM_PAGES) {
-            indicators[i].setImageDrawable(ContextCompat.getDrawable(this@RegisterPelangganActivity, R.drawable.dot_indicator_disabled))
+            indicators[i].setImageDrawable(ContextCompat.getDrawable(this@TransactionActivity, R.drawable.dot_indicator_disabled))
         }
-        indicators[position].setImageDrawable(ContextCompat.getDrawable(this@RegisterPelangganActivity, R.drawable.dot_indicator))
+        indicators[position].setImageDrawable(ContextCompat.getDrawable(this@TransactionActivity, R.drawable.dot_indicator))
     }
 
-    override fun onFieldFilled(enable: Boolean, code: Int) {
-        if (code == PRIVATE) buttonEnabled = enable
-        btn_register.setAvailable(enable, this@RegisterPelangganActivity)
-    }
-
-    override fun onAuthFilled(username: String, password: String) {
-        with(request) {
-            idPengguna = username
-            katasandi = password
-        }
-    }
-
-    override fun onPrivateFilled(fullname: String, phone: String, address: String) {
-        with(request) {
-            namaLengkap = fullname
-            noTelp = phone
-            alamat = address
-        }
-    }
 }

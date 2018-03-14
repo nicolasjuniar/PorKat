@@ -45,7 +45,7 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
                 { review, view ->
                     with(review) {
                         view.tv_name.text = this.namaLengkap
-                        view.tv_date.text = changeDateFormat(this.waktuUlasan)
+                        view.tv_date.text = changeDateFormat(this.waktuUlasan,"yyyy-MM-dd HH:mm:ss","d MMMM yyyy")
                         view.rb_review.rating = this.rating
                         view.tv_review.text = this.ulasan
                     }

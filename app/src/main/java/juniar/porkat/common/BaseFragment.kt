@@ -1,12 +1,14 @@
 package juniar.porkat.common
 
+import android.content.Context
 import android.location.Location
+import android.location.LocationManager
+import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.widget.Toast
-import com.google.android.gms.maps.model.LatLng
 import juniar.porkat.R
-import juniar.porkat.Utils.MyLocation
 import juniar.porkat.Utils.SharedPreferenceUtil
+import juniar.porkat.Utils.logDebug
+import juniar.porkat.Utils.showShortToast
 
 /**
  * Created by voen on 13/02/18.
@@ -21,15 +23,24 @@ abstract class BaseFragment<T> : Fragment() {
         }
     }
 
-    fun getMyLocation(sharedPreferenceUtil: SharedPreferenceUtil) {
-        val locationResult = object : MyLocation.LocationResult() {
-            override fun gotLocation(location: Location) {
-                val loc = LatLng(location.latitude, location.longitude)
-                sharedPreferenceUtil.setString(Constant.CommonStrings.LONGITUDE, loc.longitude.toString())
-                sharedPreferenceUtil.setString(Constant.CommonStrings.LATITUDE, loc.latitude.toString())
+    fun setMyLocation(sharedPreferenceUtil: SharedPreferenceUtil) {
+        val locationListener = object : android.location.LocationListener {
+            override fun onLocationChanged(location: Location) {
+                sharedPreferenceUtil.setString(Constant.CommonStrings.LONGITUDE, location.longitude.toString())
+                sharedPreferenceUtil.setString(Constant.CommonStrings.LATITUDE, location.latitude.toString())
             }
+
+            override fun onStatusChanged(provider: String, status: Int, extras: Bundle) {}
+            override fun onProviderEnabled(provider: String) {}
+            override fun onProviderDisabled(provider: String) {}
         }
-        val myLocation = MyLocation(activity)
-        myLocation.getLocation(activity, locationResult)
+
+        val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        try {
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L,
+                    0f, locationListener)
+        } catch (e: SecurityException) {
+            e.localizedMessage.logDebug()
+        }
     }
 }

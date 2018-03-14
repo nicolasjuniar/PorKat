@@ -47,4 +47,9 @@
         <item name="android:textColorHint">@color/colorPrimary</item>
         <item name="android:actionMenuTextColor">@color/title_color</item>
     </style>
+
+    <style name="SwitchStyle" parent="Theme.AppCompat.Light">
+        <item name="android:colorControlActivated">@color/colorPrimary</item>
+        <item name="android:colorForeground">#42221f1f</item>
+    </style>
 </resources>
