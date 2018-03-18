@@ -11,6 +11,11 @@ import android.widget.LinearLayout
 import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
+import juniar.porkat.common.Constant
+import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
+import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
+import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
+import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
 import juniar.porkat.homepelanggan.HomePelangganActivity
 import kotlinx.android.synthetic.main.activity_register_pelanggan.*
 
@@ -24,6 +29,7 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
     var indicators = arrayListOf<ImageView>()
     var request = RegisterPelangganRequest()
     var buttonEnabled = false
+    lateinit var sharedPreferenceUtil: SharedPreferenceUtil
 
     companion object {
         val AUTH = 1
@@ -38,6 +44,7 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
 
     override fun onViewReady() {
         presenter = RegisterPresenter(this)
+        sharedPreferenceUtil= SharedPreferenceUtil(this@RegisterPelangganActivity)
         fragmentList.add(FillAuthPelangganFragment.newInstance())
         fragmentList.add(FillPrivatePelangganFragment.newInstance())
         slider = SliderPagerAdapter(supportFragmentManager, fragmentList)
@@ -121,10 +128,17 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
     override fun onRegisterResponse(error: Boolean, response: RegisterPelangganResponse?, t: Throwable?) {
         setLoading(false)
         if (!error) {
-            showShortToast(response?.message!!)
-            if (response?.success!!) {
-                startActivity(Intent(this@RegisterPelangganActivity, HomePelangganActivity::class.java))
-                finishAffinity()
+            response?.let {
+                showShortToast(it.message)
+                if(it.success){
+                    with(sharedPreferenceUtil){
+                        setBoolean(SESSION, true)
+                        setString(ROLE, PELANGGAN)
+                        setString(PROFILE_PELANGGAN, it.dataPelanggan.encodeJson())
+                    }
+                    startActivity(Intent(this@RegisterPelangganActivity, HomePelangganActivity::class.java))
+                    finishAffinity()
+                }
             }
         } else {
             showShortToast(t?.localizedMessage!!)

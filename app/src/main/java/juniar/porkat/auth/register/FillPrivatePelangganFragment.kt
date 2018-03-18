@@ -56,7 +56,7 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    callback.onFieldFilled(it,PRIVATE)
+                    callback.onFieldFilled(it, PRIVATE)
                 }
 
         RxTextView.textChanges(et_fullname)
@@ -70,6 +70,7 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
                             isErrorEnabled = false
                         }
                         fullname.setTextColor(activity.getColorCompat(R.color.hint_color))
+                        callback.onPrivateFilled(et_fullname.textToString(), et_phone.textToString(), et_address.textToString())
                     } else {
                         with(field_fullname)
                         {
@@ -96,6 +97,7 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
                             isErrorEnabled = false
                         }
                         et_phone.setTextColor(activity.getColorCompat(R.color.hint_color))
+                        callback.onPrivateFilled(et_fullname.textToString(), et_phone.textToString(), et_address.textToString())
                     }
                 }
 
@@ -105,9 +107,9 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
             try {
                 startActivityForResult(builder.build(activity), PLACE_PICKER_REQUEST)
             } catch (e: GooglePlayServicesRepairableException) {
-                e.printStackTrace()
+                e.localizedMessage.logDebug()
             } catch (e: GooglePlayServicesNotAvailableException) {
-                e.printStackTrace()
+                e.localizedMessage.logDebug()
             }
         }
     }
@@ -115,9 +117,10 @@ class FillPrivatePelangganFragment : BaseFragment<Any>() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                val place = PlacePicker.getPlace(data, activity)
+                val place = PlacePicker.getPlace(activity, data)
                 val address = activity.getAddress(place.latLng.latitude, place.latLng.longitude)
                 et_address.setText(address)
+                callback.onPrivateFilled(et_fullname.textToString(), et_phone.textToString(), et_address.textToString())
             }
         }
     }

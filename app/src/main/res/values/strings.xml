@@ -71,4 +71,7 @@
     <string name="deliver_time">Jam Pengantaran :</string>
     <string name="time_example">-- : --</string>
     <string name="available_menu">Menu yang Tersedia</string>
+    <string name="dialog_exit_transaction_title">Keluar</string>
+    <string name="dalog_exit_transaction_detail">Apakah anda yakin untuk membatalkan pesanan?</string>
+    <string name="note_text">Catatan</string>
 </resources>

@@ -8,4 +8,4 @@ import juniar.porkat.auth.PelangganModel
  */
 data class RegisterPelangganResponse(@SerializedName("success") val success:Boolean,
                                      @SerializedName("message") val message:String,
-                                     @SerializedName("datapelanggan") val dataPelanggan:PelangganModel)
+                                     @SerializedName("dataPelanggan") val dataPelanggan:PelangganModel)

@@ -108,11 +108,11 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
                     when (it.role) {
                         PELANGGAN -> {
                             startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
-                            sharedPreferenceUtil.setString(PROFILE_PELANGGAN, it.datapelanggan.encodeJson())
+                            sharedPreferenceUtil.setString(PROFILE_PELANGGAN, it.dataPelanggan.encodeJson())
                         }
                         KATERING -> {
                             startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
-                            sharedPreferenceUtil.setString(PROFILE_KATERING, it.datakatering.encodeJson())
+                            sharedPreferenceUtil.setString(PROFILE_KATERING, it.dataKatering.encodeJson())
                         }
                     }
                     finishAffinity()
