@@ -1,6 +1,8 @@
 package juniar.porkat.transaction
 
+import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentPagerAdapter
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.Toolbar
@@ -10,19 +12,27 @@ import android.widget.LinearLayout
 import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
+import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import kotlinx.android.synthetic.main.activity_transaction.*
 
 /**
  * Created by Jarvis on 12/03/2018.
  */
-class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,TransactionView {
-
+class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener, TransactionView {
     val fragmentList = mutableListOf<Fragment>()
     lateinit var slider: SliderPagerAdapter
+    lateinit var pickMenuFragment: PickMenuFragment
     var indicators = arrayListOf<ImageView>()
-//    var listBoolean = mutableListOf(false, false, false)
+    var listBoolean = mutableListOf(false, false, false)
+    val listTitle by lazy {
+        mutableListOf(getString(R.string.description_transaction),
+                getString(R.string.pick_menu),
+                getString(R.string.choose_place)
+        )
+    }
 
     companion object {
+        val PICK_MENU=1
         val NUM_PAGES = 3
     }
 
@@ -32,44 +42,35 @@ class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,
     }
 
     override fun onViewReady() {
+        val fragmentPickMenu=PickMenuFragment()
+        val bundle = Bundle()
+        bundle.putInt(ID_KATERING,intent.getIntExtra(ID_KATERING,-1))
+        fragmentPickMenu.arguments=bundle
         fragmentList.add(DescriptionTransactionFragment())
+        fragmentList.add(fragmentPickMenu)
         fragmentList.add(DescriptionTransactionFragment())
-        fragmentList.add(DescriptionTransactionFragment())
+        btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
         slider = SliderPagerAdapter(supportFragmentManager, fragmentList)
         with(viewpager) {
             adapter = slider
             addOnPageChangeListener(this@TransactionActivity)
         }
+        pickMenuFragment=(viewpager.adapter as SliderPagerAdapter).getItem(PICK_MENU) as PickMenuFragment
         setupPagerIndicator(NUM_PAGES)
-        btn_submit.setAvailable(true, this@TransactionActivity)
+        btn_submit.setOnClickListener {
+            viewpager.currentItem++
+            btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
+            changeTitleToolbar(listTitle[viewpager.currentItem])
+        }
     }
 
     override fun onBackPressed() {
         if (viewpager.currentItem != 0) {
             viewpager.currentItem--
-            btn_submit.setAvailable(true, this@TransactionActivity)
+            changeTitleToolbar(listTitle[viewpager.currentItem])
+            btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
         } else {
             super.onBackPressed()
-        }
-    }
-
-    fun setLayout(index: Int) {
-        if (index == 0) {
-            changeTitleToolbar(R.string.autentikasi_text)
-            with(btn_submit) {
-                text = getString(R.string.next_text)
-                setOnClickListener {
-                    btn_submit.setAvailable(true, this@TransactionActivity)
-                    viewpager.currentItem++
-                }
-            }
-        } else {
-            changeTitleToolbar(R.string.private_text)
-            with(btn_submit) {
-                text = getString(R.string.register_text)
-                setOnClickListener {
-                }
-            }
         }
     }
 
@@ -110,13 +111,15 @@ class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,
     }
 
     override fun onGetDescriptionTransaction(startDate: String, orderDay: Int, transactionNumber: Int) {
+        listBoolean[viewpager.currentItem] = startDate.isNotEmpty() && orderDay != -1 && transactionNumber != -1
+        btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
+        pickMenuFragment.changeAdapterSize(transactionNumber-1)
     }
 
     override fun onPageScrollStateChanged(state: Int) {
     }
 
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-//        setLayout(position)
     }
 
     override fun onPageSelected(position: Int) {

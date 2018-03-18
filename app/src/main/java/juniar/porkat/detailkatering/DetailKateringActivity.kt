@@ -57,7 +57,9 @@ class DetailKateringActivity : BaseActivity<Any>() {
         tab_layout.setupWithViewPager(tabpager)
 
         fab_transaction.setOnClickListener {
-            startActivity(Intent(this@DetailKateringActivity, TransactionActivity::class.java))
+            val intent=Intent(this@DetailKateringActivity, TransactionActivity::class.java)
+            intent.putExtra(ID_KATERING,katering.id_katering)
+            startActivity(intent)
         }
     }
 

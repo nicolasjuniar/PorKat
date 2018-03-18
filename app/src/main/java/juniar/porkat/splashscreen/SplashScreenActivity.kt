@@ -41,6 +41,8 @@ class SplashScreenActivity : BaseActivity<Any>() {
             } else {
                 makeRequest(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION_CODE)
             }
+        } else {
+            makeRequest(Manifest.permission.ACCESS_FINE_LOCATION, ACCESS_FINE_LOCATION_CODE)
         }
     }
 

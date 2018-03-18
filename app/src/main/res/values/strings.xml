@@ -19,15 +19,16 @@
     <string name="two_times">2 kali</string>
     <string name="three_times">3 kali</string>
     <string name="description_transaction">Deskripsi Pengantaran</string>
-    <string name="choose_meu">Pilih Menu</string>
+    <string name="pick_menu">Pilih Menu</string>
     <string name="choose_place">Pilih Tempat Pengiriman</string>
     <string name="setting_text">Pengaturan</string>
     <string name="empty_string"></string>
     <string name="phone_text">Nomor Telpon</string>
     <string name="address_text">Alamat</string>
+    <string name="katering_name">Nama Katering</string>
     <string name="fullname_text">Nama Lengkap</string>
     <string name="rating_text">Rating</string>
-    <string name="title_activity_home_pelanggan">HomePelangganActivity</string>
+    <string name="verification_number">Nomor Verifikasi</string>
     <string name="autentikasi_text">Data Autentikasi</string>
     <string name="private_text">Data Diri</string>
     <string name="next_text">Lanjut</string>
@@ -67,4 +68,7 @@
 
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
+    <string name="deliver_time">Jam Pengantaran :</string>
+    <string name="time_example">-- : --</string>
+    <string name="available_menu">Menu yang Tersedia</string>
 </resources>

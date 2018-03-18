@@ -29,7 +29,9 @@ import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.IOException
+import java.math.BigDecimal
 import java.text.DateFormatSymbols
+import java.text.NumberFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -143,7 +145,7 @@ fun getProfileKatering(sharedPreferenceUtil: SharedPreferenceUtil): KateringMode
     return Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_KATERING), KateringModel::class.java)
 }
 
-fun changeDateFormat(input: String,oldPattern:String,newPattern:String): String {
+fun changeDateFormat(input: String, oldPattern: String, newPattern: String): String {
     val oldFormat = DateTimeFormat.forPattern(oldPattern)
     val oldDateTime = oldFormat.parseDateTime(input)
     val newFormat = DateTimeFormat.forPattern(newPattern)
@@ -161,6 +163,12 @@ fun Context.checkRequestPermission(permission: String): Boolean {
 
 fun Activity.makeRequest(permission: String, requestCode: Int) {
     ActivityCompat.requestPermissions(this, arrayOf(permission), requestCode)
+}
+
+fun String.convertToIDR(): String {
+    val indonesia = Locale("id", "ID")
+    val indoFormat = NumberFormat.getCurrencyInstance(indonesia)
+    return indoFormat.format(BigDecimal(this))
 }
 
 val sdkVersion = Build.VERSION.SDK_INT
