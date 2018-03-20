@@ -105,20 +105,20 @@ class EditProfileActivity : BaseActivity<SettingPelangganPresenter>(), SettingVi
 
         btn_update.setOnClickListener {
             setLoading(true)
-            presenter?.editProfilePelanggan(EditProfilePelangganRequest(pelanggan.id_pelanggan,et_phone.textToString(),et_fullname.textToString(),et_address.textToString()))
+            presenter?.editProfilePelanggan(EditProfilePelangganRequest(pelanggan.idPelanggan,et_phone.textToString(),et_fullname.textToString(),et_address.textToString()))
         }
     }
 
     fun setProfilePelanggan(pelanggan: PelangganModel) {
-        et_fullname.setText(pelanggan.nama_lengkap)
+        et_fullname.setText(pelanggan.namaLengkap)
         et_address.setText(pelanggan.alamat)
-        et_phone.setText(pelanggan.no_telp)
+        et_phone.setText(pelanggan.noTelp)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == FillPrivatePelangganFragment.PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                val place = PlacePicker.getPlace(data, this@EditProfileActivity)
+                val place = PlacePicker.getPlace(this@EditProfileActivity,data)
                 val address = getAddress(place.latLng.latitude, place.latLng.longitude)
                 et_address.setText(address)
             }

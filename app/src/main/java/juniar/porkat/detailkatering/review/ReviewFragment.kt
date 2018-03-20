@@ -28,7 +28,7 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
     var idKatering=-1
 
     companion object {
-        val ID_PELANGGAN = "id_pelanggan"
+        val ID_PELANGGAN = "idPelanggan"
         val ID_ULASAN="id_ulasan"
         val REVIEW = "Review"
         val EDIT="edit"
@@ -40,7 +40,7 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
 
     private val reviewAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_review, listReview,
-                { review, _, _ ->
+                { _, _, _ ->
                 },
                 { review, view ->
                     with(review) {
@@ -60,9 +60,9 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         sharedPreferenceUtil = SharedPreferenceUtil(activity)
         var login = sharedPreferenceUtil.getBoolean(SESSION)
         if (login) {
-            getProfilePelanggan(sharedPreferenceUtil)?.let {
+            getProfilePelanggan(sharedPreferenceUtil).let {
                 pelanggan = it
-                idPelanggan = pelanggan.id_pelanggan
+                idPelanggan = pelanggan.idPelanggan
             }
         }
         setLayout(login)
@@ -76,7 +76,7 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         cv_add_review.setOnClickListener {
             var args = Bundle()
             args.putInt(ID_KATERING, idKatering)
-            args.putInt(ID_PELANGGAN, pelanggan.id_pelanggan)
+            args.putInt(ID_PELANGGAN, pelanggan.idPelanggan)
             args.putString(TYPE,ADD)
             val reviewDialog = ReviewDialog()
             reviewDialog.arguments = args
@@ -151,14 +151,14 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         setLoading(false)
         swipe_layout.isRefreshing = false
         if (!error) {
-            review?.ulasanpelanggan?.let {
+            review?.ulasanPelanggan?.let {
                 setMyReview(it.rating, it.ulasan)
                 this.review = it
             }
             with(rv_review) {
                 review?.let {
                     listReview.clear()
-                    listReview.addAll(it.listulasan)
+                    listReview.addAll(it.listUlasan)
                 }
                 adapter = reviewAdapter
                 layoutManager = LinearLayoutManager(activity)

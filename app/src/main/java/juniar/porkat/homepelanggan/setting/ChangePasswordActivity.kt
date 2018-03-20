@@ -88,7 +88,7 @@ class ChangePasswordActivity : BaseActivity<SettingPelangganPresenter>(), Settin
             }
             else{
                 setLoading(true)
-                presenter?.changePasswordPelanggan(ChangePasswordPelangganRequest(pelanggan.id_pelanggan,et_new_password.textToString()))
+                presenter?.changePasswordPelanggan(ChangePasswordPelangganRequest(pelanggan.idPelanggan,et_new_password.textToString()))
             }
         }
     }

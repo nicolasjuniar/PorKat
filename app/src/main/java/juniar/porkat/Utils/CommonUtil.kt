@@ -118,7 +118,6 @@ fun Context.getAddress(lat: Double, lng: Double): String {
     var address = ""
     try {
         val addresses = geocoder.getFromLocation(lat, lng, 1)
-        val obj = addresses[0]
         address = addresses[0].thoroughfare + " " + addresses[0].subThoroughfare + ", " + addresses[0].subLocality
 
     } catch (e: IOException) {
@@ -147,10 +146,27 @@ fun getProfileKatering(sharedPreferenceUtil: SharedPreferenceUtil): KateringMode
 
 fun changeDateFormat(input: String, oldPattern: String, newPattern: String): String {
     val oldFormat = DateTimeFormat.forPattern(oldPattern)
-    val oldDateTime = oldFormat.parseDateTime(input)
+    val oldDateTime = oldFormat.parseDateTime(input.toLocaleEnglish(oldPattern))
     val newFormat = DateTimeFormat.forPattern(newPattern)
     val newDateTime = DateTime.parse(newFormat.print(oldDateTime), newFormat)
     return newDateTime.toString(newPattern, Locale("id", "ID", "ID"))
+}
+
+fun String.toLocaleEnglish(pattern: String): String {
+    val format = DateTimeFormat.forPattern(pattern)
+    return format.parseDateTime(this).toString(pattern, Locale.ENGLISH)
+}
+
+fun getDateTimeAnotherFormat(input: String, oldPattern: String, newPattern: String): DateTime {
+    val oldFormat = DateTimeFormat.forPattern(oldPattern)
+    val oldDateTime = oldFormat.parseDateTime(input)
+    val newFormat = DateTimeFormat.forPattern(newPattern)
+    return DateTime.parse(newFormat.print(oldDateTime), newFormat)
+}
+
+fun String.toDateTime(pattern: String): DateTime {
+    val format = DateTimeFormat.forPattern(pattern)
+    return format.parseDateTime(this)
 }
 
 fun getMonth(month: Int): String {

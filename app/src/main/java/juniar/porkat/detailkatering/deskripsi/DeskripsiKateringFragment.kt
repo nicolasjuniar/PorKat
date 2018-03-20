@@ -25,7 +25,7 @@ class DeskripsiKateringFragment:BaseFragment<Any>(){
         super.onViewCreated(view, savedInstanceState)
         val katering=Gson().fromJson(arguments.getString(DESKRIPSI),GetKateringModel::class.java)
         tv_address.text=katering.alamat
-        tv_contact.text=katering.no_telp
+        tv_contact.text=katering.noTelp
         tv_rating.text=katering.rating.toString()
     }
 }

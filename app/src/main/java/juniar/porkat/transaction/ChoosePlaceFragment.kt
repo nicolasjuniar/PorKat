@@ -26,6 +26,8 @@ import kotlinx.android.synthetic.main.fragment_choose_place.*
 class ChoosePlaceFragment : BaseFragment<Any>() {
 
     lateinit var callback: TransactionView
+    var latitude = -1.0
+    var longitude = -1.0
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -52,7 +54,7 @@ class ChoosePlaceFragment : BaseFragment<Any>() {
                 .map { it.toString() }
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
-                    callback.onPickPlace(et_address.textToString(), et_note.textToString())
+                    callback.onPickPlace(et_address.textToString(), et_note.textToString(), longitude, latitude)
                 }
     }
 
@@ -60,9 +62,11 @@ class ChoosePlaceFragment : BaseFragment<Any>() {
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 val place = PlacePicker.getPlace(activity, data)
-                val address = activity.getAddress(place.latLng.latitude, place.latLng.longitude)
+                longitude = place.latLng.longitude
+                latitude = place.latLng.latitude
+                val address = activity.getAddress(latitude, longitude)
                 et_address.setText(address)
-                callback.onPickPlace(et_address.textToString(), et_note.textToString())
+                callback.onPickPlace(et_address.textToString(), et_note.textToString(), longitude, latitude)
             }
         }
     }

@@ -61,7 +61,7 @@ class PickMenuFragment : BaseFragment<Any>() {
                                 view.tv_time.setOnClickListener {
                                     timePickerDialog = TimePickerDialog(context, TimePickerDialog.OnTimeSetListener { _, hour, minute ->
                                         view.tv_time.text = "$hour : $minute"
-                                        listPickMenu[listPickMenu.indexOf(pickMenu)].delilveryTime = "$hour : $minute"
+                                        listPickMenu[listPickMenu.indexOf(pickMenu)].delilveryTime = "$hour:$minute"
                                         callback.onPickMenu(listPickMenu)
                                     }, hour, minute, false)
                                     timePickerDialog.show()

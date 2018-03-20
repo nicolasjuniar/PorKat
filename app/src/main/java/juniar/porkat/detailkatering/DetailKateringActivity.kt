@@ -14,6 +14,7 @@ import juniar.porkat.detailkatering.deskripsi.DeskripsiKateringFragment.Companio
 import juniar.porkat.detailkatering.menu.MenuFragment
 import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import juniar.porkat.detailkatering.review.ReviewFragment
+import juniar.porkat.detailkatering.review.ReviewFragment.Companion.ID_PELANGGAN
 import juniar.porkat.homescreen.GetKateringModel
 import juniar.porkat.transaction.TransactionActivity
 import kotlinx.android.synthetic.main.activity_detail_katering.*
@@ -40,10 +41,10 @@ class DetailKateringActivity : BaseActivity<Any>() {
             fab_transaction.show()
         }
         val katering = intent.extras.get(DETAIL_KATERING) as GetKateringModel
-        changeTitleToolbar(katering.nama_katering)
+        changeTitleToolbar(katering.namaKatering)
         val bundle = Bundle()
         bundle.putString(DESKRIPSI, katering.encodeJson())
-        bundle.putInt(ID_KATERING, katering.id_katering)
+        bundle.putInt(ID_KATERING, katering.idKatering)
         val deskripsiKateringFragment = DeskripsiKateringFragment()
         deskripsiKateringFragment.arguments = bundle
         val menuFragment = MenuFragment()
@@ -58,7 +59,7 @@ class DetailKateringActivity : BaseActivity<Any>() {
 
         fab_transaction.setOnClickListener {
             val intent=Intent(this@DetailKateringActivity, TransactionActivity::class.java)
-            intent.putExtra(ID_KATERING,katering.id_katering)
+            intent.putExtra(ID_KATERING,katering.idKatering)
             startActivity(intent)
         }
     }

@@ -12,6 +12,8 @@ import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
 import juniar.porkat.homepelanggan.setting.EditProfileResponse
 import juniar.porkat.homescreen.ListKateringResponse
+import juniar.porkat.transaction.TransaksiRequest
+import juniar.porkat.transaction.TransaksiResponse
 import retrofit2.http.*
 
 /**
@@ -42,7 +44,7 @@ interface NetworkApi {
 
     @GET("pelanggan/ulasan/list")
     fun getListUlasan(@Query("id_katering") idKatering: Int,
-                      @Query("id_pelanggan") idPelanggan: Int): Observable<GetReviewResponse>
+                      @Query("idPelanggan") idPelanggan: Int): Observable<GetReviewResponse>
 
     @DELETE("pelanggan/ulasan/delete/{id_ulasan}")
     fun deleteUlasan(@Path("id_ulasan") idUlasan: Int): Observable<DeleteReviewResponse>
@@ -52,4 +54,7 @@ interface NetworkApi {
 
     @PUT("pelanggan/ulasan/update")
     fun updateUlasan(@Body request: UpdateReviewRequest): Observable<UpdateReviewResponse>
+
+    @POST("pelanggan/pesan/insert")
+    fun orderKatering(@Body request: TransaksiRequest): Observable<TransaksiResponse>
 }

@@ -13,23 +13,30 @@ import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import kotlinx.android.synthetic.main.activity_transaction.*
+import org.joda.time.DateTime
 
 /**
  * Created by Jarvis on 12/03/2018.
  */
-class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener, TransactionView {
+class TransactionActivity : BaseActivity<TransactionPresenter>(), ViewPager.OnPageChangeListener, TransactionView {
+
     val fragmentList = mutableListOf<Fragment>()
     lateinit var slider: SliderPagerAdapter
     lateinit var pickMenuFragment: PickMenuFragment
     var indicators = arrayListOf<ImageView>()
     var listBoolean = mutableListOf(false, false, false)
+    lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     val listTitle by lazy {
         mutableListOf(getString(R.string.description_transaction),
                 getString(R.string.pick_menu),
                 getString(R.string.choose_place)
         )
     }
+    var listDetailTransaksi = mutableListOf<DetailTransaksiModel>()
+    var listPickMenuModel = mutableListOf<PickMenuModel>()
+    var transaksiRequest = TransaksiRequest(detailPesan = listDetailTransaksi)
     var transactionNumber = -1
+    var orderDay = -1
 
     companion object {
         val PICK_MENU = 1
@@ -45,7 +52,10 @@ class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,
     override fun onViewReady() {
         val fragmentPickMenu = PickMenuFragment()
         val bundle = Bundle()
-        bundle.putInt(ID_KATERING, intent.getIntExtra(ID_KATERING, -1))
+        val idKatering = intent.getIntExtra(ID_KATERING, -1)
+        presenter = TransactionPresenter(this)
+        sharedPreferenceUtil = SharedPreferenceUtil(this@TransactionActivity)
+        bundle.putInt(ID_KATERING, idKatering)
         fragmentPickMenu.arguments = bundle
         fragmentList.add(DescriptionTransactionFragment())
         fragmentList.add(fragmentPickMenu)
@@ -58,13 +68,15 @@ class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,
         }
         pickMenuFragment = (viewpager.adapter as SliderPagerAdapter).getItem(PICK_MENU) as PickMenuFragment
         setupPagerIndicator(NUM_PAGES)
+        transaksiRequest.transaksiModel.idKatering = idKatering
+        transaksiRequest.transaksiModel.idPelanggan = getProfilePelanggan(sharedPreferenceUtil).idPelanggan
         btn_submit.setOnClickListener {
             if (viewpager.currentItem != CHOOSE_PLACE) {
                 viewpager.currentItem++
                 btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
                 changeTitleToolbar(listTitle[viewpager.currentItem])
             } else {
-                showShortToast("gud")
+                doOrderKatering(listPickMenuModel)
             }
         }
     }
@@ -120,8 +132,13 @@ class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,
     override fun onGetDescriptionTransaction(startDate: String, orderDay: Int, transactionNumber: Int) {
         listBoolean[viewpager.currentItem] = startDate.isNotEmpty() && orderDay != -1 && transactionNumber != -1
         btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
+        this.orderDay = orderDay
         this.transactionNumber = transactionNumber - 1
         pickMenuFragment.changeAdapterSize(transactionNumber - 1)
+        if (startDate.isNotEmpty()) {
+            transaksiRequest.transaksiModel.tglMulai = changeDateFormat(startDate, "d MMMM yyyy", "yyyy-MM-dd")
+            transaksiRequest.transaksiModel.tglSelesai = getDateTimeAnotherFormat(startDate, "d MMMM yyyy", "yyyy-MM-dd").plusDays(orderDay).toString("yyyy-MM-dd")
+        }
     }
 
     override fun onPageScrollStateChanged(state: Int) {
@@ -144,13 +161,59 @@ class TransactionActivity : BaseActivity<Any>(), ViewPager.OnPageChangeListener,
                 cek = pickMenuModel.picked && pickMenuModel.delilveryTime.isNotEmpty()
             }
         }
+        listPickMenuModel.clear()
+        listPickMenuModel.addAll(list)
         listBoolean[viewpager.currentItem] = cek
         btn_submit.setAvailable(cek, this@TransactionActivity)
     }
 
-    override fun onPickPlace(address: String, note: String) {
+    override fun onPickPlace(address: String, note: String, longitude: Double, latitude: Double) {
         listBoolean[viewpager.currentItem] = address.isNotEmpty() && note.isNotEmpty()
         btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
+        with(transaksiRequest.transaksiModel) {
+            alamat = address
+            this.longitude = longitude
+            this.latitude = latitude
+            catatan = note
+        }
+    }
+
+    fun doOrderKatering(list: MutableList<PickMenuModel>) {
+        var waktuPengantaran: String
+        var listWaktuPengantaran = mutableListOf<DateTime>()
+        var jumlahMenu = 0
+        var total = 0
+        list.forEach {
+            if (it.visibility) {
+                waktuPengantaran = "${transaksiRequest.transaksiModel.tglMulai} ${it.delilveryTime}:00"
+                listWaktuPengantaran.add(waktuPengantaran.toDateTime("yyyy-MM-dd HH:mm:ss"))
+                jumlahMenu++
+                total += orderDay * it.menu.harga
+            }
+        }
+        for (i in 0 until orderDay) {
+            for (j in 0 until jumlahMenu) {
+                transaksiRequest.detailPesan.add(DetailTransaksiModel(waktuPengantaran = listWaktuPengantaran[j].plusDays(i).toString("yyyy-MM-dd HH:mm:ss"), idMenu = list[j].menu.idMenu))
+            }
+        }
+        transaksiRequest.transaksiModel.total = total
+        setLoading(true)
+        presenter?.orderKatering(transaksiRequest)
+    }
+
+
+    override fun onTransactionResponse(error: Boolean, message: String?, t: Throwable?) {
+        setLoading(false)
+        if (error) {
+            t?.let {
+                it.localizedMessage.logDebug()
+            }
+        } else {
+            message?.let {
+                showShortToast(it)
+            }
+            finish()
+        }
     }
 
 }

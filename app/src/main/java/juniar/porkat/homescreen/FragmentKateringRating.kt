@@ -50,7 +50,7 @@ class FragmentKateringRating : BaseFragment<KateringPresenter>(), KateringView {
                         myLocation.longitude = sharedPreferenceUtil.getString(LONGITUDE, "0").toDouble()
                         myLocation.latitude = sharedPreferenceUtil.getString(LATITUDE, "0").toDouble()
                         kateringModel.distance = myLocation.distanceTo(kateringLocation) / 1000
-                        view.tv_katering.text = this.nama_katering
+                        view.tv_katering.text = this.namaKatering
                         view.tv_alamat.text = this.alamat
                         view.tv_jarak.text = "${this.distance.toString().substring(0, 4)} km"
                         view.tv_rating.text = this.rating.toString()
@@ -65,7 +65,9 @@ class FragmentKateringRating : BaseFragment<KateringPresenter>(), KateringView {
         if (!error) {
             with(rv_katering) {
                 getKateringList.clear()
-                getKateringList.addAll(response?.listkatering!!)
+                response?.let {
+                    getKateringList.addAll(it.listKatering)
+                }
                 kateringAdapter.notifyDataSetChanged()
                 adapter = kateringAdapter
                 layoutManager = LinearLayoutManager(activity)

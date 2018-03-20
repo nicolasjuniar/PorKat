@@ -56,7 +56,7 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
 
     fun loadPreferences() {
         val navView = nav_view.getHeaderView(0)
-        navView.tv_fullname.setText(pelanggan.nama_lengkap)
+        navView.tv_fullname.setText(pelanggan.namaLengkap)
         navView.tv_role.setText(PELANGGAN)
     }
 

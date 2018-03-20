@@ -10,5 +10,5 @@ import juniar.porkat.auth.PelangganModel
 data class LoginResponse(@SerializedName("success") val success: Boolean,
                          @SerializedName("role") val role: String,
                          @SerializedName("message") val message: String,
-                         @SerializedName("dataPelanggan") val  dataPelanggan: PelangganModel,
-                         @SerializedName("dataKatering") val dataKatering: KateringModel)
+                         @SerializedName("data_pelanggan") val  dataPelanggan: PelangganModel,
+                         @SerializedName("data_katering") val dataKatering: KateringModel)
