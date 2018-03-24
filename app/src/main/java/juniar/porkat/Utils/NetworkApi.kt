@@ -11,9 +11,10 @@ import juniar.porkat.homepelanggan.setting.ChangePasswordPelangganRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
 import juniar.porkat.homepelanggan.setting.EditProfileResponse
+import juniar.porkat.homepelanggan.transaction.GetTransactionResponse
 import juniar.porkat.homescreen.ListKateringResponse
-import juniar.porkat.transaction.TransaksiRequest
-import juniar.porkat.transaction.TransaksiResponse
+import juniar.porkat.transaction.TransactionRequest
+import juniar.porkat.transaction.TransactionResponse
 import retrofit2.http.*
 
 /**
@@ -56,5 +57,8 @@ interface NetworkApi {
     fun updateUlasan(@Body request: UpdateReviewRequest): Observable<UpdateReviewResponse>
 
     @POST("pelanggan/pesan/insert")
-    fun orderKatering(@Body request: TransaksiRequest): Observable<TransaksiResponse>
+    fun orderKatering(@Body request: TransactionRequest): Observable<TransactionResponse>
+
+    @GET("pelanggan/pesan/list")
+    fun getListTransactionPelanggan(@Query("id_pelanggan") idPelanggan: Int):Observable<GetTransactionResponse>
 }

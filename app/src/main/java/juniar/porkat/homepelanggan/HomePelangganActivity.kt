@@ -21,6 +21,7 @@ import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
 import juniar.porkat.homepelanggan.home.HomePelangganFragment
 import juniar.porkat.homepelanggan.setting.SettingFragment
+import juniar.porkat.homepelanggan.transaction.HistoryTransactionFragment
 import juniar.porkat.homescreen.HomeActivity
 import kotlinx.android.synthetic.main.activity_home_pelanggan.*
 import kotlinx.android.synthetic.main.app_bar_home_pelanggan.*
@@ -82,7 +83,8 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
                 fragment = HomePelangganFragment()
             }
             R.id.nav_transaction -> {
-
+                changeTitleToolbar(getString(R.string.history_transaction_text))
+                fragment=HistoryTransactionFragment()
             }
             R.id.nav_setting -> {
                 changeTitleToolbar(R.string.setting_text)

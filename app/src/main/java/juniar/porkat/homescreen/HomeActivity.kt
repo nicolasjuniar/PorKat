@@ -23,8 +23,8 @@ class HomeActivity : BaseActivity<Any>() {
     }
 
     override fun onViewReady() {
-        tabAdapter.addFragment(FragmentKateringRating(),"Rekomendasi")
-        tabAdapter.addFragment(FragmentKateringDistance(),"Sekitar")
+        tabAdapter.addFragment(KateringRatingFragment(),"Rekomendasi")
+        tabAdapter.addFragment(KateringDistanceFragment(),"Sekitar")
         tabpager.adapter=tabAdapter
         tab_layout.setupWithViewPager(tabpager)
     }

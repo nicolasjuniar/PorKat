@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import juniar.porkat.R
 import juniar.porkat.Utils.TabPagerAdapter
 import juniar.porkat.common.BaseFragment
-import juniar.porkat.homescreen.FragmentKateringDistance
-import juniar.porkat.homescreen.FragmentKateringRating
+import juniar.porkat.homescreen.KateringDistanceFragment
+import juniar.porkat.homescreen.KateringRatingFragment
 import kotlinx.android.synthetic.main.fragment_home_pelanggan.*
 
 /**
@@ -23,8 +23,8 @@ class HomePelangganFragment : BaseFragment<Any>() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         tabAdapter = TabPagerAdapter(childFragmentManager)
         super.onViewCreated(view, savedInstanceState)
-        tabAdapter.addFragment(FragmentKateringRating(), "Rekomendasi")
-        tabAdapter.addFragment(FragmentKateringDistance(), "Sekitar")
+        tabAdapter.addFragment(KateringRatingFragment(), "Rekomendasi")
+        tabAdapter.addFragment(KateringDistanceFragment(), "Sekitar")
         tabpager.adapter = tabAdapter
         tab_layout.setupWithViewPager(tabpager)
     }

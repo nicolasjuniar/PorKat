@@ -34,7 +34,7 @@ class TransactionActivity : BaseActivity<TransactionPresenter>(), ViewPager.OnPa
     }
     var listDetailTransaksi = mutableListOf<DetailTransaksiModel>()
     var listPickMenuModel = mutableListOf<PickMenuModel>()
-    var transaksiRequest = TransaksiRequest(detailPesan = listDetailTransaksi)
+    var transaksiRequest = TransactionRequest(detailPesan = listDetailTransaksi)
     var transactionNumber = -1
     var orderDay = -1
 
