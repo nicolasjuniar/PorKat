@@ -76,4 +76,8 @@
     <string name="note_text">Catatan</string>
     <string name="history_transaction_text">Riwayat Transaksi</string>
     <string name="status_example">Melakukan Pembayaran</string>
+    <string name="status_text">Status Transaksi</string>
+    <string name="transaction_date_text">Tanggal Transaksi</string>
+    <string name="total_text">Total Transaksi</string>
+    <string name="note_example">Taruh di Meja</string>
 </resources>

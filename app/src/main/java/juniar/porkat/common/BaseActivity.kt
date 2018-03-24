@@ -11,6 +11,7 @@ import juniar.porkat.R
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.Utils.logDebug
 import juniar.porkat.Utils.showShortToast
+import juniar.porkat.common.Constant.CommonStrings.Companion.EMPTY_STRING
 import juniar.porkat.common.Constant.CommonStrings.Companion.LATITUDE
 import juniar.porkat.common.Constant.CommonStrings.Companion.LONGITUDE
 import kotlinx.android.synthetic.main.toolbar.*
@@ -37,6 +38,17 @@ abstract class BaseActivity<T> : AppCompatActivity() {
             it.setHomeAsUpIndicator(drawable)
         }
         toolbar_title.setText(title)
+    }
+
+    fun setupToolbarTitle(toolbarId: Toolbar, title: String = EMPTY_STRING, drawable: Int = R.drawable.ic_back_24dp) {
+        setSupportActionBar(toolbarId)
+        supportActionBar?.let {
+            it.setDisplayShowTitleEnabled(false)
+            it.setDisplayHomeAsUpEnabled(true)
+            it.setDisplayShowHomeEnabled(true)
+            it.setHomeAsUpIndicator(drawable)
+        }
+        toolbar_title.text = title
     }
 
     fun changeTitleToolbar(title: String) {

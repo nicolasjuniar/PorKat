@@ -1,7 +1,9 @@
 package juniar.porkat.auth.login
 
+import android.content.DialogInterface
 import android.content.Intent
 import android.support.v4.content.res.ResourcesCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.Toolbar
 import android.text.SpannableStringBuilder
 import android.text.Spanned
@@ -14,6 +16,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import juniar.porkat.R
 import juniar.porkat.Utils.*
+import juniar.porkat.auth.register.RegisterKateringActivity
 import juniar.porkat.auth.register.RegisterPelangganActivity
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
@@ -59,7 +62,18 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
         val spanBuilder = SpannableStringBuilder(str1)
         val clickSpan = object : ClickableSpan() {
             override fun onClick(widget: View?) {
-                startActivity(Intent(this@LoginActivity, RegisterPelangganActivity::class.java))
+                val items = arrayOf<CharSequence>("Pelanggan", "Katering", "Batal")
+
+                val builder = AlertDialog.Builder(this@LoginActivity)
+                builder.setTitle("Daftar Sebagai:")
+                builder.setItems(items) { dialog, item ->
+                    when {
+                        items[item] == "Pelanggan" -> startActivity(Intent(this@LoginActivity, RegisterPelangganActivity::class.java))
+                        items[item] == "Katering" -> startActivity(Intent(this@LoginActivity, RegisterKateringActivity::class.java))
+                        items[item] == "Batal" -> dialog.dismiss()
+                    }
+                }
+                builder.show()
             }
 
             override fun updateDrawState(ds: TextPaint?) {

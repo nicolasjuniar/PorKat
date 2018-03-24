@@ -1,5 +1,6 @@
 package juniar.porkat.homepelanggan.transaction
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseFragment
+import juniar.porkat.common.Constant.CommonStrings.Companion.DETAIL_TRANSAKSI
 import juniar.porkat.common.GeneralRecyclerViewAdapter
 import kotlinx.android.synthetic.main.fragment_history_transaction.*
 import kotlinx.android.synthetic.main.viewholder_history_transaction.view.*
@@ -23,7 +25,9 @@ class HistoryTransactionFragment : BaseFragment<HistoryTransactionPresenter>(), 
     private val transactionAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_history_transaction, listHistoryTransaction,
                 { transaction, _, _ ->
-
+                    val intent=Intent(activity,DetailTransactionActivity::class.java)
+                    intent.putExtra(DETAIL_TRANSAKSI,transaction)
+                    startActivity(intent)
                 },
                 { transaction, view ->
                     with(transaction) {

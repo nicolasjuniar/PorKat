@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_detail_katering.*
 class DetailKateringActivity : BaseActivity<Any>() {
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     var tabAdapter = TabPagerAdapter(supportFragmentManager)
+    lateinit var katering:GetKateringModel
 
     companion object {
         val DETAIL_KATERING = "detail_katering"
@@ -32,7 +33,8 @@ class DetailKateringActivity : BaseActivity<Any>() {
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_detail_katering)
-        setupToolbarTitle(toolbar_layout as Toolbar)
+        katering = intent.extras.get(DETAIL_KATERING) as GetKateringModel
+        setupToolbarTitle(toolbar_layout as Toolbar,katering.namaKatering)
     }
 
     override fun onViewReady() {
@@ -40,8 +42,6 @@ class DetailKateringActivity : BaseActivity<Any>() {
         if (sharedPreferenceUtil.getBoolean(SESSION)) {
             fab_transaction.show()
         }
-        val katering = intent.extras.get(DETAIL_KATERING) as GetKateringModel
-        changeTitleToolbar(katering.namaKatering)
         val bundle = Bundle()
         bundle.putString(DESKRIPSI, katering.encodeJson())
         bundle.putInt(ID_KATERING, katering.idKatering)

@@ -16,6 +16,7 @@ class Constant {
             val PROFILE_KATERING="profile_katering"
             val LONGITUDE="longitude"
             val LATITUDE="latitude"
+            val DETAIL_TRANSAKSI="detail_transaksi"
         }
     }
 
