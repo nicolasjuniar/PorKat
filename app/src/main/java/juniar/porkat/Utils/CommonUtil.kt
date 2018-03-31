@@ -8,6 +8,7 @@ import android.location.Geocoder
 import android.os.Build
 import android.support.annotation.ColorRes
 import android.support.design.widget.Snackbar
+import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -185,6 +186,17 @@ fun String.convertToIDR(): String {
     val indonesia = Locale("id", "ID")
     val indoFormat = NumberFormat.getCurrencyInstance(indonesia)
     return indoFormat.format(BigDecimal(this))
+}
+
+fun TextView.setErrorColor(isValid: Boolean, context: Context) {
+    this.setTextColor(context.getColorCompat(if (isValid) R.color.hint_color else R.color.md_red_500))
+}
+
+fun TextInputLayout.setErrorText(isValid: Boolean, errorMessage: String) {
+    with(this) {
+        isErrorEnabled = !isValid
+        error = if (isValid) null else errorMessage
+    }
 }
 
 val sdkVersion = Build.VERSION.SDK_INT

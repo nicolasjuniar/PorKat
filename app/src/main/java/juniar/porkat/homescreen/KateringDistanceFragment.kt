@@ -20,6 +20,7 @@ import juniar.porkat.common.BaseFragment
 import juniar.porkat.common.Constant
 import juniar.porkat.common.GeneralRecyclerViewAdapter
 import juniar.porkat.detailkatering.DetailKateringActivity
+import juniar.porkat.detailkatering.DetailKateringActivity.Companion.DETAIL_KATERING
 import kotlinx.android.synthetic.main.fragment_katering.*
 import kotlinx.android.synthetic.main.viewholder_katering.view.*
 
@@ -36,9 +37,8 @@ class KateringDistanceFragment : BaseFragment<KateringPresenter>(), KateringView
         GeneralRecyclerViewAdapter(R.layout.viewholder_katering, getKateringList,
                 { kateringModel, _, _ ->
                     val intent = Intent(activity, DetailKateringActivity::class.java)
-                    intent.putExtra(DetailKateringActivity.DETAIL_KATERING, kateringModel)
+                    intent.putExtra(DETAIL_KATERING, kateringModel)
                     startActivity(intent)
-                    startActivity(Intent(activity, DetailKateringActivity::class.java))
                 },
                 { kateringModel, view ->
                     with(kateringModel) {

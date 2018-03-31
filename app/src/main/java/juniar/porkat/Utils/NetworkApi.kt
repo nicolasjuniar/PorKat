@@ -12,6 +12,7 @@ import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
 import juniar.porkat.homepelanggan.setting.EditProfileResponse
 import juniar.porkat.homepelanggan.transaction.GetTransactionResponse
+import juniar.porkat.homepelanggan.transaction.MenuTransactionResponse
 import juniar.porkat.homescreen.ListKateringResponse
 import juniar.porkat.transaction.TransactionRequest
 import juniar.porkat.transaction.TransactionResponse
@@ -45,7 +46,7 @@ interface NetworkApi {
 
     @GET("pelanggan/ulasan/list")
     fun getListUlasan(@Query("id_katering") idKatering: Int,
-                      @Query("idPelanggan") idPelanggan: Int): Observable<GetReviewResponse>
+                      @Query("id_pelanggan") idPelanggan: Int): Observable<GetReviewResponse>
 
     @DELETE("pelanggan/ulasan/delete/{id_ulasan}")
     fun deleteUlasan(@Path("id_ulasan") idUlasan: Int): Observable<DeleteReviewResponse>
@@ -61,4 +62,7 @@ interface NetworkApi {
 
     @GET("pelanggan/pesan/list")
     fun getListTransactionPelanggan(@Query("id_pelanggan") idPelanggan: Int):Observable<GetTransactionResponse>
+
+    @GET("pelanggan/pesan/menu")
+    fun getMenuTransaction(@Query("id_pesan") idPesan:Int):Observable<MenuTransactionResponse>
 }

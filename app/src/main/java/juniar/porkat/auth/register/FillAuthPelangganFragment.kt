@@ -10,24 +10,21 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import juniar.porkat.R
-import juniar.porkat.Utils.getColorCompat
-import juniar.porkat.Utils.textToString
-import juniar.porkat.Utils.toHtmlText
+import juniar.porkat.Utils.*
 import juniar.porkat.auth.register.RegisterPelangganActivity.Companion.AUTH
 import juniar.porkat.common.BaseFragment
 import kotlinx.android.synthetic.main.fragment_register_autentikasi.*
-import java.util.concurrent.TimeUnit
 
 /**
  * Created by Nicolas Juniar on 14/02/2018.
  */
 class FillAuthPelangganFragment : BaseFragment<Any>() {
 
-    lateinit var callback: RegisterView
+    lateinit var callback: RegisterPelangganView
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        callback = activity as RegisterView
+        callback = activity as RegisterPelangganView
     }
 
     companion object {
@@ -42,56 +39,22 @@ class FillAuthPelangganFragment : BaseFragment<Any>() {
         super.onViewCreated(view, savedInstanceState)
         Observable.combineLatest(
                 RxTextView.textChanges(et_username)
-                        .map { it.isNotEmpty() },
+                        .map { it.isNotEmpty() && it.length >= 4 },
                 RxTextView.textChanges(et_password)
                         .map { it.isNotEmpty() && it.length >= 6 },
                 BiFunction { username: Boolean, pass: Boolean ->
+                    field_username.setErrorText(et_username.textToString().isEmpty() || username,getString(R.string.username_error_text))
+                    tv_username.setErrorColor(et_username.textToString().isEmpty() || username,activity)
+
+                    field_password.setErrorText(et_password.textToString().isEmpty() || pass, getString(R.string.password_error_text))
+                    tv_password.setErrorColor(et_password.textToString().isEmpty() || pass, activity)
+
                     username && pass
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe {
                     callback.onFieldFilled(it,AUTH)
                     callback.onAuthFilled(et_username.textToString(),et_password.textToString())
-                }
-
-        RxTextView.textChanges(et_username)
-                .map { it.isNotEmpty() && it.length < 4 }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (it) {
-                        with(field_username) {
-                            isErrorEnabled = true
-                            error = getString(R.string.username_error_text).toHtmlText()
-                        }
-                        username.setTextColor(activity.getColorCompat(R.color.md_red_500))
-                    } else {
-                        with(field_username) {
-                            error = null
-                            isErrorEnabled = false
-                        }
-                        username.setTextColor(activity.getColorCompat(R.color.hint_color))
-                    }
-                }
-
-        RxTextView.textChanges(et_password)
-                .map { it.isNotEmpty() && it.length < 6 }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (it) {
-                        with(field_password)
-                        {
-                            isErrorEnabled = true
-                            error = getString(R.string.password_error_text).toHtmlText()
-                        }
-                        password.setTextColor(activity.getColorCompat(R.color.md_red_500))
-                    } else {
-                        with(field_password)
-                        {
-                            error = null
-                            isErrorEnabled = false
-                        }
-                        password.setTextColor(activity.getColorCompat(R.color.hint_color))
-                    }
                 }
     }
 }

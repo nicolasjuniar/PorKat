@@ -1,6 +1,5 @@
 package juniar.porkat.auth.login
 
-import android.content.DialogInterface
 import android.content.Intent
 import android.support.v4.content.res.ResourcesCompat
 import android.support.v7.app.AlertDialog
@@ -25,6 +24,7 @@ import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
 import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
+import juniar.porkat.homekatering.HomeKateringActivity
 import juniar.porkat.homepelanggan.HomePelangganActivity
 import kotlinx.android.synthetic.main.activity_login.*
 
@@ -121,12 +121,12 @@ class LoginActivity : BaseActivity<LoginPresenter>(), LoginView {
 
                     when (it.role) {
                         PELANGGAN -> {
-                            startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
                             sharedPreferenceUtil.setString(PROFILE_PELANGGAN, it.dataPelanggan.encodeJson())
+                            startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
                         }
                         KATERING -> {
-                            startActivity(Intent(this@LoginActivity, HomePelangganActivity::class.java))
                             sharedPreferenceUtil.setString(PROFILE_KATERING, it.dataKatering.encodeJson())
+                            startActivity(Intent(this@LoginActivity, HomeKateringActivity::class.java))
                         }
                     }
                     finishAffinity()

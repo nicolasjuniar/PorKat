@@ -16,6 +16,7 @@ import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
 import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
+import juniar.porkat.homekatering.HomeKateringActivity
 import juniar.porkat.homepelanggan.HomePelangganActivity
 import juniar.porkat.homescreen.HomeActivity
 
@@ -53,7 +54,7 @@ class SplashScreenActivity : BaseActivity<Any>() {
                 startActivity(Intent(this@SplashScreenActivity, HomePelangganActivity::class.java))
             }
             if (role.equals(KATERING, true)) {
-//                startActivity(Intent(this@SplashScreenActivity, MenuKateringActivity::class.java))
+                startActivity(Intent(this@SplashScreenActivity, HomeKateringActivity::class.java))
             }
         } else {
             startActivity(Intent(this@SplashScreenActivity, HomeActivity::class.java))

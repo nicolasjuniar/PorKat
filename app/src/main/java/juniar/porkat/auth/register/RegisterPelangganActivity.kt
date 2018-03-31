@@ -11,7 +11,6 @@ import android.widget.LinearLayout
 import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
-import juniar.porkat.common.Constant
 import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
@@ -22,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_register_pelanggan.*
 /**
  * Created by Nicolas Juniar on 12/02/2018.
  */
-class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterView, ViewPager.OnPageChangeListener {
+class RegisterPelangganActivity : BaseActivity<RegisterPelangganPresenter>(), RegisterPelangganView, ViewPager.OnPageChangeListener {
 
     val fragmentList = mutableListOf<Fragment>()
     lateinit var slider: SliderPagerAdapter
@@ -43,8 +42,8 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
     }
 
     override fun onViewReady() {
-        presenter = RegisterPresenter(this)
-        sharedPreferenceUtil= SharedPreferenceUtil(this@RegisterPelangganActivity)
+        presenter = RegisterPelangganPresenter(this)
+        sharedPreferenceUtil = SharedPreferenceUtil(this@RegisterPelangganActivity)
         fragmentList.add(FillAuthPelangganFragment.newInstance())
         fragmentList.add(FillPrivatePelangganFragment.newInstance())
         slider = SliderPagerAdapter(supportFragmentManager, fragmentList)
@@ -130,8 +129,8 @@ class RegisterPelangganActivity : BaseActivity<RegisterPresenter>(), RegisterVie
         if (!error) {
             response?.let {
                 showShortToast(it.message)
-                if(it.success){
-                    with(sharedPreferenceUtil){
+                if (it.success) {
+                    with(sharedPreferenceUtil) {
                         setBoolean(SESSION, true)
                         setString(ROLE, PELANGGAN)
                         setString(PROFILE_PELANGGAN, it.dataPelanggan.encodeJson())

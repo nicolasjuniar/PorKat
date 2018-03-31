@@ -56,6 +56,7 @@
     <string name="menu_example">Nasi Goreng Spesial</string>
     <string name="price_example">Rp 12.000,00</string>
     <string name="date_example">19 Februari 2017</string>
+    <string name="time_example">18:09</string>
     <string name="review_example">Makanan enak \nTemoat nyaman \ndsb</string>
     <string name="add_review">Tambahkan Ulasan</string>
     <string name="button_add_text">Tambah</string>
@@ -69,7 +70,6 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_maps">Map</string>
     <string name="deliver_time">Jam Pengantaran :</string>
-    <string name="time_example">-- : --</string>
     <string name="available_menu">Menu yang Tersedia</string>
     <string name="dialog_exit_transaction_title">Keluar</string>
     <string name="dalog_exit_transaction_detail">Apakah anda yakin untuk membatalkan pesanan?</string>
@@ -80,4 +80,17 @@
     <string name="transaction_date_text">Tanggal Transaksi</string>
     <string name="total_text">Total Transaksi</string>
     <string name="note_example">Taruh di Meja</string>
+    <string name="chosen_menu">Menu yang dipilih</string>
+    <string name="take_photo">Ambil Foto</string>
+    <string name="add_photo_detail">Foto katering dapat ditambah nanti</string>
+    <string name="add_photo_title">Tambahkan foto katering</string>
+    <string name="title_activity_home_katering">HomeKateringActivity</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+
+    <string name="action_example">Example action</string>
 </resources>

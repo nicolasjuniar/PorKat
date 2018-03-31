@@ -25,11 +25,11 @@ import kotlinx.android.synthetic.main.fragment_register_pelanggan_private.*
  */
 class FillPrivatePelangganFragment : BaseFragment<Any>() {
 
-    lateinit var callback: RegisterView
+    lateinit var callback: RegisterPelangganView
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        callback = activity as RegisterView
+        callback = activity as RegisterPelangganView
     }
 
     companion object {
