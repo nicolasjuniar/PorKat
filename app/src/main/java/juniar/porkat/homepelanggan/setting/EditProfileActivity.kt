@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_edit_profile_pelanggan.*
 /**
  * Created by Nicolas Juniar on 22/02/2018.
  */
-class EditProfileActivity : BaseActivity<SettingPelangganPresenter>(), SettingView {
+class EditProfileActivity : BaseActivity<SettingPresenter>(), SettingView {
 
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
 
@@ -33,7 +33,7 @@ class EditProfileActivity : BaseActivity<SettingPelangganPresenter>(), SettingVi
 
     override fun onViewReady() {
         sharedPreferenceUtil = SharedPreferenceUtil(this@EditProfileActivity)
-        presenter= SettingPelangganPresenter(this)
+        presenter= SettingPresenter(this)
         val pelanggan = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN), PelangganModel::class.java)
         Observable.combineLatest(
                 RxTextView.textChanges(et_fullname)

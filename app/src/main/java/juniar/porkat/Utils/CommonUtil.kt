@@ -4,6 +4,9 @@ import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.Matrix
+import android.graphics.drawable.BitmapDrawable
 import android.location.Geocoder
 import android.os.Build
 import android.support.annotation.ColorRes
@@ -13,14 +16,12 @@ import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
 import android.text.Html
+import android.util.Base64
 import android.util.Log
 import android.util.Patterns
 import android.view.View
 import android.view.WindowManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import com.google.gson.Gson
 import juniar.porkat.R
 import juniar.porkat.auth.KateringModel
@@ -29,6 +30,7 @@ import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
+import java.io.ByteArrayOutputStream
 import java.io.IOException
 import java.math.BigDecimal
 import java.text.DateFormatSymbols
@@ -197,6 +199,25 @@ fun TextInputLayout.setErrorText(isValid: Boolean, errorMessage: String) {
         isErrorEnabled = !isValid
         error = if (isValid) null else errorMessage
     }
+}
+
+fun getResizedBitmap(bm: Bitmap, newWidth: Int, newHeight: Int): Bitmap {
+    val width = bm.width
+    val height = bm.height
+    val scaleWidth = newWidth.toFloat() / width
+    val scaleHeight = newHeight.toFloat() / height
+    val matrix = Matrix()
+    matrix.postScale(scaleWidth, scaleHeight)
+    val resizedBitmap = Bitmap.createBitmap(
+            bm, 0, 0, width, height, matrix, false)
+    bm.recycle()
+    return resizedBitmap
+}
+
+fun ImageView.encodeBase64(): String {
+    val byteArrayOutputStream = ByteArrayOutputStream()
+    (this.drawable as BitmapDrawable).bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
+    return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
 }
 
 val sdkVersion = Build.VERSION.SDK_INT

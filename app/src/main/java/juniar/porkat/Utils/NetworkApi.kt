@@ -3,10 +3,12 @@ package juniar.porkat.Utils
 import io.reactivex.Observable
 import juniar.porkat.auth.login.LoginRequest
 import juniar.porkat.auth.login.LoginResponse
+import juniar.porkat.auth.register.RegisterKateringRequest
 import juniar.porkat.auth.register.RegisterPelangganRequest
-import juniar.porkat.auth.register.RegisterPelangganResponse
+import juniar.porkat.auth.register.RegisterResponse
 import juniar.porkat.detailkatering.menu.GetListMenuResponse
 import juniar.porkat.detailkatering.review.*
+import juniar.porkat.homekatering.setting.ChangePasswordKateringRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordPelangganRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
@@ -33,7 +35,7 @@ interface NetworkApi {
     fun login(@Body request: LoginRequest): Observable<LoginResponse>
 
     @POST("pelanggan/register")
-    fun registerPelanggan(@Body request: RegisterPelangganRequest): Observable<RegisterPelangganResponse>
+    fun registerPelanggan(@Body request: RegisterPelangganRequest): Observable<RegisterResponse>
 
     @PUT("pelanggan/update/profile")
     fun editProfilePelanggan(@Body request: EditProfilePelangganRequest): Observable<EditProfileResponse>
@@ -61,8 +63,14 @@ interface NetworkApi {
     fun orderKatering(@Body request: TransactionRequest): Observable<TransactionResponse>
 
     @GET("pelanggan/pesan/list")
-    fun getListTransactionPelanggan(@Query("id_pelanggan") idPelanggan: Int):Observable<GetTransactionResponse>
+    fun getListTransactionPelanggan(@Query("id_pelanggan") idPelanggan: Int): Observable<GetTransactionResponse>
 
     @GET("pelanggan/pesan/menu")
-    fun getMenuTransaction(@Query("id_pesan") idPesan:Int):Observable<MenuTransactionResponse>
+    fun getMenuTransaction(@Query("id_pesan") idPesan: Int): Observable<MenuTransactionResponse>
+
+    @POST("katering/register")
+    fun registerKatering(@Body request: RegisterKateringRequest): Observable<RegisterResponse>
+
+    @PUT("katering/update/password")
+    fun changePasswordKatering(@Body request: ChangePasswordKateringRequest): Observable<ChangePasswordResponse>
 }

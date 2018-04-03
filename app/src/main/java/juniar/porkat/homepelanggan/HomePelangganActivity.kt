@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import juniar.porkat.R
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.Utils.buildAlertDialog
+import juniar.porkat.Utils.getProfilePelanggan
 import juniar.porkat.Utils.showShortToast
 import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.BaseActivity
@@ -20,12 +21,12 @@ import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
 import juniar.porkat.homepelanggan.home.HomePelangganFragment
-import juniar.porkat.homepelanggan.setting.SettingFragment
+import juniar.porkat.homepelanggan.setting.SettingPelangganFragment
 import juniar.porkat.homepelanggan.transaction.HistoryTransactionFragment
 import juniar.porkat.homescreen.HomeActivity
 import kotlinx.android.synthetic.main.activity_home_pelanggan.*
 import kotlinx.android.synthetic.main.app_bar_home_pelanggan.*
-import kotlinx.android.synthetic.main.nav_header_home_pelanggan.view.*
+import kotlinx.android.synthetic.main.nav_header_home.view.*
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.
@@ -49,7 +50,7 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
         toggle.syncState()
         fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.container_body, HomePelangganFragment()).commit()
-        pelanggan = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN), PelangganModel::class.java)
+        pelanggan = getProfilePelanggan(sharedPreferenceUtil)
         nav_view.menu.getItem(0).isChecked = true
         loadPreferences()
         nav_view.setNavigationItemSelectedListener(this)
@@ -88,7 +89,7 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
             }
             R.id.nav_setting -> {
                 changeTitleToolbar(R.string.setting_text)
-                fragment = SettingFragment()
+                fragment = SettingPelangganFragment()
 
             }
             R.id.nav_logout -> {
@@ -102,7 +103,8 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
 
         fragment?.let {
             fragmentManager.beginTransaction()
-                    .replace(R.id.container_body, fragment).commit()
+                    .replace(R.id.container_body, fragment)
+                    .commit()
         }
 
         drawer_layout.closeDrawer(GravityCompat.START)

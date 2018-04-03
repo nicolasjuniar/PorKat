@@ -5,19 +5,19 @@
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home_24dp"
-            android:title="Beranda" />
+            android:title="@string/home_text" />
         <item
             android:id="@+id/nav_transaction"
             android:icon="@drawable/ic_money_24dp"
-            android:title="Riwayat Transaksi" />
+            android:title="@string/history_transaction_text" />
         <item
             android:id="@+id/nav_setting"
             android:icon="@drawable/ic_setting_24dp"
-            android:title="Pengaturan" />
+            android:title="@string/setting_text" />
         <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/ic_back_24dp"
-            android:title="Keluar" />
+            android:title="@string/logout_text" />
     </group>
 
 </menu>

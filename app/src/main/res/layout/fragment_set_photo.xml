@@ -18,15 +18,27 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/iv_katering"
-        android:layout_width="@dimen/dimen_500px"
-        android:layout_height="@dimen/dimen_500px"
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/layout_photo"
+        android:layout_width="@dimen/dimen_510px"
+        android:layout_height="@dimen/dimen_510px"
         android:layout_marginTop="@dimen/dimen_40dp"
-        android:src="@drawable/deafult_pp"
+        android:background="@color/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
+
+        <ImageView
+            android:id="@+id/iv_katering"
+            android:layout_width="@dimen/dimen_500px"
+            android:layout_height="@dimen/dimen_500px"
+            android:src="@drawable/deafult_pp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </android.support.constraint.ConstraintLayout>
+
 
     <Button
         android:id="@+id/btn_add_photo"
@@ -39,6 +51,6 @@
         android:textColor="@color/White"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_katering" />
+        app:layout_constraintTop_toBottomOf="@id/layout_photo" />
 
 </android.support.constraint.ConstraintLayout>

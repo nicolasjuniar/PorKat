@@ -7,17 +7,22 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.BiFunction
 import juniar.porkat.R
 import juniar.porkat.Utils.*
+import juniar.porkat.auth.KateringModel
 import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.BaseActivity
+import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
+import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
+import juniar.porkat.homekatering.setting.ChangePasswordKateringRequest
 import kotlinx.android.synthetic.main.activity_change_password.*
 
 /**
  * Created by Nicolas Juniar on 23/02/2018.
  */
-class ChangePasswordActivity : BaseActivity<SettingPelangganPresenter>(), SettingView {
+class ChangePasswordActivity : BaseActivity<SettingPresenter>(), SettingView {
 
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
-    lateinit var pelanggan:PelangganModel
+    lateinit var pelanggan: PelangganModel
+    lateinit var katering: KateringModel
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_change_password)
@@ -25,8 +30,8 @@ class ChangePasswordActivity : BaseActivity<SettingPelangganPresenter>(), Settin
     }
 
     override fun onViewReady() {
-        presenter= SettingPelangganPresenter(this)
-        sharedPreferenceUtil=SharedPreferenceUtil(this@ChangePasswordActivity)
+        presenter = SettingPresenter(this)
+        sharedPreferenceUtil = SharedPreferenceUtil(this@ChangePasswordActivity)
         Observable.combineLatest(
                 RxTextView.textChanges(et_old_password)
                         .map { it.isNotEmpty() && it.length >= 6 },
@@ -81,14 +86,27 @@ class ChangePasswordActivity : BaseActivity<SettingPelangganPresenter>(), Settin
                         new_password.setTextColor(getColorCompat(R.color.hint_color))
                     }
                 }
-        pelanggan= getProfilePelanggan(sharedPreferenceUtil)
+        if (intent.getStringExtra(ROLE) == PELANGGAN) {
+            pelanggan = getProfilePelanggan(sharedPreferenceUtil)
+        } else {
+            katering = getProfileKatering(sharedPreferenceUtil)
+        }
         btn_update.setOnClickListener {
-            if(et_old_password.textToString() != pelanggan.katasandi){
-                showShortToast(getString(R.string.old_password_invalid))
-            }
-            else{
-                setLoading(true)
-                presenter?.changePasswordPelanggan(ChangePasswordPelangganRequest(pelanggan.idPelanggan,et_new_password.textToString()))
+            if (intent.getStringExtra(ROLE) == PELANGGAN) {
+                if (et_old_password.textToString() != pelanggan.katasandi) {
+                    showShortToast(getString(R.string.old_password_invalid))
+                } else {
+                    setLoading(true)
+                    presenter?.changePasswordPelanggan(ChangePasswordPelangganRequest(pelanggan.idPelanggan, et_new_password.textToString()))
+
+                }
+            } else {
+                if (et_old_password.textToString() != katering.katasandi) {
+                    showShortToast(getString(R.string.old_password_invalid))
+                } else {
+                    setLoading(true)
+                    presenter?.changePasswordKatering(ChangePasswordKateringRequest(katering.idKatering, et_new_password.textToString()))
+                }
             }
         }
     }
@@ -105,10 +123,14 @@ class ChangePasswordActivity : BaseActivity<SettingPelangganPresenter>(), Settin
 
     override fun onUpdateProfile(error: Boolean, message: String?, t: Throwable?) {
         if (!error) {
-            showShortToast(message!!)
+            message?.let {
+                showShortToast(it)
+            }
             finish()
         } else {
-            showShortToast(t?.localizedMessage!!)
+            t?.let {
+                showShortToast(it.localizedMessage)
+            }
         }
     }
 

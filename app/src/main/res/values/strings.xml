@@ -7,6 +7,7 @@
     <string name="register_text">Daftar</string>
     <string name="username_text">Id Pengguna</string>
     <string name="password_text">Katasandi</string>
+    <string name="logout_text">Keluar</string>
     <string name="register_reminder">Belum punya akun? %s</string>
     <string name="register_here">Daftar disini</string>
     <string name="home_text">Beranda</string>
@@ -93,4 +94,13 @@
     <string name="title_section3">Section 3</string>
 
     <string name="action_example">Example action</string>
+    <string name="send_food_text">Pengiriman Makanan</string>
+    <string name="food_text">Lihat Makanan</string>
+    <string name="transaction_text">Daftar Pesanan</string>
+    <string name="manage_menu_text">Kelola Menu</string>
+    <string name="add_photo_text">Tambahkan Foto</string>
+    <string name="pick_from_gallery_text">Pilih lewat penyimpanan</string>
+    <string name="cancel_text">Batal</string>
+    <string name="take_from_camera">Ambil lewat kamera</string>
+    <string name="change_photo_text">Ganti Foto</string>
 </resources>

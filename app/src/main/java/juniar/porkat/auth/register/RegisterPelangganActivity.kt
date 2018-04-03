@@ -124,7 +124,7 @@ class RegisterPelangganActivity : BaseActivity<RegisterPelangganPresenter>(), Re
         }
     }
 
-    override fun onRegisterResponse(error: Boolean, response: RegisterPelangganResponse?, t: Throwable?) {
+    override fun onRegisterResponse(error: Boolean, response: RegisterResponse?, t: Throwable?) {
         setLoading(false)
         if (!error) {
             response?.let {

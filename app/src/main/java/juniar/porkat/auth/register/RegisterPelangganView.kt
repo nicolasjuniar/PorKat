@@ -5,7 +5,7 @@ package juniar.porkat.auth.register
  */
 interface RegisterPelangganView {
     fun setLoading(loading: Boolean)
-    fun onRegisterResponse(error: Boolean, response: RegisterPelangganResponse?, t: Throwable?)
+    fun onRegisterResponse(error: Boolean, response: RegisterResponse?, t: Throwable?)
     fun onFieldFilled(enable: Boolean, code: Int)
     fun onAuthFilled(username: String, password: String)
     fun onPrivateFilled(fullname: String, phone: String, address: String)

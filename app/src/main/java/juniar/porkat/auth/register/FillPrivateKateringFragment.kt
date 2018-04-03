@@ -18,16 +18,17 @@ import juniar.porkat.R
 import juniar.porkat.Utils.getAddress
 import juniar.porkat.Utils.logDebug
 import juniar.porkat.Utils.textToString
-import juniar.porkat.auth.register.RegisterPelangganActivity.Companion.PRIVATE
 import juniar.porkat.common.BaseFragment
 import kotlinx.android.synthetic.main.fragment_register_katering_private.*
 
 /**
  * Created by Jarvis on 26/03/2018.
  */
-class FillPrivateKateringFragment : BaseFragment<Any>() {
+class FillPrivateKateringFragment : BaseFragment<FillPrivateKateringPresenter>() {
 
     lateinit var callback: RegisterKateringView
+    var longitude = 0.0
+    var latitude = 0.0
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -35,7 +36,6 @@ class FillPrivateKateringFragment : BaseFragment<Any>() {
     }
 
     companion object {
-        val PLACE_PICKER_REQUEST = 1
         fun newInstance(): FillPrivateKateringFragment {
             return FillPrivateKateringFragment()
         }
@@ -45,7 +45,8 @@ class FillPrivateKateringFragment : BaseFragment<Any>() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Observable.combineLatest(
+        presenter = FillPrivateKateringPresenter()
+        presenter?.setPrivateKateringDataValidation(Observable.combineLatest(
                 RxTextView.textChanges(et_fullname)
                         .map { it.isNotEmpty() },
                 RxTextView.textChanges(et_phone)
@@ -55,12 +56,12 @@ class FillPrivateKateringFragment : BaseFragment<Any>() {
                 RxTextView.textChanges(et_verification)
                         .map { it.isNotEmpty() },
                 Function4 { fullname: Boolean, phone: Boolean, address: Boolean, verification: Boolean ->
-                    fullname && phone && address && verification })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{
-                    callback.onFieldFilled(it)
-                }
-
+                    fullname && phone && address && verification
+                })
+                .observeOn(AndroidSchedulers.mainThread()), {
+            callback.onFieldFilled(it)
+            callback.onPrivateFilled(et_fullname.textToString(), et_phone.textToString(), et_address.textToString(), et_verification.textToString(), latitude, longitude)
+        })
 
         et_address.setOnClickListener {
             val builder = PlacePicker.IntentBuilder()
@@ -79,9 +80,11 @@ class FillPrivateKateringFragment : BaseFragment<Any>() {
         if (requestCode == FillPrivatePelangganFragment.PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
                 val place = PlacePicker.getPlace(activity, data)
-                val address = activity.getAddress(place.latLng.latitude, place.latLng.longitude)
+                longitude = place.latLng.longitude
+                latitude = place.latLng.latitude
+                val address = activity.getAddress(latitude, longitude)
                 et_address.setText(address)
-                callback.onPrivateFilled(et_fullname.textToString(), et_phone.textToString(), et_address.textToString(), et_verification.textToString())
+                callback.onPrivateFilled(et_fullname.textToString(), et_phone.textToString(), et_address.textToString(), et_verification.textToString(), latitude, longitude)
             }
         }
     }

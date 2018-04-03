@@ -24,6 +24,7 @@ class Constant {
         companion object {
             val ACCESS_FINE_LOCATION_CODE=101
             val READ_EXTERNAL_STORAGE_CODE=102
+            val CAMERA_INTENT_CODE=103
         }
     }
 }

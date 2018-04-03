@@ -1,5 +1,6 @@
 package juniar.porkat.auth.register
 
+import android.content.Intent
 import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v4.view.ViewPager
@@ -10,6 +11,11 @@ import android.widget.LinearLayout
 import juniar.porkat.R
 import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
+import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
+import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
+import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
+import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
+import juniar.porkat.homekatering.HomeKateringActivity
 import kotlinx.android.synthetic.main.activity_register_pelanggan.*
 
 /**
@@ -20,8 +26,8 @@ class RegisterKateringActivity : BaseActivity<RegisterKateringPresenter>(), Regi
     val fragmentList = mutableListOf<Fragment>()
     lateinit var slider: SliderPagerAdapter
     var indicators = arrayListOf<ImageView>()
-    var request = RegisterPelangganRequest()
-    val listBoolean= mutableListOf(false,false,false)
+    var request = RegisterKateringRequest()
+    val listBoolean = mutableListOf(false, false, true)
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
 
     companion object {
@@ -62,8 +68,8 @@ class RegisterKateringActivity : BaseActivity<RegisterKateringPresenter>(), Regi
     }
 
     fun setLayout(index: Int) {
-        when(index){
-            AUTH->{
+        when (index) {
+            AUTH -> {
                 changeTitleToolbar(R.string.autentikasi_text)
                 with(btn_register) {
                     text = getString(R.string.next_text)
@@ -73,7 +79,7 @@ class RegisterKateringActivity : BaseActivity<RegisterKateringPresenter>(), Regi
                     }
                 }
             }
-            PRIVATE->{
+            PRIVATE -> {
                 changeTitleToolbar(R.string.private_text)
                 with(btn_register) {
                     text = getString(R.string.next_text)
@@ -83,13 +89,13 @@ class RegisterKateringActivity : BaseActivity<RegisterKateringPresenter>(), Regi
                     }
                 }
             }
-            PHOTO->{
-                changeTitleToolbar(R.string.private_text)
+            PHOTO -> {
+                changeTitleToolbar(R.string.add_photo_text)
                 with(btn_register) {
-                    text = getString(R.string.next_text)
+                    text = getString(R.string.register_text)
                     setOnClickListener {
-                        viewpager.currentItem++
-                        btn_register.setAvailable(listBoolean[viewpager.currentItem], this@RegisterKateringActivity)
+                        setLoading(true)
+                        presenter?.registerPelanggan(request)
                     }
                 }
             }
@@ -150,7 +156,7 @@ class RegisterKateringActivity : BaseActivity<RegisterKateringPresenter>(), Regi
     }
 
     override fun onFieldFilled(enable: Boolean) {
-        listBoolean[viewpager.currentItem]=enable
+        listBoolean[viewpager.currentItem] = enable
         btn_register.setAvailable(enable, this@RegisterKateringActivity)
     }
 
@@ -161,9 +167,43 @@ class RegisterKateringActivity : BaseActivity<RegisterKateringPresenter>(), Regi
         }
     }
 
-    override fun onPrivateFilled(fullname: String, phone: String, address: String, verificationNumber: String) {
-        with(request){
+    override fun onPrivateFilled(fullname: String, phone: String, address: String, verificationNumber: String, latitude: Double, longitude: Double) {
+        with(request) {
+            namaKatering = fullname
+            noTelp = phone
+            this.latitude = latitude
+            this.longitude = longitude
+            this.noVerifikasi=verificationNumber
+            this.alamat=address
+        }
+    }
 
+    override fun onGetPhotoKatering(photoName: String, encodedImage: String) {
+        with(request) {
+            foto = photoName
+            this.encodedImage = encodedImage
+        }
+    }
+
+    override fun onRegisterResponse(error: Boolean, response: RegisterResponse?, t: Throwable?) {
+        setLoading(false)
+        if (!error) {
+            response?.let {
+                showShortToast(it.message)
+                if (it.success) {
+                    with(sharedPreferenceUtil) {
+                        setBoolean(SESSION, true)
+                        setString(ROLE, KATERING)
+                        setString(PROFILE_KATERING, it.dataKatering.encodeJson())
+                    }
+                    startActivity(Intent(this@RegisterKateringActivity, HomeKateringActivity::class.java))
+                    finishAffinity()
+                }
+            }
+        } else {
+            t?.let {
+                showShortToast(it.localizedMessage)
+            }
         }
     }
 }
