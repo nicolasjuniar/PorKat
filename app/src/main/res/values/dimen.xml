@@ -58,6 +58,8 @@
     <dimen name="dimen_250dp">250dp</dimen>
     <dimen name="dimen_320dp">320dp</dimen>
     <dimen name="dimen_360dp">360dp</dimen>
+    <dimen name="dimen_505px">505px</dimen>
+    <dimen name="dimen_510px">510px</dimen>
 
     <dimen name="pixel_250px">250px</dimen>
 

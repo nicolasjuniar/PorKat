@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_edit_profile_pelanggan.*
 /**
  * Created by Nicolas Juniar on 22/02/2018.
  */
-class EditProfileActivity : BaseActivity<SettingPresenter>(), SettingView {
+class EditProfilePelangganActivity : BaseActivity<SettingPresenter>(), SettingView {
 
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
 
@@ -32,69 +32,33 @@ class EditProfileActivity : BaseActivity<SettingPresenter>(), SettingView {
     }
 
     override fun onViewReady() {
-        sharedPreferenceUtil = SharedPreferenceUtil(this@EditProfileActivity)
-        presenter= SettingPresenter(this)
+        sharedPreferenceUtil = SharedPreferenceUtil(this@EditProfilePelangganActivity)
+        presenter = SettingPresenter(this)
         val pelanggan = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN), PelangganModel::class.java)
-        Observable.combineLatest(
+        presenter?.setEditProfileValidation(Observable.combineLatest(
                 RxTextView.textChanges(et_fullname)
-                        .map { it.isNotEmpty() },
+                        .map { alphabetOnly(it.toString()) },
                 RxTextView.textChanges(et_phone)
-                        .map { it.isNotEmpty() },
+                        .map { isPhoneValid(it.toString()) },
                 RxTextView.textChanges(et_address)
                         .map { it.isNotEmpty() },
                 Function3 { fullname: Boolean, phone: Boolean, address: Boolean ->
+                    field_fullname.setErrorText(fullname || et_fullname.textToString().isEmpty(), getString(R.string.error_fullname_invalid))
+                    tv_fullname.setErrorColor(fullname, this@EditProfilePelangganActivity)
+
+                    field_phone.setErrorText(phone || et_phone.textToString().isEmpty(), getString(R.string.error_phone_invalid))
+                    tv_phone.setErrorColor(phone, this@EditProfilePelangganActivity)
                     fullname && phone && address
                 })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    btn_update.setAvailable(it, this@EditProfileActivity)
-                }
-
-        RxTextView.textChanges(et_fullname)
-                .map { alphabetOnly(it.toString()) || it.isEmpty() }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (it) {
-                        with(field_fullname)
-                        {
-                            error = null
-                            isErrorEnabled = false
-                        }
-                        fullname.setTextColor(getColorCompat(R.color.hint_color))
-                    } else {
-                        with(field_fullname)
-                        {
-                            isErrorEnabled = true
-                            error = getString(R.string.error_fullname_invalid).toHtmlText()
-                        }
-                        fullname.setTextColor(getColorCompat(R.color.md_red_500))
-                    }
-                }
-
-        RxTextView.textChanges(et_phone)
-                .map { it.isNotEmpty() && !isPhoneValid(it.toString()) }
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe {
-                    if (it) {
-                        with(field_phone) {
-                            isErrorEnabled = true
-                            error = getString(R.string.error_phone_invalid).toHtmlText()
-                        }
-                        et_phone.setTextColor(getColorCompat(R.color.md_red_500))
-                    } else {
-                        with(field_phone) {
-                            error = null
-                            isErrorEnabled = false
-                        }
-                        et_phone.setTextColor(getColorCompat(R.color.hint_color))
-                    }
-                }
+                .observeOn(AndroidSchedulers.mainThread()), {
+            btn_update.setAvailable(it, this@EditProfilePelangganActivity)
+        })
 
         et_address.setOnClickListener {
             val builder = PlacePicker.IntentBuilder()
 
             try {
-                startActivityForResult(builder.build(this@EditProfileActivity), FillPrivatePelangganFragment.PLACE_PICKER_REQUEST)
+                startActivityForResult(builder.build(this@EditProfilePelangganActivity), FillPrivatePelangganFragment.PLACE_PICKER_REQUEST)
             } catch (e: GooglePlayServicesRepairableException) {
                 e.printStackTrace()
             } catch (e: GooglePlayServicesNotAvailableException) {
@@ -105,7 +69,7 @@ class EditProfileActivity : BaseActivity<SettingPresenter>(), SettingView {
 
         btn_update.setOnClickListener {
             setLoading(true)
-            presenter?.editProfilePelanggan(EditProfilePelangganRequest(pelanggan.idPelanggan,et_phone.textToString(),et_fullname.textToString(),et_address.textToString()))
+            presenter?.editProfilePelanggan(EditProfilePelangganRequest(pelanggan.idPelanggan, et_phone.textToString(), et_fullname.textToString(), et_address.textToString()))
         }
     }
 
@@ -118,7 +82,7 @@ class EditProfileActivity : BaseActivity<SettingPresenter>(), SettingView {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         if (requestCode == FillPrivatePelangganFragment.PLACE_PICKER_REQUEST) {
             if (resultCode == Activity.RESULT_OK) {
-                val place = PlacePicker.getPlace(this@EditProfileActivity,data)
+                val place = PlacePicker.getPlace(this@EditProfilePelangganActivity, data)
                 val address = getAddress(place.latLng.latitude, place.latLng.longitude)
                 et_address.setText(address)
             }
@@ -127,19 +91,22 @@ class EditProfileActivity : BaseActivity<SettingPresenter>(), SettingView {
 
     override fun onUpdateProfile(error: Boolean, message: String?, t: Throwable?) {
         if (!error) {
-            showShortToast(message!!)
+            message?.let {
+                showShortToast(it)
+            }
             finish()
         } else {
-            showShortToast(t?.localizedMessage!!)
+            t?.let {
+                showShortToast(it.localizedMessage)
+            }
         }
     }
 
     override fun setLoading(loading: Boolean) {
-        if(loading){
+        if (loading) {
             window.setFlags(DONT_TOUCH, DONT_TOUCH)
             progressbar.show()
-        }
-        else{
+        } else {
             window.clearFlags(DONT_TOUCH)
             progressbar.hide()
         }

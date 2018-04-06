@@ -50,7 +50,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/fullname"
+                android:id="@+id/tv_fullname"
                 style="@style/hint_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -69,7 +69,7 @@
                 android:src="@drawable/ic_contact_24dp"
                 android:tint="@color/colorPrimary"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fullname" />
+                app:layout_constraintTop_toBottomOf="@id/tv_fullname" />
 
 
             <android.support.design.widget.TextInputLayout
@@ -80,7 +80,7 @@
                 android:layout_marginRight="@dimen/dimen_20dp"
                 app:layout_constraintLeft_toRightOf="@id/ic_fullname"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/fullname">
+                app:layout_constraintTop_toBottomOf="@id/tv_fullname">
 
                 <EditText
                     android:id="@+id/et_fullname"
@@ -90,7 +90,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:id="@+id/phone"
+                android:id="@+id/tv_phone"
                 style="@style/hint_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
                 android:src="@drawable/ic_call_24dp"
                 android:tint="@color/colorPrimary"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phone" />
+                app:layout_constraintTop_toBottomOf="@id/tv_phone" />
 
 
             <android.support.design.widget.TextInputLayout
@@ -120,7 +120,7 @@
                 android:layout_marginRight="@dimen/dimen_20dp"
                 app:layout_constraintLeft_toRightOf="@id/ic_phone"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/phone">
+                app:layout_constraintTop_toBottomOf="@id/tv_phone">
 
                 <EditText
                     android:id="@+id/et_phone"
@@ -131,7 +131,7 @@
             </android.support.design.widget.TextInputLayout>
 
             <TextView
-                android:id="@+id/address"
+                android:id="@+id/tv_address"
                 style="@style/hint_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -150,7 +150,7 @@
                 android:src="@drawable/ic_map_24dp"
                 android:tint="@color/colorPrimary"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address" />
+                app:layout_constraintTop_toBottomOf="@id/tv_address" />
 
 
             <android.support.design.widget.TextInputLayout
@@ -161,7 +161,7 @@
                 android:layout_marginRight="@dimen/dimen_20dp"
                 app:layout_constraintLeft_toRightOf="@id/ic_address"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/address">
+                app:layout_constraintTop_toBottomOf="@id/tv_address">
 
                 <EditText
                     android:id="@+id/et_address"

@@ -37,8 +37,14 @@ abstract class BaseFragment<T> : Fragment() {
 
         val locationManager = activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager
         try {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L,
-                    0f, locationListener)
+            when{
+                locationManager.allProviders.contains(LocationManager.NETWORK_PROVIDER)->{
+                    locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0L, 0f, locationListener)
+                }
+                locationManager.allProviders.contains(LocationManager.GPS_PROVIDER)->{
+                    locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0L, 0f, locationListener)
+                }
+            }
         } catch (e: SecurityException) {
             e.localizedMessage.logDebug()
         }

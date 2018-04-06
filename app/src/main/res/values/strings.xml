@@ -103,4 +103,15 @@
     <string name="cancel_text">Batal</string>
     <string name="take_from_camera">Ambil lewat kamera</string>
     <string name="change_photo_text">Ganti Foto</string>
+    <string name="menu_name_text">Nama Menu</string>
+    <string name="menu_price_text">Harga Menu</string>
+    <string name="manage_menu">Kelola Menu</string>
+    <string name="edit_menu_text">Edit Menu</string>
+    <string name="btn_edit_text">Ubah</string>
+    <string name="btn_delete_text">Hapus</string>
+    <string name="add_menu_text">Tambah Menu</string>
+    <string name="dialog_delete_menu_title">Hapus Menu</string>
+    <string name="dialog_delete_menu_message">Apakah anda yakin menghapus menu %s?</string>
+    <string name="dialog_update_menu_title">Ubah Menu</string>
+    <string name="dialog_update_menu_message">Apakah anda yakin ingin mengubah menu %s?</string>
 </resources>

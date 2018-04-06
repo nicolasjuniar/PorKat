@@ -9,7 +9,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import com.google.gson.Gson
 import juniar.porkat.R
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.Utils.buildAlertDialog
@@ -19,6 +18,7 @@ import juniar.porkat.auth.KateringModel
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant
 import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
+import juniar.porkat.homekatering.menu.MenuKateringFragment
 import juniar.porkat.homekatering.setting.SettingKateringFragment
 import juniar.porkat.homescreen.HomeActivity
 import kotlinx.android.synthetic.main.activity_home_katering.*
@@ -30,7 +30,7 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
     lateinit var fragmentManager: FragmentManager
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     var exit = false
-    lateinit var katering:KateringModel
+    lateinit var katering: KateringModel
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_home_katering)
@@ -44,8 +44,8 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
         toggle.syncState()
         sharedPreferenceUtil = SharedPreferenceUtil(this@HomeKateringActivity)
         fragmentManager = supportFragmentManager
-        katering= getProfileKatering(sharedPreferenceUtil)
-        nav_view.menu.getItem(0).isChecked=true
+        katering = getProfileKatering(sharedPreferenceUtil)
+        nav_view.menu.getItem(0).isChecked = true
         loadPreferences()
         nav_view.setNavigationItemSelectedListener(this)
     }
@@ -82,7 +82,8 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
 
             }
             R.id.nav_menu -> {
-
+                changeTitleToolbar(getString(R.string.manage_menu))
+                fragment = MenuKateringFragment()
             }
             R.id.nav_setting -> {
                 changeTitleToolbar(R.string.setting_text)

@@ -5,15 +5,20 @@ import android.content.Context
 import android.content.DialogInterface
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.graphics.Matrix
+import android.graphics.Point
 import android.graphics.drawable.BitmapDrawable
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Build
+import android.provider.MediaStore
 import android.support.annotation.ColorRes
 import android.support.design.widget.Snackbar
 import android.support.design.widget.TextInputLayout
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import android.support.v4.content.CursorLoader
 import android.support.v7.app.AlertDialog
 import android.text.Html
 import android.util.Base64
@@ -28,6 +33,7 @@ import juniar.porkat.auth.KateringModel
 import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
+import kotlinx.android.synthetic.main.fragment_set_photo.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.ByteArrayOutputStream
@@ -218,6 +224,48 @@ fun ImageView.encodeBase64(): String {
     val byteArrayOutputStream = ByteArrayOutputStream()
     (this.drawable as BitmapDrawable).bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream)
     return Base64.encodeToString(byteArrayOutputStream.toByteArray(), Base64.DEFAULT)
+}
+
+fun getCapturedPhotoBitmap(path: String): Bitmap {
+    val options = BitmapFactory.Options()
+    val requiredSize = 450
+    var scale = 1
+    while (options.outWidth / scale / 2 >= requiredSize && options.outHeight / scale / 2 >= requiredSize)
+        scale *= 2
+    options.inSampleSize = scale
+    options.inJustDecodeBounds = false
+    return BitmapFactory.decodeFile(path, options)
+}
+
+fun Activity.getStoragePhotoBitmap(uri: Uri?):Bitmap{
+    val projection = arrayOf(MediaStore.MediaColumns.DATA)
+    val cursorLoader = CursorLoader(this, uri, projection,
+            null, null, null)
+    val cursor = cursorLoader.loadInBackground()
+    val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
+    cursor.moveToFirst()
+    val selectedImagePath = cursor.getString(columnIndex)
+    val options = BitmapFactory.Options()
+    options.inJustDecodeBounds = true
+    BitmapFactory.decodeFile(selectedImagePath, options)
+    val requiredSize = 450
+    var scale = 1
+    while (options.outWidth / scale / 2 >= requiredSize && options.outHeight / scale / 2 >= requiredSize)
+        scale *= 2
+    options.inSampleSize = scale
+    options.inJustDecodeBounds = false
+    val bitmap = BitmapFactory.decodeFile(selectedImagePath, options)
+
+    val display = this.windowManager.defaultDisplay
+    val size = Point()
+    display.getSize(size)
+    val width = size.x
+    return if (bitmap.width < width) {
+        val resizedHeight = bitmap.height + (width - bitmap.width)
+        getResizedBitmap(bitmap, width, resizedHeight)
+    } else {
+        bitmap
+    }
 }
 
 val sdkVersion = Build.VERSION.SDK_INT

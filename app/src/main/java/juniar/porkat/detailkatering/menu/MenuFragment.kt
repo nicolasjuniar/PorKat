@@ -29,10 +29,10 @@ import java.util.*
  */
 class MenuFragment : BaseFragment<MenuPresenter>(), MenuView {
 
-    lateinit var listMenu: MutableList<MenuKateringModel>
+    private var listMenu= mutableListOf<MenuKateringModel>()
 
     companion object {
-        val ID_KATERING="id_katering"
+        const val ID_KATERING="id_katering"
     }
 
     private val menuAdapter by lazy {
@@ -44,7 +44,7 @@ class MenuFragment : BaseFragment<MenuPresenter>(), MenuView {
                     with(menu) {
                         view.tv_menu.text = this.namaMenu
                         view.tv_price.text = this.harga.toString().convertToIDR()
-                        Picasso.with(activity).load("${PorkatApp.BASE_URL}/foto/katering/${this.foto}").centerCrop().resize(200,200).into(view.iv_menu)
+                        Picasso.with(activity).load("${PorkatApp.BASE_URL}/foto/menu/${this.foto}").centerCrop().resize(200,200).into(view.iv_menu)
                     }
                 })
     }
@@ -54,18 +54,15 @@ class MenuFragment : BaseFragment<MenuPresenter>(), MenuView {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         presenter= MenuPresenter(this)
-        listMenu= mutableListOf()
         presenter?.getListMenuKatering(arguments.getInt(ID_KATERING))
+
+        with(rv_menu) {
+            adapter = menuAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }
 
         swipe_layout.setOnRefreshListener({
             presenter?.getListMenuKatering(arguments.getInt(ID_KATERING))
-        })
-
-        rv_menu.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
-                val topRowVerticalPosition = if (recyclerView == null || recyclerView.childCount == 0) 0 else recyclerView.getChildAt(0).top
-                swipe_layout.isEnabled = topRowVerticalPosition >= 0
-            }
         })
     }
 
@@ -81,13 +78,15 @@ class MenuFragment : BaseFragment<MenuPresenter>(), MenuView {
         setLoading(false)
         swipe_layout.isRefreshing = false
         if (!error) {
-            with(rv_menu) {
-                listMenu=list!!
-                adapter = menuAdapter
-                layoutManager = LinearLayoutManager(activity)
+            listMenu.clear()
+            list?.let {
+                listMenu.addAll(it)
             }
+            menuAdapter.notifyDataSetChanged()
         } else {
-            context.showShortToast(t?.localizedMessage!!)
+            t?.let {
+                activity?.showShortToast(it.localizedMessage)
+            }
         }
     }
 }

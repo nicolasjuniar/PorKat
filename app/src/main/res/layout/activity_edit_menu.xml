@@ -1,0 +1,225 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/White"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+    <requestFocus />
+
+    <include
+        android:id="@+id/toolbar_layout"
+        layout="@layout/toolbar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <View
+        android:id="@+id/toolbar_shadow"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dimen_3dp"
+        android:background="@drawable/toolbar_dropshadow"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout" />
+
+    <ProgressBar
+        android:id="@+id/progressbar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#fff"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTintMode="src_in"
+        android:max="100"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout" />
+
+
+    <ScrollView
+        android:layout_width="@dimen/dimen_0dp"
+        android:layout_height="@dimen/dimen_0dp"
+        android:layout_marginTop="@dimen/dimen_5dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_layout">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_menu_name"
+                style="@style/hint_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_28dp"
+                android:text="@string/menu_name_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="parent" />
+
+            <ImageView
+                android:id="@+id/ic_menu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_30dp"
+                android:src="@drawable/ic_menu_24dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_menu_name" />
+
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/field_menu"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_4dp"
+                android:layout_marginRight="@dimen/dimen_20dp"
+                app:layout_constraintLeft_toRightOf="@id/ic_menu"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_menu_name">
+
+                <EditText
+                    android:id="@+id/et_menu_name"
+                    style="@style/singleline_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+            </android.support.design.widget.TextInputLayout>
+
+            <TextView
+                android:id="@+id/tv_price"
+                style="@style/hint_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_28dp"
+                android:text="@string/menu_price_text"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/field_menu" />
+
+            <ImageView
+                android:id="@+id/ic_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="@dimen/dimen_20dp"
+                android:layout_marginTop="@dimen/dimen_30dp"
+                android:src="@drawable/ic_money_24dp"
+                android:tint="@color/colorPrimary"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_price" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/field_price"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/dimen_4dp"
+                android:layout_marginRight="@dimen/dimen_20dp"
+                app:layout_constraintLeft_toRightOf="@id/ic_price"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_price">
+
+                <EditText
+                    android:id="@+id/et_price"
+                    style="@style/singleline_edittext"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:inputType="number" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/layout_photo"
+                android:layout_width="@dimen/dimen_505px"
+                android:layout_height="@dimen/dimen_505px"
+                android:layout_marginTop="@dimen/dimen_40dp"
+                android:background="@color/colorPrimary"
+                android:visibility="visible"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/field_price">
+
+                <ImageView
+                    android:id="@+id/iv_menu"
+                    android:layout_width="@dimen/dimen_500px"
+                    android:layout_height="@dimen/dimen_500px"
+                    android:src="@drawable/default_food"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="@dimen/dimen_60dp"
+                android:layout_height="@dimen/dimen_60dp"
+                android:background="@drawable/circle_shape"
+                app:layout_constraintBottom_toBottomOf="@id/layout_photo"
+                app:layout_constraintLeft_toRightOf="@id/layout_photo"
+                app:layout_constraintRight_toRightOf="@id/layout_photo"
+                app:layout_constraintTop_toBottomOf="@id/layout_photo">
+
+                <ImageView
+                    android:id="@+id/iv_take_photo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_add_photo_24dp"
+                    android:tint="@color/White"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <Button
+                android:id="@+id/btn_add"
+                style="@style/disabled_rounded_button"
+                android:layout_width="@dimen/dimen_0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_28dp"
+                android:layout_marginTop="@dimen/dimen_40dp"
+                android:text="@string/button_add_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_photo"
+                tool:visibility="gone" />
+
+            <Button
+                android:id="@+id/btn_edit"
+                style="@style/disabled_rounded_button"
+                android:layout_width="@dimen/dimen_150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_28dp"
+                android:layout_marginLeft="@dimen/dimen_0dp"
+                android:layout_marginRight="@dimen/dimen_0dp"
+                android:layout_marginTop="@dimen/dimen_40dp"
+                android:text="@string/btn_edit_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/btn_delete"
+                app:layout_constraintTop_toBottomOf="@id/layout_photo" />
+
+            <Button
+                android:id="@+id/btn_delete"
+                style="@style/disabled_rounded_button"
+                android:layout_width="@dimen/dimen_150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_28dp"
+                android:layout_marginLeft="@dimen/dimen_0dp"
+                android:layout_marginRight="@dimen/dimen_0dp"
+                android:layout_marginTop="@dimen/dimen_40dp"
+                android:text="@string/btn_delete_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toRightOf="@id/btn_edit"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/layout_photo" />
+
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+</android.support.constraint.ConstraintLayout>

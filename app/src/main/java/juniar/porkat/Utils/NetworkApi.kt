@@ -6,9 +6,15 @@ import juniar.porkat.auth.login.LoginResponse
 import juniar.porkat.auth.register.RegisterKateringRequest
 import juniar.porkat.auth.register.RegisterPelangganRequest
 import juniar.porkat.auth.register.RegisterResponse
+import juniar.porkat.common.CommonResponse
 import juniar.porkat.detailkatering.menu.GetListMenuResponse
 import juniar.porkat.detailkatering.review.*
+import juniar.porkat.homekatering.menu.DeleteMenuRequest
+import juniar.porkat.homekatering.menu.InsertMenuRequest
+import juniar.porkat.homekatering.menu.InsertMenuResponse
+import juniar.porkat.homekatering.menu.UpdateMenuRequest
 import juniar.porkat.homekatering.setting.ChangePasswordKateringRequest
+import juniar.porkat.homekatering.setting.EditProfileKateringRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordPelangganRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
@@ -73,4 +79,16 @@ interface NetworkApi {
 
     @PUT("katering/update/password")
     fun changePasswordKatering(@Body request: ChangePasswordKateringRequest): Observable<ChangePasswordResponse>
+
+    @PUT("katering/update/profile")
+    fun editProfileKatering(@Body request: EditProfileKateringRequest): Observable<EditProfileResponse>
+
+    @POST("menu/insert")
+    fun insertMenu(@Body request: InsertMenuRequest): Observable<InsertMenuResponse>
+
+    @PUT("menu/delete")
+    fun deleteMenu(@Body request: DeleteMenuRequest): Observable<CommonResponse>
+
+    @PUT("menu/update")
+    fun updateMenu(@Body request:UpdateMenuRequest):Observable<CommonResponse>
 }

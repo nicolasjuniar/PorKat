@@ -5,13 +5,10 @@ import android.app.Activity.RESULT_OK
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.BitmapFactory
-import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import android.support.v4.content.CursorLoader
 import android.support.v4.content.FileProvider
 import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
@@ -54,7 +51,7 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_add_photo.setOnClickListener {
+        iv_take_photo.setOnClickListener {
             selectImage()
         }
     }
@@ -64,63 +61,23 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
         when (requestCode) {
             REQUEST_IMAGE_CAPTURE -> {
                 if (resultCode == RESULT_OK) {
-                    val options = BitmapFactory.Options()
-                    val requiredSize = 450
-                    var scale = 1
-                    while (options.outWidth / scale / 2 >= requiredSize && options.outHeight / scale / 2 >= requiredSize)
-                        scale *= 2
-                    options.inSampleSize = scale
-                    options.inJustDecodeBounds = false
-                    val bitmap = BitmapFactory.decodeFile(imageFilePath, options)
                     with(iv_katering) {
-                        setImageBitmap(bitmap)
+                        setImageBitmap(getCapturedPhotoBitmap(imageFilePath))
                         scaleType = ImageView.ScaleType.CENTER_CROP
                     }
-                    btn_add_photo.text = getString(R.string.change_photo_text)
                     callback.onGetPhotoKatering(photoName, iv_katering.encodeBase64())
                 }
             }
             READ_EXTERNAL_STORAGE_CODE -> {
-                if (resultCode == RESULT_OK) {
-                    val selectedImageUri = data?.data
-                    val projection = arrayOf(MediaStore.MediaColumns.DATA)
-                    val cursorLoader = CursorLoader(activity, selectedImageUri, projection,
-                            null, null, null)
-                    val cursor = cursorLoader.loadInBackground()
-                    val columnIndex = cursor.getColumnIndexOrThrow(MediaStore.MediaColumns.DATA)
-                    cursor.moveToFirst()
-                    val selectedImagePath = cursor.getString(columnIndex)
-                    val options = BitmapFactory.Options()
-                    options.inJustDecodeBounds = true
-                    BitmapFactory.decodeFile(selectedImagePath, options)
-                    val requiredSize = 450
-                    var scale = 1
-                    while (options.outWidth / scale / 2 >= requiredSize && options.outHeight / scale / 2 >= requiredSize)
-                        scale *= 2
-                    options.inSampleSize = scale
-                    options.inJustDecodeBounds = false
-                    val bitmap = BitmapFactory.decodeFile(selectedImagePath, options)
-
-                    val display = activity.windowManager.defaultDisplay
-                    val size = Point()
-                    display.getSize(size)
-                    val width = size.x
-                    if (bitmap.width < width) {
-                        val resizedHeight = bitmap.height + (width - bitmap.width)
-                        val newResizedBitmap = getResizedBitmap(bitmap, width, resizedHeight)
+                if (resultCode == RESULT_OK)
+                    activity?.let {
+                        var thisActivity = it
                         with(iv_katering) {
-                            setImageBitmap(newResizedBitmap)
-                            scaleType = ImageView.ScaleType.CENTER_CROP
-                        }
-                    } else {
-                        with(iv_katering) {
-                            setImageBitmap(bitmap)
+                            setImageBitmap(thisActivity.getStoragePhotoBitmap(data?.data))
                             scaleType = ImageView.ScaleType.CENTER_CROP
                         }
                     }
-                    btn_add_photo.text = getString(R.string.change_photo_text)
-                    callback.onGetPhotoKatering(photoName, iv_katering.encodeBase64())
-                }
+                callback.onGetPhotoKatering(photoName, iv_katering.encodeBase64())
             }
         }
     }
