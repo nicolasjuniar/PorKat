@@ -1,8 +1,8 @@
-package juniar.porkat.auth.register
+package juniar.porkat.homepelanggan.transaction.invoice
 
 import android.Manifest
+import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
@@ -15,42 +15,60 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
+import juniar.porkat.PorkatApp
 import juniar.porkat.R
 import juniar.porkat.Utils.*
+import juniar.porkat.auth.register.SetKateringPhotoFragment
 import juniar.porkat.common.BaseFragment
-import juniar.porkat.common.Constant.CommonInt.Companion.CAMERA_INTENT_CODE
+import juniar.porkat.common.Constant
 import juniar.porkat.common.Constant.CommonInt.Companion.READ_EXTERNAL_STORAGE_CODE
-import kotlinx.android.synthetic.main.fragment_set_photo.*
+import juniar.porkat.homepelanggan.transaction.GetTransactionModel
+import kotlinx.android.synthetic.main.fragment_invoice.*
 import java.io.File
 import java.io.IOException
 
-/**
- * Created by Jarvis on 26/03/2018.
- */
-class SetKateringPhotoFragment : BaseFragment<Any>() {
+class InvoiceFragment : BaseFragment<InvoicePresenter>(), InvoiceView {
 
     private var imageFilePath = ""
-    lateinit var callback: RegisterKateringView
     private var photoName = ""
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        callback = context as RegisterKateringView
-    }
+    lateinit var transactionModel: GetTransactionModel
 
     companion object {
         const val REQUEST_IMAGE_CAPTURE = 100
-        fun newInstance(): SetKateringPhotoFragment {
-            return SetKateringPhotoFragment()
-        }
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) = inflater.inflate(R.layout.fragment_set_photo, container, false)
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? = inflater?.inflate(R.layout.fragment_invoice, container, false)
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        presenter = InvoicePresenter(this)
+        transactionModel = arguments.getParcelable(Constant.CommonStrings.DETAIL_TRANSAKSI) as GetTransactionModel
         iv_take_photo.setOnClickListener {
             selectImage()
+        }
+
+        if (transactionModel.nota.isNotEmpty()) {
+            Picasso.with(activity)
+                    .load("${PorkatApp.BASE_URL}/foto/nota/${transactionModel.nota}")
+                    .centerCrop()
+                    .memoryPolicy(MemoryPolicy.NO_CACHE)
+                    .resize(500, 500)
+                    .placeholder(R.drawable.default_invoice)
+                    .into(iv_invoice)
+
+            btn_upload.setAvailable(true, activity)
+        }
+
+        btn_upload.setOnClickListener {
+            activity?.let {
+                it.buildAlertDialog(getString(R.string.dialog_upload_invoice_title), getString(R.string.dialog_update_invoice_message), getString(R.string.yes_dialog), getString(R.string.no_dialog), {
+                    setLoading(true)
+                    photoName = if (transactionModel.nota.isNotEmpty()) transactionModel.nota else photoName
+                    presenter?.updateInvoice(transactionModel.idPesan, photoName, iv_invoice.encodeBase64())
+                }).show()
+            }
         }
     }
 
@@ -58,25 +76,25 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
         super.onActivityResult(requestCode, resultCode, data)
         when (requestCode) {
             REQUEST_IMAGE_CAPTURE -> {
-                if (resultCode == RESULT_OK) {
-                    with(iv_katering) {
+                if (resultCode == Activity.RESULT_OK) {
+                    with(iv_invoice) {
                         setImageBitmap(getCapturedPhotoBitmap(imageFilePath))
                         scaleType = ImageView.ScaleType.CENTER_CROP
                     }
-                    callback.onGetPhotoKatering(photoName, iv_katering.encodeBase64())
+                    btn_upload.setAvailable(true, activity)
                 }
             }
             READ_EXTERNAL_STORAGE_CODE -> {
-                if (resultCode == RESULT_OK)
+                if (resultCode == Activity.RESULT_OK)
                     activity?.let {
                         var thisActivity = it
-                        with(iv_katering) {
+                        with(iv_invoice) {
                             setImageBitmap(thisActivity.getStoragePhotoBitmap(data?.data))
                             scaleType = ImageView.ScaleType.CENTER_CROP
                         }
                         photoName = "IMG_${getTimeStamp()}.jpg"
                     }
-                callback.onGetPhotoKatering(photoName, iv_katering.encodeBase64())
+                btn_upload.setAvailable(true, activity)
             }
         }
     }
@@ -95,10 +113,10 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
                                 if (it.checkRequestPermission(android.Manifest.permission.CAMERA)) {
                                     openCameraIntent()
                                 } else {
-                                    activity?.makeRequest(Manifest.permission.CAMERA, CAMERA_INTENT_CODE)
+                                    activity?.makeRequest(Manifest.permission.CAMERA, Constant.CommonInt.CAMERA_INTENT_CODE)
                                 }
                             } else {
-                                activity?.makeRequest(Manifest.permission.CAMERA, CAMERA_INTENT_CODE)
+                                activity?.makeRequest(Manifest.permission.CAMERA, Constant.CommonInt.CAMERA_INTENT_CODE)
                             }
                         }
                     }
@@ -107,10 +125,10 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
                             if (it.checkRequestPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
                                 takeImage()
                             } else {
-                                activity?.makeRequest(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE_CODE)
+                                activity?.makeRequest(Manifest.permission.READ_EXTERNAL_STORAGE, Constant.CommonInt.READ_EXTERNAL_STORAGE_CODE)
                             }
                         } else {
-                            activity?.makeRequest(Manifest.permission.READ_EXTERNAL_STORAGE, READ_EXTERNAL_STORAGE_CODE)
+                            activity?.makeRequest(Manifest.permission.READ_EXTERNAL_STORAGE, Constant.CommonInt.READ_EXTERNAL_STORAGE_CODE)
                         }
                     }
                     items[item] == getString(R.string.cancel_text) -> dialog.dismiss()
@@ -123,7 +141,7 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
     private fun takeImage() {
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "image/*"
-        startActivityForResult(Intent.createChooser(intent, "Select File"), READ_EXTERNAL_STORAGE_CODE)
+        startActivityForResult(Intent.createChooser(intent, "Select File"), Constant.CommonInt.READ_EXTERNAL_STORAGE_CODE)
     }
 
     private fun openCameraIntent() {
@@ -140,7 +158,7 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
                 context?.let {
                     val photoUri = FileProvider.getUriForFile(context, "${it.packageName}.provider", file)
                     pictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-                    startActivityForResult(pictureIntent, REQUEST_IMAGE_CAPTURE)
+                    startActivityForResult(pictureIntent, SetKateringPhotoFragment.REQUEST_IMAGE_CAPTURE)
                 }
             }
         }
@@ -157,12 +175,12 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            READ_EXTERNAL_STORAGE_CODE -> {
+            Constant.CommonInt.READ_EXTERNAL_STORAGE_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     takeImage()
                 }
             }
-            CAMERA_INTENT_CODE -> {
+            Constant.CommonInt.CAMERA_INTENT_CODE -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openCameraIntent()
                 }
@@ -170,4 +188,28 @@ class SetKateringPhotoFragment : BaseFragment<Any>() {
         }
     }
 
+    override fun setLoading(loading: Boolean) {
+        if (loading) {
+            pb_loading.show()
+        } else {
+            pb_loading.hide()
+        }
+    }
+
+    override fun onSuccessUpdateInvoice(error: Boolean, message: String?, t: Throwable?) {
+        setLoading(false)
+        if (!error) {
+            message?.let {
+                activity?.showShortToast(it)
+            }
+            activity?.let {
+                it.setResult(RESULT_OK)
+                it.finish()
+            }
+        } else {
+            t?.let {
+                activity?.showShortToast(it.localizedMessage)
+            }
+        }
+    }
 }

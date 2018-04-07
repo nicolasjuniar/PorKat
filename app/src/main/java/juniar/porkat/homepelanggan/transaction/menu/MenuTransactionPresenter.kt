@@ -1,4 +1,4 @@
-package juniar.porkat.homepelanggan.transaction
+package juniar.porkat.homepelanggan.transaction.menu
 
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
@@ -6,11 +6,7 @@ import juniar.porkat.Utils.NetworkApi
 import juniar.porkat.Utils.NetworkManager
 import juniar.porkat.common.BasePresenter
 
-/**
- * Created by Jarvis on 25/03/2018.
- */
-class DetailTransactionPresenter(val view: DetailTransactionView) : BasePresenter() {
-
+class MenuTransactionPresenter(val view:MenuTransactionView):BasePresenter(){
     fun getListMenuTransaction(idPesan: Int) {
         compositeDisposable.add(NetworkManager.createService(NetworkApi::class.java)
                 .getMenuTransaction(idPesan)
@@ -22,5 +18,4 @@ class DetailTransactionPresenter(val view: DetailTransactionView) : BasePresente
                     view.onGetListMenuTransaction(true, null, it)
                 }))
     }
-
 }

@@ -1,5 +1,6 @@
 package juniar.porkat.homepelanggan.transaction
 
+import android.app.Activity.RESULT_OK
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -22,18 +23,22 @@ class HistoryTransactionFragment : BaseFragment<HistoryTransactionPresenter>(), 
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     var listHistoryTransaction = mutableListOf<GetTransactionModel>()
 
+    companion object {
+        const val UPDATE_INVOICE_CODE = 1
+    }
+
     private val transactionAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_history_transaction, listHistoryTransaction,
                 { transaction, _, _ ->
-                    val intent=Intent(activity,DetailTransactionActivity::class.java)
-                    intent.putExtra(DETAIL_TRANSAKSI,transaction)
-                    startActivity(intent)
+                    val intent = Intent(activity, DetailTransactionActivity::class.java)
+                    intent.putExtra(DETAIL_TRANSAKSI, transaction)
+                    startActivityForResult(intent, UPDATE_INVOICE_CODE)
                 },
                 { transaction, view ->
                     with(transaction) {
                         view.tv_katering.text = transaction.namaKatering
                         view.tv_status.text = transaction.status
-                        view.tv_date.text = "${changeDateFormat(transaction.tglMulai,"yyyy-MM-dd","d MMM yyyy")} - ${changeDateFormat(transaction.tglSelsai,"yyyy-MM-dd","d MMM yyyy")}"
+                        view.tv_date.text = "${changeDateFormat(transaction.tglMulai, "yyyy-MM-dd", "d MMM yyyy")} - ${changeDateFormat(transaction.tglSelsai, "yyyy-MM-dd", "d MMM yyyy")}"
                         view.tv_total.text = transaction.total.toString().convertToIDR()
                     }
                 })
@@ -48,9 +53,13 @@ class HistoryTransactionFragment : BaseFragment<HistoryTransactionPresenter>(), 
         sharedPreferenceUtil = SharedPreferenceUtil(activity)
         presenter?.getListTransactionPelanggan(getProfilePelanggan(sharedPreferenceUtil).idPelanggan)
 
-        with(rv_transaction){
-            adapter=transactionAdapter
-            layoutManager=LinearLayoutManager(activity)
+        with(rv_transaction) {
+            adapter = transactionAdapter
+            layoutManager = LinearLayoutManager(activity)
+        }
+
+        swipe_layout.setOnRefreshListener {
+            presenter?.getListTransactionPelanggan(getProfilePelanggan(sharedPreferenceUtil).idPelanggan)
         }
     }
 
@@ -64,16 +73,23 @@ class HistoryTransactionFragment : BaseFragment<HistoryTransactionPresenter>(), 
 
     override fun onGetListTransactionPelanggan(error: Boolean, listTransaction: MutableList<GetTransactionModel>?, t: Throwable?) {
         setLoading(false)
-        if(!error){
+        if (!error) {
             listHistoryTransaction.clear()
             listTransaction?.let {
                 listHistoryTransaction.addAll(it)
             }
             transactionAdapter.notifyDataSetChanged()
-        }else{
+        } else {
             t?.let {
                 activity?.showShortToast(it.localizedMessage)
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UPDATE_INVOICE_CODE && resultCode == RESULT_OK) {
+            presenter?.getListTransactionPelanggan(getProfilePelanggan(sharedPreferenceUtil).idPelanggan)
         }
     }
 

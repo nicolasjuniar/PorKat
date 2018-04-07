@@ -5,34 +5,49 @@
     android:layout_height="match_parent"
     android:background="@color/White">
 
+    <ProgressBar
+        android:id="@+id/pb_loading"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#fff"
+        android:indeterminate="true"
+        android:indeterminateTint="@color/colorPrimary"
+        android:indeterminateTintMode="src_in"
+        android:max="100"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"/>
+
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dimen_28dp"
         android:fontFamily="@font/lato_bold"
-        android:text="@string/add_photo_detail"
+        style="@style/margin_left_right_20dp"
+        android:textAlignment="center"
+        android:text="@string/invoice_detail"
         android:textColor="@color/title_color"
         android:textSize="@dimen/font_20sp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/pb_loading" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/layout_photo"
         android:layout_width="@dimen/dimen_505px"
         android:layout_height="@dimen/dimen_505px"
-        android:layout_marginTop="@dimen/dimen_40dp"
+        android:layout_marginTop="@dimen/dimen_20dp"
         android:background="@color/colorPrimary"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">
 
         <ImageView
-            android:id="@+id/iv_katering"
+            android:id="@+id/iv_invoice"
             android:layout_width="@dimen/dimen_500px"
             android:layout_height="@dimen/dimen_500px"
-            android:src="@drawable/deafult_pp"
+            android:src="@drawable/default_invoice"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -58,6 +73,18 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
     </android.support.constraint.ConstraintLayout>
+
+    <Button
+        android:id="@+id/btn_upload"
+        android:layout_marginTop="@dimen/dimen_60dp"
+        android:layout_width="@dimen/dimen_0dp"
+        style="@style/disabled_rounded_button"
+        android:text="@string/upload_text"
+        app:layout_constraintTop_toBottomOf="@id/layout_photo"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
 </android.support.constraint.ConstraintLayout>

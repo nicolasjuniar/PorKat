@@ -33,7 +33,6 @@ import juniar.porkat.auth.KateringModel
 import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
-import kotlinx.android.synthetic.main.fragment_set_photo.*
 import org.joda.time.DateTime
 import org.joda.time.format.DateTimeFormat
 import java.io.ByteArrayOutputStream
@@ -41,6 +40,7 @@ import java.io.IOException
 import java.math.BigDecimal
 import java.text.DateFormatSymbols
 import java.text.NumberFormat
+import java.text.SimpleDateFormat
 import java.util.*
 import java.util.regex.Pattern
 
@@ -106,6 +106,10 @@ fun Context.buildAlertDialog(title: String, message: String = "", yesButton: Str
     }
 
     return builder.create()
+}
+
+fun getTimeStamp(): String {
+    return SimpleDateFormat("yyyyMMdd_Hmmss", Locale.getDefault()).format(Date())
 }
 
 fun Button.setAvailable(enable: Boolean, context: Context) {
@@ -237,7 +241,7 @@ fun getCapturedPhotoBitmap(path: String): Bitmap {
     return BitmapFactory.decodeFile(path, options)
 }
 
-fun Activity.getStoragePhotoBitmap(uri: Uri?):Bitmap{
+fun Activity.getStoragePhotoBitmap(uri: Uri?): Bitmap {
     val projection = arrayOf(MediaStore.MediaColumns.DATA)
     val cursorLoader = CursorLoader(this, uri, projection,
             null, null, null)

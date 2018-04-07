@@ -134,6 +134,7 @@ class EditMenuActivity : BaseActivity<EditMenuPresenter>(), EditMenuView {
                         setImageBitmap(getStoragePhotoBitmap(data?.data))
                         scaleType = ImageView.ScaleType.CENTER_CROP
                     }
+                    photoName = "IMG_${getTimeStamp()}.jpg"
                     setPhoto = true
                     btn_add.setAvailable(et_menu_name.textToString().isNotEmpty() && et_price.textToString().isNotEmpty() && setPhoto, this@EditMenuActivity)
                 }
@@ -202,8 +203,7 @@ class EditMenuActivity : BaseActivity<EditMenuPresenter>(), EditMenuView {
     }
 
     private fun createImageFile(): File {
-        val timeStamp = SimpleDateFormat("yyyyMMdd_Hmmss", Locale.getDefault()).format(Date())
-        photoName = "IMG_$timeStamp.jpg"
+        photoName = "IMG_${getTimeStamp()}.jpg"
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val image = File.createTempFile(photoName, ".jpg", storageDir)
         imageFilePath = image.absolutePath

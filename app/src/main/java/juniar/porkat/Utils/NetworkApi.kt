@@ -90,5 +90,11 @@ interface NetworkApi {
     fun deleteMenu(@Body request: DeleteMenuRequest): Observable<CommonResponse>
 
     @PUT("menu/update")
-    fun updateMenu(@Body request:UpdateMenuRequest):Observable<CommonResponse>
+    fun updateMenu(@Body request: UpdateMenuRequest): Observable<CommonResponse>
+
+    @FormUrlEncoded
+    @POST("pelanggan/pesan/update")
+    fun updateTransaction(@Field("id_pesan") idPesan: Int,
+                          @Field("nota") nota: String,
+                          @Field("encoded_image") encodedImage: String): Observable<CommonResponse>
 }

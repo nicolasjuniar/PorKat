@@ -114,4 +114,10 @@
     <string name="dialog_delete_menu_message">Apakah anda yakin menghapus menu %s?</string>
     <string name="dialog_update_menu_title">Ubah Menu</string>
     <string name="dialog_update_menu_message">Apakah anda yakin ingin mengubah menu %s?</string>
+    <string name="detail_transaction_text">Detail</string>
+    <string name="invoice_text">Nota</string>
+    <string name="invoice_detail">Tambahkan bukti pembayaran transaksi katering</string>
+    <string name="upload_text">Unggah</string>
+    <string name="dialog_upload_invoice_title">Unggah Nota</string>
+    <string name="dialog_update_invoice_message">Apakah anda yakin nota pembayaran sudah benar?</string>
 </resources>
