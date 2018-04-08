@@ -9,6 +9,7 @@ import juniar.porkat.auth.register.RegisterResponse
 import juniar.porkat.common.CommonResponse
 import juniar.porkat.detailkatering.menu.GetListMenuResponse
 import juniar.porkat.detailkatering.review.*
+import juniar.porkat.homekatering.UpdatePhotoKateringRequest
 import juniar.porkat.homekatering.menu.DeleteMenuRequest
 import juniar.porkat.homekatering.menu.InsertMenuRequest
 import juniar.porkat.homekatering.menu.InsertMenuResponse
@@ -97,4 +98,8 @@ interface NetworkApi {
     fun updateTransaction(@Field("id_pesan") idPesan: Int,
                           @Field("nota") nota: String,
                           @Field("encoded_image") encodedImage: String): Observable<CommonResponse>
+
+
+    @PUT("katering/update/photo")
+    fun updatePhotoKatering(@Body request: UpdatePhotoKateringRequest): Observable<CommonResponse>
 }

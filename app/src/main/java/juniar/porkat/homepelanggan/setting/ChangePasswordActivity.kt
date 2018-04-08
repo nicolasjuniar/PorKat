@@ -11,6 +11,8 @@ import juniar.porkat.auth.KateringModel
 import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
+import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
+import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
 import juniar.porkat.homekatering.setting.ChangePasswordKateringRequest
 import kotlinx.android.synthetic.main.activity_change_password.*
@@ -125,6 +127,13 @@ class ChangePasswordActivity : BaseActivity<SettingPresenter>(), SettingView {
         if (!error) {
             message?.let {
                 showShortToast(it)
+            }
+            if (intent.getStringExtra(ROLE) == PELANGGAN) {
+                pelanggan.katasandi = et_new_password.textToString()
+                sharedPreferenceUtil.setString(PROFILE_PELANGGAN,pelanggan.encodeJson())
+            } else {
+                katering.katasandi=et_new_password.textToString()
+                sharedPreferenceUtil.setString(PROFILE_KATERING,katering.encodeJson())
             }
             finish()
         } else {

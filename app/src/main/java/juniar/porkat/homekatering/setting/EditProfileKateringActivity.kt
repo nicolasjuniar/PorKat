@@ -26,6 +26,7 @@ class EditProfileKateringActivity : BaseActivity<SettingPresenter>(), SettingVie
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     var longitude = 0.0
     var latitude = 0.0
+    lateinit var katering: KateringModel
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_edit_profile_katering)
@@ -34,7 +35,7 @@ class EditProfileKateringActivity : BaseActivity<SettingPresenter>(), SettingVie
 
     override fun onViewReady() {
         sharedPreferenceUtil = SharedPreferenceUtil(this@EditProfileKateringActivity)
-        val katering = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_KATERING), KateringModel::class.java)
+        katering = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_KATERING), KateringModel::class.java)
         presenter = SettingPresenter(this)
         presenter?.setEditProfileValidation(Observable.combineLatest(
                 RxTextView.textChanges(et_fullname)
@@ -106,6 +107,11 @@ class EditProfileKateringActivity : BaseActivity<SettingPresenter>(), SettingVie
             message?.let {
                 showShortToast(it)
             }
+            katering.namaKatering=et_fullname.textToString()
+            katering.noTelp=et_phone.textToString()
+            katering.alamat=et_address.textToString()
+            sharedPreferenceUtil.setString(PROFILE_KATERING,katering.encodeJson())
+            setResult(Activity.RESULT_OK)
             finish()
         } else {
             t?.let {

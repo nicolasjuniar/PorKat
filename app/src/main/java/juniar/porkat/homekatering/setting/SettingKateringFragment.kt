@@ -9,6 +9,7 @@ import juniar.porkat.R
 import juniar.porkat.common.BaseFragment
 import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
+import juniar.porkat.homekatering.HomeKateringActivity.Companion.EDIT_KATERING
 import juniar.porkat.homepelanggan.setting.ChangePasswordActivity
 import kotlinx.android.synthetic.main.fragment_setting.*
 
@@ -19,7 +20,7 @@ class SettingKateringFragment : BaseFragment<Any>() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         menu_edit_profile.setOnClickListener {
-            startActivity(Intent(activity, EditProfileKateringActivity::class.java))
+            activity.startActivityForResult(Intent(activity, EditProfileKateringActivity::class.java),EDIT_KATERING)
         }
         menu_change_password.setOnClickListener {
             val intent = Intent(activity, ChangePasswordActivity::class.java)

@@ -1,5 +1,6 @@
 package juniar.porkat.homekatering
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Handler
 import android.support.design.widget.NavigationView
@@ -9,6 +10,9 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
+import juniar.porkat.PorkatApp
 import juniar.porkat.R
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.Utils.buildAlertDialog
@@ -23,7 +27,7 @@ import juniar.porkat.homekatering.setting.SettingKateringFragment
 import juniar.porkat.homescreen.HomeActivity
 import kotlinx.android.synthetic.main.activity_home_katering.*
 import kotlinx.android.synthetic.main.app_bar_home_katering.*
-import kotlinx.android.synthetic.main.nav_header_home.view.*
+import kotlinx.android.synthetic.main.nav_header_home_katering.view.*
 
 class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationItemSelectedListener {
 
@@ -31,6 +35,10 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     var exit = false
     lateinit var katering: KateringModel
+
+    companion object {
+        const val EDIT_KATERING=1
+    }
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_home_katering)
@@ -44,16 +52,25 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
         toggle.syncState()
         sharedPreferenceUtil = SharedPreferenceUtil(this@HomeKateringActivity)
         fragmentManager = supportFragmentManager
-        katering = getProfileKatering(sharedPreferenceUtil)
         nav_view.menu.getItem(0).isChecked = true
         loadPreferences()
         nav_view.setNavigationItemSelectedListener(this)
     }
 
     fun loadPreferences() {
+        katering= getProfileKatering(sharedPreferenceUtil)
         val navView = nav_view.getHeaderView(0)
         navView.tv_fullname.setText(katering.namaKatering)
         navView.tv_role.setText(KATERING)
+        Picasso.with(this@HomeKateringActivity)
+                .load("${PorkatApp.BASE_URL}/foto/katering/${katering.foto}")
+                .centerCrop()
+                .memoryPolicy(MemoryPolicy.NO_CACHE)
+                .resize(200, 200)
+                .into(navView.iv_photo_katering)
+        navView.iv_photo_katering.setOnClickListener {
+            startActivityForResult(Intent(this@HomeKateringActivity,EditPhotoKateringActivity::class.java), EDIT_KATERING)
+        }
     }
 
     override fun onBackPressed() {
@@ -67,6 +84,13 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
                 exit = true
                 Handler().postDelayed({ exit = false }, (3 * 1000).toLong())
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode== EDIT_KATERING && resultCode== Activity.RESULT_OK){
+            loadPreferences()
         }
     }
 

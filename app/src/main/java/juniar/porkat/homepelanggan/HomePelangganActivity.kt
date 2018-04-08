@@ -26,7 +26,7 @@ import juniar.porkat.homepelanggan.transaction.HistoryTransactionFragment
 import juniar.porkat.homescreen.HomeActivity
 import kotlinx.android.synthetic.main.activity_home_pelanggan.*
 import kotlinx.android.synthetic.main.app_bar_home_pelanggan.*
-import kotlinx.android.synthetic.main.nav_header_home.view.*
+import kotlinx.android.synthetic.main.nav_header_home_pelanggan.view.*
 
 /**
  * Created by Nicolas Juniar on 12/02/2018.
