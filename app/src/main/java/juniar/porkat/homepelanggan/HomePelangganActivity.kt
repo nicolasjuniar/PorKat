@@ -1,5 +1,6 @@
 package juniar.porkat.homepelanggan
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Handler
 import android.support.design.widget.NavigationView
@@ -9,7 +10,6 @@ import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.widget.Toolbar
 import android.view.MenuItem
-import com.google.gson.Gson
 import juniar.porkat.R
 import juniar.porkat.Utils.SharedPreferenceUtil
 import juniar.porkat.Utils.buildAlertDialog
@@ -18,7 +18,6 @@ import juniar.porkat.Utils.showShortToast
 import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
-import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.SESSION
 import juniar.porkat.homepelanggan.home.HomePelangganFragment
 import juniar.porkat.homepelanggan.setting.SettingPelangganFragment
@@ -37,6 +36,10 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
     var exit = false
     lateinit var pelanggan: PelangganModel
 
+    companion object {
+        const val EDIT_PELANGGAN=1
+    }
+
     override fun onSetupLayout() {
         setContentView(R.layout.activity_home_pelanggan)
         setupToolbarTitle(toolbar_layout as Toolbar, R.string.home_text)
@@ -50,13 +53,13 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
         toggle.syncState()
         fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.container_body, HomePelangganFragment()).commit()
-        pelanggan = getProfilePelanggan(sharedPreferenceUtil)
         nav_view.menu.getItem(0).isChecked = true
         loadPreferences()
         nav_view.setNavigationItemSelectedListener(this)
     }
 
     fun loadPreferences() {
+        pelanggan = getProfilePelanggan(sharedPreferenceUtil)
         val navView = nav_view.getHeaderView(0)
         navView.tv_fullname.setText(pelanggan.namaLengkap)
         navView.tv_role.setText(PELANGGAN)
@@ -73,6 +76,13 @@ class HomePelangganActivity : BaseActivity<Any>(), NavigationView.OnNavigationIt
                 exit = true
                 Handler().postDelayed({ exit = false }, (3 * 1000).toLong())
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode== EDIT_PELANGGAN && resultCode== Activity.RESULT_OK){
+            loadPreferences()
         }
     }
 

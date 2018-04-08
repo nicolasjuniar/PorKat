@@ -10,12 +10,14 @@ import juniar.porkat.common.CommonResponse
 import juniar.porkat.detailkatering.menu.GetListMenuResponse
 import juniar.porkat.detailkatering.review.*
 import juniar.porkat.homekatering.UpdatePhotoKateringRequest
+import juniar.porkat.homekatering.food.GetListMakananToday
 import juniar.porkat.homekatering.menu.DeleteMenuRequest
 import juniar.porkat.homekatering.menu.InsertMenuRequest
 import juniar.porkat.homekatering.menu.InsertMenuResponse
 import juniar.porkat.homekatering.menu.UpdateMenuRequest
 import juniar.porkat.homekatering.setting.ChangePasswordKateringRequest
 import juniar.porkat.homekatering.setting.EditProfileKateringRequest
+import juniar.porkat.homekatering.transaction.GetKateringTransactionResponse
 import juniar.porkat.homepelanggan.setting.ChangePasswordPelangganRequest
 import juniar.porkat.homepelanggan.setting.ChangePasswordResponse
 import juniar.porkat.homepelanggan.setting.EditProfilePelangganRequest
@@ -102,4 +104,10 @@ interface NetworkApi {
 
     @PUT("katering/update/photo")
     fun updatePhotoKatering(@Body request: UpdatePhotoKateringRequest): Observable<CommonResponse>
+
+    @GET("transaksi/makanan/list")
+    fun getListMakananToday(@Query("id_katering") idKatering: Int): Observable<GetListMakananToday>
+
+    @GET("katering/pesan/list")
+    fun getListTransactionKatering(@Query("id_katering") idKatering: Int): Observable<GetKateringTransactionResponse>
 }

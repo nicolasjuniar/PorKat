@@ -22,6 +22,7 @@ import juniar.porkat.auth.KateringModel
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant
 import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
+import juniar.porkat.homekatering.food.FoodByDateFragment
 import juniar.porkat.homekatering.menu.MenuKateringFragment
 import juniar.porkat.homekatering.setting.SettingKateringFragment
 import juniar.porkat.homescreen.HomeActivity
@@ -98,9 +99,11 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
         var fragment: Fragment? = null
         when (item.itemId) {
             R.id.nav_send_food -> {
+
             }
             R.id.nav_food -> {
-
+                changeTitleToolbar(R.string.food_text)
+                fragment=FoodByDateFragment()
             }
             R.id.nav_transaction -> {
 

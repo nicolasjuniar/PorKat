@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.activity_edit_profile_pelanggan.*
 class EditProfilePelangganActivity : BaseActivity<SettingPresenter>(), SettingView {
 
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
+    lateinit var pelanggan: PelangganModel
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_edit_profile_pelanggan)
@@ -34,7 +35,7 @@ class EditProfilePelangganActivity : BaseActivity<SettingPresenter>(), SettingVi
     override fun onViewReady() {
         sharedPreferenceUtil = SharedPreferenceUtil(this@EditProfilePelangganActivity)
         presenter = SettingPresenter(this)
-        val pelanggan = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN), PelangganModel::class.java)
+        pelanggan = Gson().fromJson(sharedPreferenceUtil.getString(PROFILE_PELANGGAN), PelangganModel::class.java)
         presenter?.setEditProfileValidation(Observable.combineLatest(
                 RxTextView.textChanges(et_fullname)
                         .map { alphabetOnly(it.toString()) },
@@ -94,6 +95,11 @@ class EditProfilePelangganActivity : BaseActivity<SettingPresenter>(), SettingVi
             message?.let {
                 showShortToast(it)
             }
+            pelanggan.namaLengkap = et_fullname.textToString()
+            pelanggan.noTelp = et_phone.textToString()
+            pelanggan.alamat = et_address.textToString()
+            sharedPreferenceUtil.setString(PROFILE_PELANGGAN,pelanggan.encodeJson())
+            setResult(Activity.RESULT_OK)
             finish()
         } else {
             t?.let {

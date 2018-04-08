@@ -121,4 +121,5 @@
     <string name="dialog_upload_invoice_title">Unggah Nota</string>
     <string name="dialog_update_invoice_message">Apakah anda yakin nota pembayaran sudah benar?</string>
     <string name="edit_photo_katering_text">Ubah Foto Katering</string>
+    <string name="amount_menu_text">Jumlah : %s</string>
 </resources>

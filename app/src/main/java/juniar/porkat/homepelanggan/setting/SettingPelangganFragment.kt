@@ -9,6 +9,7 @@ import juniar.porkat.R
 import juniar.porkat.common.BaseFragment
 import juniar.porkat.common.Constant.CommonStrings.Companion.PELANGGAN
 import juniar.porkat.common.Constant.CommonStrings.Companion.ROLE
+import juniar.porkat.homepelanggan.HomePelangganActivity.Companion.EDIT_PELANGGAN
 import kotlinx.android.synthetic.main.fragment_setting.*
 
 /**
@@ -21,7 +22,7 @@ class SettingPelangganFragment : BaseFragment<Any>() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         menu_edit_profile.setOnClickListener {
-            startActivity(Intent(activity, EditProfilePelangganActivity::class.java))
+            activity.startActivityForResult(Intent(activity, EditProfilePelangganActivity::class.java),EDIT_PELANGGAN)
         }
         menu_change_password.setOnClickListener {
             val intent=Intent(activity,ChangePasswordActivity::class.java)
