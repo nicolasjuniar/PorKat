@@ -25,6 +25,7 @@ import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
 import juniar.porkat.homekatering.food.FoodByDateFragment
 import juniar.porkat.homekatering.menu.MenuKateringFragment
 import juniar.porkat.homekatering.setting.SettingKateringFragment
+import juniar.porkat.homekatering.transaction.KateringTransactionFragment
 import juniar.porkat.homescreen.HomeActivity
 import kotlinx.android.synthetic.main.activity_home_katering.*
 import kotlinx.android.synthetic.main.app_bar_home_katering.*
@@ -106,7 +107,8 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
                 fragment=FoodByDateFragment()
             }
             R.id.nav_transaction -> {
-
+                changeTitleToolbar(R.string.transaction_text)
+                fragment=KateringTransactionFragment()
             }
             R.id.nav_menu -> {
                 changeTitleToolbar(getString(R.string.manage_menu))

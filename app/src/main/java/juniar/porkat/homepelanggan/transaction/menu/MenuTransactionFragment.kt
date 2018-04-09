@@ -22,7 +22,10 @@ import kotlinx.android.synthetic.main.viewholder_menu_transaction.view.*
 class MenuTransactionFragment : BaseFragment<MenuTransactionPresenter>(), MenuTransactionView {
 
     var listMenuTransaction = mutableListOf<MenuTransactionModel>()
-    lateinit var transactionModel: GetTransactionModel
+
+    companion object {
+        const val ID_PESAN="id_pesan"
+    }
 
     private val menuTransactionAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_menu_transaction, listMenuTransaction,
@@ -42,9 +45,9 @@ class MenuTransactionFragment : BaseFragment<MenuTransactionPresenter>(), MenuTr
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        transactionModel = arguments.getParcelable(Constant.CommonStrings.DETAIL_TRANSAKSI) as GetTransactionModel
+        val idPesan = arguments.getInt(ID_PESAN)
         presenter = MenuTransactionPresenter(this)
-        presenter?.getListMenuTransaction(transactionModel.idPesan)
+        presenter?.getListMenuTransaction(idPesan)
 
         with(rv_menu) {
             adapter = menuTransactionAdapter
@@ -52,7 +55,7 @@ class MenuTransactionFragment : BaseFragment<MenuTransactionPresenter>(), MenuTr
         }
 
         swipe_layout.setOnRefreshListener {
-            presenter?.getListMenuTransaction(transactionModel.idPesan)
+            presenter?.getListMenuTransaction(idPesan)
         }
     }
 

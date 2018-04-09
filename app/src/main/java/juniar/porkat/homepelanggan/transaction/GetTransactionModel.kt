@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName
 data class GetTransactionModel(@SerializedName("id_pesan") val idPesan:Int,
                                @SerializedName("nama_katering") val namaKatering:String,
                                @SerializedName("tgl_mulai") val tglMulai:String,
-                               @SerializedName("tgl_selesai") val tglSelsai:String,
+                               @SerializedName("tgl_selesai") val tglSelesai:String,
                                @SerializedName("alamat") val alamat:String,
                                @SerializedName("catatan") val catatan:String,
                                @SerializedName("nota") val nota:String,
@@ -25,14 +25,13 @@ data class GetTransactionModel(@SerializedName("id_pesan") val idPesan:Int,
             parcel.readString(),
             parcel.readString(),
             parcel.readInt(),
-            parcel.readString()) {
-    }
+            parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeInt(idPesan)
         parcel.writeString(namaKatering)
         parcel.writeString(tglMulai)
-        parcel.writeString(tglSelsai)
+        parcel.writeString(tglSelesai)
         parcel.writeString(alamat)
         parcel.writeString(catatan)
         parcel.writeString(nota)

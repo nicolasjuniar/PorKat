@@ -30,7 +30,7 @@ class HistoryTransactionFragment : BaseFragment<HistoryTransactionPresenter>(), 
     private val transactionAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_history_transaction, listHistoryTransaction,
                 { transaction, _, _ ->
-                    val intent = Intent(activity, DetailTransactionActivity::class.java)
+                    val intent = Intent(activity, DetailTransactionPelangganActivity::class.java)
                     intent.putExtra(DETAIL_TRANSAKSI, transaction)
                     startActivityForResult(intent, UPDATE_INVOICE_CODE)
                 },
@@ -38,7 +38,7 @@ class HistoryTransactionFragment : BaseFragment<HistoryTransactionPresenter>(), 
                     with(transaction) {
                         view.tv_katering.text = transaction.namaKatering
                         view.tv_status.text = transaction.status
-                        view.tv_date.text = "${changeDateFormat(transaction.tglMulai, "yyyy-MM-dd", "d MMM yyyy")} - ${changeDateFormat(transaction.tglSelsai, "yyyy-MM-dd", "d MMM yyyy")}"
+                        view.tv_date.text = "${changeDateFormat(transaction.tglMulai, "yyyy-MM-dd", "d MMM yyyy")} - ${changeDateFormat(transaction.tglSelesai, "yyyy-MM-dd", "d MMM yyyy")}"
                         view.tv_total.text = transaction.total.toString().convertToIDR()
                     }
                 })
@@ -68,6 +68,7 @@ class HistoryTransactionFragment : BaseFragment<HistoryTransactionPresenter>(), 
             progressbar.show()
         } else {
             progressbar.hide()
+            swipe_layout.isRefreshing=false
         }
     }
 
