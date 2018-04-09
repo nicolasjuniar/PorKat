@@ -48,7 +48,7 @@
     <string name="new_password_text">Katasandi baru</string>
     <string name="old_password_invalid">Katasandi lama salah</string>
     <string name="get_location_text">Lokasi didapatkan</string>
-    <string name="name_example">Katering Yogyakarta</string>
+    <string name="katering_example">Katering Yogyakarta</string>
     <string name="contact_example">087123456789</string>
     <string name="rating_example">4.4</string>
     <string name="deskripsi_text">Deskripsi</string>
@@ -57,6 +57,7 @@
     <string name="menu_example">Nasi Goreng Spesial</string>
     <string name="price_example">Rp 12.000,00</string>
     <string name="date_example">19 Februari 2017</string>
+    <string name="address_example">Jl. Jogja no 18</string>
     <string name="time_example">18:09</string>
     <string name="review_example">Makanan enak \nTemoat nyaman \ndsb</string>
     <string name="add_review">Tambahkan Ulasan</string>
@@ -122,4 +123,5 @@
     <string name="dialog_update_invoice_message">Apakah anda yakin nota pembayaran sudah benar?</string>
     <string name="edit_photo_katering_text">Ubah Foto Katering</string>
     <string name="amount_menu_text">Jumlah : %s</string>
+    <string name="send_time_example">58 Menit</string>
 </resources>

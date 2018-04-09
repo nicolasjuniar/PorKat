@@ -8,8 +8,8 @@ import net.danlew.android.joda.JodaTimeAndroid
  */
 class PorkatApp : Application() {
     companion object {
-//        const val BASE_URL = "http://192.168.43.168/porkat_web/"
-        const val BASE_URL = "http://192.168.1.15/porkat_web/" //Binar Punya
+        const val BASE_URL = "http://192.168.43.168/porkat_web/"
+//        const val BASE_URL = "http://192.168.1.15/porkat_web/" //Binar Punya
 //        const val BASE_URL = "http://192.168.23.225/porkat_web/" //Inet Sinergi
 //        const val BASE_URL = "http://192.168.100.15/porkat_web/" //Irfan Kontrakan
     }

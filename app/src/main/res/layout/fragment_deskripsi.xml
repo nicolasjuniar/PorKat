@@ -29,7 +29,7 @@
             android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/dimen_0dp"
-            android:text="@string/name_example"
+            android:text="@string/katering_example"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@id/ic_address"
             app:layout_constraintTop_toBottomOf="@id/address" />

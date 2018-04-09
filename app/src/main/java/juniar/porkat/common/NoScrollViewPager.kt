@@ -1,4 +1,4 @@
-package juniar.porkat.View
+package juniar.porkat.common
 
 import android.content.Context
 import android.support.v4.view.ViewPager

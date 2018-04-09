@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/dimen_4dp"
             android:fontFamily="@font/roboto_regular"
-            android:text="@string/name_example"
+            android:text="@string/katering_example"
             android:textColor="@color/title_color"
             android:textSize="@dimen/font_16sp"
             app:layout_constraintLeft_toLeftOf="parent"

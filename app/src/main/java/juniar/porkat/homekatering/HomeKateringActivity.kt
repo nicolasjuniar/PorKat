@@ -24,6 +24,7 @@ import juniar.porkat.common.Constant
 import juniar.porkat.common.Constant.CommonStrings.Companion.KATERING
 import juniar.porkat.homekatering.food.FoodByDateFragment
 import juniar.porkat.homekatering.menu.MenuKateringFragment
+import juniar.porkat.homekatering.sendfood.SendFoodFragment
 import juniar.porkat.homekatering.setting.SettingKateringFragment
 import juniar.porkat.homekatering.transaction.KateringTransactionFragment
 import juniar.porkat.homescreen.HomeActivity
@@ -55,6 +56,9 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
         sharedPreferenceUtil = SharedPreferenceUtil(this@HomeKateringActivity)
         fragmentManager = supportFragmentManager
         nav_view.menu.getItem(0).isChecked = true
+        fragmentManager.beginTransaction()
+                .replace(R.id.container_body,SendFoodFragment())
+                .commit()
         loadPreferences()
         nav_view.setNavigationItemSelectedListener(this)
     }
@@ -100,7 +104,8 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
         var fragment: Fragment? = null
         when (item.itemId) {
             R.id.nav_send_food -> {
-
+                changeTitleToolbar(R.string.send_food_text)
+                fragment=SendFoodFragment()
             }
             R.id.nav_food -> {
                 changeTitleToolbar(R.string.food_text)
