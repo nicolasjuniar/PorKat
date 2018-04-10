@@ -55,12 +55,14 @@
         <TextView
             android:id="@+id/tv_address"
             style="@style/hint_text"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/dimen_0dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/dimen_4dp"
             android:text="@string/address_example"
             app:layout_constraintBottom_toBottomOf="@id/ic_map"
             app:layout_constraintLeft_toRightOf="@id/ic_map"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_marginRight="@dimen/dimen_4dp"
             app:layout_constraintTop_toTopOf="@id/ic_map" />
 
         <de.hdodenhof.circleimageview.CircleImageView
@@ -71,7 +73,7 @@
             android:layout_marginTop="@dimen/dimen_8dp"
             android:src="@color/Red"
             app:layout_constraintLeft_toRightOf="@id/iv_menu"
-            app:layout_constraintTop_toBottomOf="@id/ic_map" />
+            app:layout_constraintTop_toBottomOf="@id/tv_address" />
 
         <TextView
             android:id="@+id/tv_time"

@@ -1,5 +1,6 @@
 package juniar.porkat.homekatering.sendfood
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
@@ -24,13 +25,32 @@ class SendFoodFragment : BaseFragment<SendFoodPresenter>(), SendFoodView {
     private val sendFoodAdapter by lazy {
         GeneralRecyclerViewAdapter(R.layout.viewholder_send_food, listSendFood,
                 { _, _, _ ->
-
                 },
                 { sendFood, view ->
                     with(sendFood) {
                         view.tv_name.text = sendFood.namaMenu
                         view.tv_address.text = sendFood.alamat
                         view.tv_time.text = changeDateFormat(sendFood.waktuPengantaran, "yyyy-MM-dd HH:mm:ss", "HH:mm")
+                        val difference= getDifferenceTime(changeDateFormat(sendFood.waktuPengantaran, "yyyy-MM-dd HH:mm:ss", "HH:mm"))
+                        when
+                        {
+                            difference>=3 -> {
+                                view.tv_time.text=getString(R.string.difference_time_text,difference.toString())
+                                view.ic_indicator.setImageResource(R.color.Green)
+                            }
+                            difference>=1 -> {
+                                view.tv_time.text=getString(R.string.difference_time_text,difference.toString())
+                                view.ic_indicator.setImageResource(R.color.Yellow)
+                            }
+                            difference>0 ->{
+                                view.tv_time.text=getString(R.string.less_than_one_hour)
+                                view.ic_indicator.setImageResource(R.color.Red)
+                            }
+                            else->{
+                                view.tv_time.text=getString(R.string.late_text)
+                                view.ic_indicator.setImageResource(R.color.Red)
+                            }
+                        }
                         Picasso.with(activity).load("${juniar.porkat.PorkatApp.BASE_URL}/foto/menu/${this.foto}").centerCrop().resize(200, 200).into(view.iv_menu)
                     }
                 })

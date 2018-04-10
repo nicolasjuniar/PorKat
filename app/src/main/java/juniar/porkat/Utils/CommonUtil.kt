@@ -34,6 +34,7 @@ import juniar.porkat.auth.PelangganModel
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_PELANGGAN
 import org.joda.time.DateTime
+import org.joda.time.Duration
 import org.joda.time.format.DateTimeFormat
 import java.io.ByteArrayOutputStream
 import java.io.IOException
@@ -270,6 +271,20 @@ fun Activity.getStoragePhotoBitmap(uri: Uri?): Bitmap {
     } else {
         bitmap
     }
+}
+
+fun getTimeNow(): String {
+    val pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+    val dateTime = DateTime.parse(DateTime().toString(), DateTimeFormat.forPattern(pattern))
+    return dateTime.toString("HH:mm")
+}
+
+fun getDifferenceTime(timeSend: String): Long {
+    val pattern = "HH:mm"
+    val format = DateTimeFormat.forPattern(pattern)
+    val dtNow = format.parseDateTime(getTimeNow())
+    val dtSend = format.parseDateTime(timeSend)
+    return Duration(dtNow.millis, dtSend.millis).standardHours
 }
 
 val sdkVersion = Build.VERSION.SDK_INT

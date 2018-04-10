@@ -124,4 +124,7 @@
     <string name="edit_photo_katering_text">Ubah Foto Katering</string>
     <string name="amount_menu_text">Jumlah : %s</string>
     <string name="send_time_example">58 Menit</string>
+    <string name="difference_time_text">%s jam</string>
+    <string name="less_than_one_hour">Kurang dari 1 jam</string>
+    <string name="late_text">Terlambat</string>
 </resources>
