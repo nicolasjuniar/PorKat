@@ -66,8 +66,8 @@ class HomeKateringActivity : BaseActivity<Any>(), NavigationView.OnNavigationIte
     fun loadPreferences() {
         katering= getProfileKatering(sharedPreferenceUtil)
         val navView = nav_view.getHeaderView(0)
-        navView.tv_fullname.setText(katering.namaKatering)
-        navView.tv_role.setText(KATERING)
+        navView.tv_fullname.text = katering.namaKatering
+        navView.tv_role.text = KATERING
         Picasso.with(this@HomeKateringActivity)
                 .load("${PorkatApp.BASE_URL}/foto/katering/${katering.foto}")
                 .centerCrop()

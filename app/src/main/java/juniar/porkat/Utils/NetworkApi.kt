@@ -15,6 +15,7 @@ import juniar.porkat.homekatering.menu.DeleteMenuRequest
 import juniar.porkat.homekatering.menu.InsertMenuRequest
 import juniar.porkat.homekatering.menu.InsertMenuResponse
 import juniar.porkat.homekatering.menu.UpdateMenuRequest
+import juniar.porkat.homekatering.sendfood.DirectionResponse
 import juniar.porkat.homekatering.sendfood.GetListSendFoodResponse
 import juniar.porkat.homekatering.setting.ChangePasswordKateringRequest
 import juniar.porkat.homekatering.setting.EditProfileKateringRequest
@@ -114,4 +115,14 @@ interface NetworkApi {
 
     @GET("transaksi/pengantaran/list")
     fun getListSendFood(@Query("id_katering") idKatering: Int):Observable<GetListSendFoodResponse>
+
+    @GET("api/directions/json?")
+    fun getDirection(@Query("units") units:String="metric",
+                     @Query("origin") origin:String,
+                     @Query("destination") destination:String,
+                     @Query("mode") mode:String="driving"):Observable<DirectionResponse>
+
+    @FormUrlEncoded
+    @POST("katering/sendfood/done")
+    fun doneSendFood(@Field("id_detailpesan") idDetailPesan:Int):Observable<CommonResponse>
 }

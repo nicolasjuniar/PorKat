@@ -12,6 +12,7 @@
     <color name="edittext_color">#333333</color>
     <color name="underline_color">#26000000</color>
     <color name="hint_color">#8A000000</color>
+    <color name="polyline_color">#ADD8E6</color>
 
     <color name="White">#FFFFFF</color>
     <color name="Ivory">#FFFFF0</color>

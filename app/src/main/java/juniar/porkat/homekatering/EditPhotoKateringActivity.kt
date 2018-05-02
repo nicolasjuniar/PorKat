@@ -21,27 +21,27 @@ import juniar.porkat.auth.register.SetKateringPhotoFragment
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.Constant
 import juniar.porkat.common.Constant.CommonStrings.Companion.PROFILE_KATERING
-import kotlinx.android.synthetic.main.activity_edit_photo_katering.*
 import java.io.File
 import java.io.IOException
+import kotlinx.android.synthetic.main.activity_edit_photo_katering.*
 
-class EditPhotoKateringActivity:BaseActivity<EditKateringPresenter>(),EditPhotoKateringView{
+class EditPhotoKateringActivity : BaseActivity<EditKateringPresenter>(), EditPhotoKateringView {
 
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     private var imageFilePath = ""
     private var photoName = ""
-    lateinit var katering:KateringModel
+    lateinit var katering: KateringModel
 
     override fun onSetupLayout() {
         setContentView(R.layout.activity_edit_photo_katering)
-        setupToolbarTitle(toolbar_layout as Toolbar,getString(R.string.edit_photo_katering_text))
+        setupToolbarTitle(toolbar_layout as Toolbar, getString(R.string.edit_photo_katering_text))
     }
 
     override fun onViewReady() {
-        sharedPreferenceUtil= SharedPreferenceUtil(this@EditPhotoKateringActivity)
-        presenter=EditKateringPresenter(this)
-        katering= getProfileKatering(sharedPreferenceUtil)
-        if(katering.foto.isNotEmpty()){
+        sharedPreferenceUtil = SharedPreferenceUtil(this@EditPhotoKateringActivity)
+        presenter = EditKateringPresenter(this)
+        katering = getProfileKatering(sharedPreferenceUtil)
+        if (katering.foto.isNotEmpty()) {
             Picasso.with(this@EditPhotoKateringActivity)
                     .load("${PorkatApp.BASE_URL}/foto/katering/${katering.foto}")
                     .centerCrop()
@@ -49,7 +49,7 @@ class EditPhotoKateringActivity:BaseActivity<EditKateringPresenter>(),EditPhotoK
                     .resize(500, 500)
                     .into(iv_photo_katering)
 
-            btn_upload.setAvailable(true,this@EditPhotoKateringActivity)
+            btn_upload.setAvailable(true, this@EditPhotoKateringActivity)
         }
 
         iv_take_photo.setOnClickListener {
@@ -57,31 +57,31 @@ class EditPhotoKateringActivity:BaseActivity<EditKateringPresenter>(),EditPhotoK
         }
 
         btn_upload.setOnClickListener {
-            photoName=if(katering.foto.isNotEmpty()) katering.foto else photoName
+            photoName = if (katering.foto.isNotEmpty()) katering.foto else photoName
             setLoading(true)
-            presenter?.updatePhotoKatering(UpdatePhotoKateringRequest(katering.idKatering,photoName,iv_photo_katering.encodeBase64()))
+            presenter?.updatePhotoKatering(UpdatePhotoKateringRequest(katering.idKatering, photoName, iv_photo_katering.encodeBase64()))
         }
     }
 
     override fun setLoading(loading: Boolean) {
-        if(loading){
+        if (loading) {
             pb_loading.show()
-        }else{
+        } else {
             pb_loading.hide()
         }
     }
 
     override fun onSuccessUploadPhoto(error: Boolean, message: String?, t: Throwable?) {
         setLoading(false)
-        if(!error){
+        if (!error) {
             message?.let {
                 showShortToast(it)
             }
-            katering.foto=photoName
-            sharedPreferenceUtil.setString(PROFILE_KATERING,katering.encodeJson())
+            katering.foto = photoName
+            sharedPreferenceUtil.setString(PROFILE_KATERING, katering.encodeJson())
             setResult(Activity.RESULT_OK)
             finish()
-        }else{
+        } else {
             t?.let {
                 showShortToast(it.localizedMessage)
             }
@@ -97,7 +97,7 @@ class EditPhotoKateringActivity:BaseActivity<EditKateringPresenter>(),EditPhotoK
                         setImageBitmap(getCapturedPhotoBitmap(imageFilePath))
                         scaleType = ImageView.ScaleType.CENTER_CROP
                     }
-                    btn_upload.setAvailable(true,this@EditPhotoKateringActivity)
+                    btn_upload.setAvailable(true, this@EditPhotoKateringActivity)
                 }
             }
             Constant.CommonInt.READ_EXTERNAL_STORAGE_CODE -> {
@@ -107,7 +107,7 @@ class EditPhotoKateringActivity:BaseActivity<EditKateringPresenter>(),EditPhotoK
                         scaleType = ImageView.ScaleType.CENTER_CROP
                     }
                     photoName = "IMG_${getTimeStamp()}.jpg"
-                    btn_upload.setAvailable(true,this@EditPhotoKateringActivity)
+                    btn_upload.setAvailable(true, this@EditPhotoKateringActivity)
                 }
             }
         }

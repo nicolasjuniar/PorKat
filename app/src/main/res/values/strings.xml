@@ -127,4 +127,11 @@
     <string name="difference_time_text">%s jam</string>
     <string name="less_than_one_hour">Kurang dari 1 jam</string>
     <string name="late_text">Terlambat</string>
+    <string name="dialog_choose_transaction_title">Pilih pesanan</string>
+    <string name="dialog_choice_transaction_detail">Pilih pesanan yang ingin dikirim dengan menekan pesanan</string>
+    <string name="dialog_ok">OK</string>
+    <string name="send_time_text">Waktu Pengantaran</string>
+    <string name="btn_done_text">Selesai</string>
+    <string name="detail_send_food_text">Detail Pengiriman Makanan</string>
+    <string name="done_send_text">sudah diantar</string>
 </resources>
