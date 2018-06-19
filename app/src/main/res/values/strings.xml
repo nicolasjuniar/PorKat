@@ -15,7 +15,7 @@
     <string name="order_day">Lama Pesan</string>
     <string name="one_week">1 Minggu</string>
     <string name="one_month">1 Bulan</string>
-    <string name="trnsaction_number">Banyak Pengiriman(Per Hari)</string>
+    <string name="transaction_number">Banyak Pengiriman(Per Hari)</string>
     <string name="one_times">1 kali</string>
     <string name="two_times">2 kali</string>
     <string name="three_times">3 kali</string>
@@ -33,6 +33,7 @@
     <string name="autentikasi_text">Data Autentikasi</string>
     <string name="private_text">Data Diri</string>
     <string name="next_text">Lanjut</string>
+    <string name="order_text">Pesan</string>
     <string name="username_error_text">Id Pengguna minimal 4 karakter</string>
     <string name="password_error_text">Katasandi minimal 6 karakter</string>
     <string name="error_fullname_invalid">Masukkan nama dengan benar</string>
@@ -58,7 +59,7 @@
     <string name="price_example">Rp 12.000,00</string>
     <string name="date_example">19 Februari 2017</string>
     <string name="address_example">Jl. Jogja no 18</string>
-    <string name="time_example">18:09</string>
+    <string name="time_example">--:--</string>
     <string name="review_example">Makanan enak \nTemoat nyaman \ndsb</string>
     <string name="add_review">Tambahkan Ulasan</string>
     <string name="button_add_text">Tambah</string>
@@ -134,4 +135,8 @@
     <string name="btn_done_text">Selesai</string>
     <string name="detail_send_food_text">Detail Pengiriman Makanan</string>
     <string name="done_send_text">sudah diantar</string>
+    <string name="dialog_done_send_food_title">Konfirmasi Pengiriman</string>
+    <string name="dialog_done_send_food_detail">Apakah makanan ini sudah selesai diantar</string>
+    <string name="edit_review">Ubah Ulasan</string>
+    <string name="button_edit_text">Ubah</string>
 </resources>

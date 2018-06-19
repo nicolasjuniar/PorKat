@@ -134,14 +134,14 @@ fun Context.getAddress(lat: Double, lng: Double): String {
     var address = ""
     try {
         val addresses = geocoder.getFromLocation(lat, lng, 1)
-        address = addresses[0].thoroughfare + " " + addresses[0].subThoroughfare + ", " + addresses[0].subLocality
+        address = addresses[0].getAddressLine(0)
 
     } catch (e: IOException) {
         e.printStackTrace()
         Toast.makeText(this, e.message, Toast.LENGTH_SHORT).show()
     }
 
-    return address
+    return address.substringBefore(",")
 }
 
 fun String.logDebug(TAG: String = "debug") {

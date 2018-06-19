@@ -69,7 +69,7 @@ class PickMenuFragment : BaseFragment<Any>() {
                                 with(pickMenu.menu) {
                                     view.tv_menu.text = this.namaMenu
                                     view.tv_price.text = this.harga.toString().convertToIDR()
-                                    Picasso.with(activity).load("${PorkatApp.BASE_URL}/foto/katering/${this.foto}").centerCrop().resize(200, 200).into(view.iv_menu)
+                                    Picasso.with(activity).load("${PorkatApp.BASE_URL}/foto/menu/${this.foto}").centerCrop().resize(200, 200).into(view.iv_menu)
                                 }
                             } else {
                                 view.cv_picked_menu.hide()

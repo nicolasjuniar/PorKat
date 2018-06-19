@@ -3,10 +3,7 @@ package juniar.porkat.homekatering.sendfood
 import android.app.Activity
 import android.support.v7.widget.Toolbar
 import juniar.porkat.R
-import juniar.porkat.Utils.DONT_TOUCH
-import juniar.porkat.Utils.hide
-import juniar.porkat.Utils.show
-import juniar.porkat.Utils.showShortToast
+import juniar.porkat.Utils.*
 import juniar.porkat.common.BaseActivity
 import kotlinx.android.synthetic.main.activity_detail_send_food.*
 
@@ -27,15 +24,17 @@ class DetailSendFoodActivity : BaseActivity<DetailSendFoodPresenter>(), DetailSe
         val sendFood = intent.extras.get(DETAIL_SEND_FOOD) as SendFoodModel
         tv_fullname.text = sendFood.namaLengkap
         tv_address.text = sendFood.alamat
-        tv_time.text = sendFood.waktuPengantaran
+        tv_time.text = changeDateFormat(sendFood.waktuPengantaran,"yyyy-MM-dd HH:mm:ss","HH:mm")
         tv_menu.text = sendFood.namaMenu
         tv_note.text = sendFood.catatan
         if (sendFood.status == getString(R.string.done_send_text)) {
             btn_done.hide()
         }
         btn_done.setOnClickListener {
-            setLoading(true)
-            presenter?.sendFood(sendFood.idDetailPesan)
+            buildAlertDialog(getString(R.string.dialog_done_send_food_title),getString(R.string.dialog_done_send_food_detail),getString(R.string.yes_dialog),getString(R.string.no_dialog),{
+                setLoading(true)
+                presenter?.sendFood(sendFood.idDetailPesan)
+            }).show()
         }
     }
 

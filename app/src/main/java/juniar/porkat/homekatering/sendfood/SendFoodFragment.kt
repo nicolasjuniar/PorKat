@@ -118,12 +118,6 @@ class SendFoodFragment : BaseFragment<SendFoodPresenter>(), SendFoodView {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == SEND_FOOD || resultCode == Activity.RESULT_OK) {
-            if (requestCode == SEND_FOOD) {
-                activity?.showShortToast("Request Code bener")
-            }
-            if (resultCode == RESULT_OK) {
-                activity?.showShortToast("Result Code bener")
-            }
             presenter?.getListSendFood(kateringModel.idKatering)
         }
     }

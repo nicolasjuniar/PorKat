@@ -13,6 +13,7 @@ import juniar.porkat.Utils.convertToIDR
 import juniar.porkat.Utils.hide
 import juniar.porkat.Utils.show
 import juniar.porkat.Utils.showShortToast
+import juniar.porkat.auth.login.LoginActivity
 import juniar.porkat.common.BaseActivity
 import juniar.porkat.common.GeneralRecyclerViewAdapter
 import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
@@ -46,7 +47,7 @@ class PickMenuActivity : BaseActivity<MenuPresenter>(), MenuView {
                     with(menu) {
                         view.tv_menu.text = this.namaMenu
                         view.tv_price.text = this.harga.toString().convertToIDR()
-                        Picasso.with(this@PickMenuActivity).load("${PorkatApp.BASE_URL}/foto/katering/${this.foto}").centerCrop().resize(200, 200).into(view.iv_menu)
+                        Picasso.with(this@PickMenuActivity).load("${PorkatApp.BASE_URL}/foto/menu/${this.foto}").centerCrop().resize(200, 200).into(view.iv_menu)
                     }
                 })
     }

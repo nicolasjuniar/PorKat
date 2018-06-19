@@ -38,6 +38,7 @@ class ChoosePlaceFragment : BaseFragment<Any>() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         et_address.setOnClickListener {
             val builder = PlacePicker.IntentBuilder()
 

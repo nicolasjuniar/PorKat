@@ -9,6 +9,7 @@ import android.view.Window
 import com.jakewharton.rxbinding2.widget.RxTextView
 import juniar.porkat.R
 import juniar.porkat.Utils.setAvailable
+import juniar.porkat.Utils.showShortToast
 import juniar.porkat.Utils.textToString
 import juniar.porkat.detailkatering.menu.MenuFragment.Companion.ID_KATERING
 import juniar.porkat.detailkatering.review.ReviewFragment.Companion.ADD
@@ -42,12 +43,16 @@ class ReviewDialog : DialogFragment(), ReviewDialogView {
 
         callback = targetFragment as ReviewView
         if (arguments.getString(TYPE) == ADD) {
+            tv_title.text=getString(R.string.add_review)
             idKatering = arguments.getInt(ID_KATERING)
             idPelanggan = arguments.getInt(ID_PELANGGAN)
+            btn_send.text=getString(R.string.button_add_text)
         } else {
+            tv_title.text=getString(R.string.edit_review)
             idUlasan = arguments.getInt(ID_ULASAN)
             rb_review.rating = arguments.getFloat(RATING)
             et_review.setText(arguments.getString(ULASAN))
+            btn_send.text=getString(R.string.button_edit_text)
         }
 
         rb_review.setOnRatingBarChangeListener { ratingBar, rating, _ ->
@@ -74,11 +79,11 @@ class ReviewDialog : DialogFragment(), ReviewDialogView {
 
     override fun onInsertReview(error: Boolean, insertReviewResponse: InsertReviewResponse?, t: Throwable?) {
         callback.onInsertReview(insertReviewResponse!!)
-        dismiss()
+        this.dismiss()
     }
 
     override fun onUpdateReview(error: Boolean, updateReviewResponse: UpdateReviewResponse?, t: Throwable?) {
         callback.onUpdateReview(updateReviewResponse!!)
-        dismiss()
+        this.dismiss()
     }
 }

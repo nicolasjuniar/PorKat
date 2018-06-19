@@ -7,5 +7,5 @@ import com.google.gson.annotations.SerializedName
  */
 data class InsertReviewRequest(@SerializedName("ulasan") val ulasan:String,
                                @SerializedName("rating") val rating:Float,
-                               @SerializedName("idPelanggan") val idPelanggan:Int,
+                               @SerializedName("id_pelanggan") val idPelanggan:Int,
                                @SerializedName("id_katering") val idKatering:Int)

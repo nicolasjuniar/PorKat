@@ -69,9 +69,9 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         idKatering = arguments.getInt(ID_KATERING)
         presenter?.getListMenuKatering(idKatering, idPelanggan)
 
-        swipe_layout.setOnRefreshListener({
+        swipe_layout.setOnRefreshListener {
             presenter?.getListMenuKatering(idKatering, idPelanggan)
-        })
+        }
 
         cv_add_review.setOnClickListener {
             var args = Bundle()

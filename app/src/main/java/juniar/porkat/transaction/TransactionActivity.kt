@@ -32,6 +32,7 @@ class TransactionActivity : BaseActivity<TransactionPresenter>(), ViewPager.OnPa
                 getString(R.string.choose_place)
         )
     }
+
     var listDetailTransaksi = mutableListOf<DetailTransaksiModel>()
     var listPickMenuModel = mutableListOf<PickMenuModel>()
     var transaksiRequest = TransactionRequest(detailPesan = listDetailTransaksi)
@@ -75,6 +76,9 @@ class TransactionActivity : BaseActivity<TransactionPresenter>(), ViewPager.OnPa
                 viewpager.currentItem++
                 btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
                 changeTitleToolbar(listTitle[viewpager.currentItem])
+                if (viewpager.currentItem == CHOOSE_PLACE) {
+                    btn_submit.text = getString(R.string.order_text)
+                }
             } else {
                 doOrderKatering(listPickMenuModel)
             }
@@ -85,6 +89,7 @@ class TransactionActivity : BaseActivity<TransactionPresenter>(), ViewPager.OnPa
         if (viewpager.currentItem != 0) {
             viewpager.currentItem--
             changeTitleToolbar(listTitle[viewpager.currentItem])
+            btn_submit.text = getString(R.string.next_text)
             btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
         } else {
             buildAlertDialog(getString(R.string.dialog_exit_transaction_title), getString(R.string.dalog_exit_transaction_detail), getString(R.string.yes_dialog), getString(R.string.no_dialog), {
@@ -168,7 +173,7 @@ class TransactionActivity : BaseActivity<TransactionPresenter>(), ViewPager.OnPa
     }
 
     override fun onPickPlace(address: String, note: String, longitude: Double, latitude: Double) {
-        listBoolean[viewpager.currentItem] = address.isNotEmpty() && note.isNotEmpty()
+        listBoolean[viewpager.currentItem] = address.isNotEmpty()
         btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
         with(transaksiRequest.transaksiModel) {
             alamat = address

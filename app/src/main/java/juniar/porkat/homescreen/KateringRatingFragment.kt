@@ -68,10 +68,10 @@ class KateringRatingFragment : BaseFragment<KateringPresenter>(), KateringView {
                 response?.let {
                     getKateringList.addAll(it.listKatering)
                 }
-                kateringAdapter.notifyDataSetChanged()
                 adapter = kateringAdapter
                 layoutManager = LinearLayoutManager(activity)
             }
+            kateringAdapter.notifyDataSetChanged()
         } else {
             context.showShortToast(t?.localizedMessage!!)
         }

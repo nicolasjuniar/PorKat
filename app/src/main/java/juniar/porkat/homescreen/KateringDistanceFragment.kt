@@ -60,8 +60,9 @@ class KateringDistanceFragment : BaseFragment<KateringPresenter>(), KateringView
         swipe_layout.isRefreshing = false
         if (!error) {
             with(rv_katering) {
+                getKateringList.clear()
                 response?.let {
-                    getKateringList = it.listKatering
+                    getKateringList.addAll(it.listKatering)
                 }
                 adapter = kateringAdapter
                 layoutManager = LinearLayoutManager(activity)
