@@ -31,7 +31,7 @@ class DetailSendFoodActivity : BaseActivity<DetailSendFoodPresenter>(), DetailSe
             btn_done.hide()
         }
         btn_done.setOnClickListener {
-            buildAlertDialog(getString(R.string.dialog_done_send_food_title),getString(R.string.dialog_done_send_food_detail),getString(R.string.yes_dialog),getString(R.string.no_dialog),{
+            buildAlertDialog(getString(R.string.dialog_done_send_food_title),getString(R.string.dialog_done_send_food_detail),getString(R.string.yes_dialog),getString(R.string.no_dialog),positiveAction = {
                 setLoading(true)
                 presenter?.sendFood(sendFood.idDetailPesan)
             }).show()
