@@ -62,7 +62,8 @@ interface NetworkApi {
                       @Query("id_pelanggan") idPelanggan: Int): Observable<GetReviewResponse>
 
     @DELETE("pelanggan/ulasan/delete/{id_ulasan}")
-    fun deleteUlasan(@Path("id_ulasan") idUlasan: Int): Observable<DeleteReviewResponse>
+    fun deleteUlasan(@Path("id_ulasan") idUlasan: Int,
+                     @Query("id_katering") idKatering:Int): Observable<DeleteReviewResponse>
 
     @POST("pelanggan/ulasan/insert")
     fun insertUlasan(@Body request: InsertReviewRequest): Observable<InsertReviewResponse>

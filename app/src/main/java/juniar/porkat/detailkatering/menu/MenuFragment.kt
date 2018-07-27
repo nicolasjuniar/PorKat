@@ -61,9 +61,9 @@ class MenuFragment : BaseFragment<MenuPresenter>(), MenuView {
             layoutManager = LinearLayoutManager(activity)
         }
 
-        swipe_layout.setOnRefreshListener({
+        swipe_layout.setOnRefreshListener {
             presenter?.getListMenuKatering(arguments.getInt(ID_KATERING))
-        })
+        }
     }
 
     override fun setLoading(loading: Boolean) {

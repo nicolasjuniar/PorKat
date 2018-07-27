@@ -20,22 +20,22 @@ import kotlinx.android.synthetic.main.viewholder_review.view.*
  */
 class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
 
-    var listReview= mutableListOf<ReviewModel>()
+    var listReview = mutableListOf<ReviewModel>()
     lateinit var sharedPreferenceUtil: SharedPreferenceUtil
     lateinit var pelanggan: PelangganModel
-    var review=ReviewModel()
+    var review = ReviewModel()
     var idPelanggan = -1
-    var idKatering=-1
+    var idKatering = -1
 
     companion object {
         val ID_PELANGGAN = "idPelanggan"
-        val ID_ULASAN="id_ulasan"
+        val ID_ULASAN = "id_ulasan"
         val REVIEW = "Review"
-        val EDIT="edit"
-        val ADD="add"
-        val TYPE="type"
-        val RATING="rating"
-        val ULASAN="ulasan"
+        val EDIT = "edit"
+        val ADD = "add"
+        val TYPE = "type"
+        val RATING = "rating"
+        val ULASAN = "ulasan"
     }
 
     private val reviewAdapter by lazy {
@@ -45,7 +45,7 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
                 { review, view ->
                     with(review) {
                         view.tv_name.text = this.namaLengkap
-                        view.tv_date.text = changeDateFormat(this.waktuUlasan,"yyyy-MM-dd HH:mm:ss","d MMMM yyyy")
+                        view.tv_date.text = changeDateFormat(this.waktuUlasan, "yyyy-MM-dd HH:mm:ss", "d MMMM yyyy")
                         view.rb_review.rating = this.rating
                         view.tv_review.text = this.ulasan
                     }
@@ -77,7 +77,7 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
             var args = Bundle()
             args.putInt(ID_KATERING, idKatering)
             args.putInt(ID_PELANGGAN, pelanggan.idPelanggan)
-            args.putString(TYPE,ADD)
+            args.putString(TYPE, ADD)
             val reviewDialog = ReviewDialog()
             reviewDialog.arguments = args
             reviewDialog.setTargetFragment(this@ReviewFragment, 1)
@@ -86,10 +86,10 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
 
         ic_edit.setOnClickListener {
             var args = Bundle()
-            args.putInt(ID_ULASAN,review.idUlasan)
-            args.putFloat(RATING,review.rating)
-            args.putString(ULASAN,review.ulasan)
-            args.putString(TYPE,EDIT)
+            args.putInt(ID_ULASAN, review.idUlasan)
+            args.putFloat(RATING, review.rating)
+            args.putString(ULASAN, review.ulasan)
+            args.putString(TYPE, EDIT)
             val reviewDialog = ReviewDialog()
             reviewDialog.arguments = args
             reviewDialog.setTargetFragment(this@ReviewFragment, 1)
@@ -99,7 +99,7 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
         ic_delete.setOnClickListener {
             activity.buildAlertDialog(getString(R.string.delete_review_dialog_title), yesButton = getString(R.string.yes_dialog), noButton = getString(R.string.no_dialog), positiveAction = {
                 setHorizontalProgress(true)
-                presenter?.deleteReview(review.idUlasan)
+                presenter?.deleteReview(review.idUlasan, idKatering)
             }).show()
         }
     }
@@ -181,9 +181,9 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
 
     override fun onInsertReview(review: InsertReviewResponse) {
         setMyReview(review.rating, review.ulasan)
-        this.review.idUlasan=review.idUlasan
-        this.review.rating=review.rating
-        this.review.ulasan= review.ulasan
+        this.review.idUlasan = review.idUlasan
+        this.review.rating = review.rating
+        this.review.ulasan = review.ulasan
         activity?.let {
             it.showShortToast(review.message)
         }
@@ -192,9 +192,9 @@ class ReviewFragment : BaseFragment<ReviewPresenter>(), ReviewView {
 
     override fun onUpdateReview(review: UpdateReviewResponse) {
         setMyReview(review.rating, review.ulasan)
-        this.review.idUlasan=review.idUlasan
-        this.review.rating=review.rating
-        this.review.ulasan= review.ulasan
+        this.review.idUlasan = review.idUlasan
+        this.review.rating = review.rating
+        this.review.ulasan = review.ulasan
         activity?.let {
             it.showShortToast(review.message)
         }

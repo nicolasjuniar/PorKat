@@ -63,11 +63,11 @@ class InvoiceFragment : BaseFragment<InvoicePresenter>(), InvoiceView {
 
         btn_upload.setOnClickListener {
             activity?.let {
-                it.buildAlertDialog(getString(R.string.dialog_upload_invoice_title), getString(R.string.dialog_update_invoice_message), getString(R.string.yes_dialog), getString(R.string.no_dialog), {
+                it.buildAlertDialog(getString(R.string.dialog_upload_invoice_title), getString(R.string.dialog_update_invoice_message), getString(R.string.yes_dialog), getString(R.string.no_dialog)) {
                     setLoading(true)
                     photoName = if (transactionModel.nota.isNotEmpty()) transactionModel.nota else photoName
                     presenter?.updateInvoice(transactionModel.idPesan, photoName, iv_invoice.encodeBase64())
-                }).show()
+                }.show()
             }
         }
     }

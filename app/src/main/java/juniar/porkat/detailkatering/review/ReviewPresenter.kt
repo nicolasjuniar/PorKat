@@ -22,9 +22,9 @@ class ReviewPresenter(val view: ReviewView? = null, val view2: ReviewDialogView?
                 )
     }
 
-    fun deleteReview(idUlasan: Int) {
+    fun deleteReview(idUlasan: Int, idKatering: Int) {
         NetworkManager.createService(NetworkApi::class.java)
-                .deleteUlasan(idUlasan)
+                .deleteUlasan(idUlasan, idKatering)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.newThread())
                 .subscribe(

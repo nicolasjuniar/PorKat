@@ -92,9 +92,9 @@ class TransactionActivity : BaseActivity<TransactionPresenter>(), ViewPager.OnPa
             btn_submit.text = getString(R.string.next_text)
             btn_submit.setAvailable(listBoolean[viewpager.currentItem], this@TransactionActivity)
         } else {
-            buildAlertDialog(getString(R.string.dialog_exit_transaction_title), getString(R.string.dalog_exit_transaction_detail), getString(R.string.yes_dialog), getString(R.string.no_dialog), {
+            buildAlertDialog(getString(R.string.dialog_exit_transaction_title), getString(R.string.dalog_exit_transaction_detail), getString(R.string.yes_dialog), getString(R.string.no_dialog)) {
                 super.onBackPressed()
-            }).show()
+            }.show()
         }
     }
 
